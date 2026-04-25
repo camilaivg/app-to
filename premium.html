@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>BAPPSEARCH - Obtén Premium</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    /* VARIABLES GLOBALES */
+    :root {
+      --bg-app: #2c363b;
+      --bg-card: #3a464c;
+      --text-primary: #ffffff;
+      --text-secondary: #aab8c0;
+      --accent-cyan: #5fa5a1;
+      --accent-pink: #df7b90;
+      --font-main: 'Nunito', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-main); }
+    body { background-color: #121212; display: flex; justify-content: center; min-height: 100vh; }
+
+    /* CONTENEDOR PRINCIPAL */
+    .mobile-app-container {
+      width: 100%; max-width: 480px; 
+      background-color: var(--bg-app); 
+      position: relative; overflow-x: hidden; min-height: 100vh;
+      display: flex; flex-direction: column;
+    }
+
+    /* LÓGICA DE VISTAS (Paso 1 y Paso 2) */
+    input[name="flow-nav"] { display: none; }
+    
+    .view-plan, .view-checkout {
+      display: none; flex-direction: column; flex: 1; 
+      animation: slideIn 0.3s ease forwards;
+    }
+
+    #step-plan:checked ~ .view-plan { display: flex; }
+    #step-checkout:checked ~ .view-checkout { display: flex; }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    /* =======================================
+       VISTA 1: PLAN BENEFICIOS (DARK THEME) 
+       ======================================= */
+    .plan-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .plan-logo { font-size: 1.1rem; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
+    .plan-logo span { color: var(--text-secondary); font-weight: 400; }
+    .btn-close { color: var(--text-secondary); font-size: 1.4rem; text-decoration: none; cursor: pointer; }
+
+    .plan-body { padding: 30px 20px; color: var(--text-primary); overflow-y: auto; }
+    .plan-subtitle { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 15px; }
+    .plan-title { font-size: 1.8rem; font-weight: 800; text-align: center; margin-bottom: 10px; line-height: 1.2; }
+    
+    .mascot-container { font-size: 5rem; text-align: center; color: var(--accent-pink); margin: 20px 0; position: relative; }
+    .mascot-container i.star1 { position: absolute; top: 0; left: 35%; font-size: 1.5rem; transform: rotate(-15deg); }
+    .mascot-container i.star2 { position: absolute; top: 15px; right: 35%; font-size: 1.2rem; transform: rotate(20deg); }
+
+    .benefits-list { list-style: none; margin-bottom: 30px; }
+    .benefits-list li { display: flex; gap: 15px; margin-bottom: 18px; align-items: flex-start; font-size: 1.05rem; line-height: 1.4; font-weight: 600;}
+    .benefits-list i { color: var(--accent-cyan); font-size: 1.3rem; margin-top: 2px; }
+
+    .price-block { text-align: center; margin-bottom: 25px; }
+    .price-block p { font-size: 1.2rem; font-weight: 800; margin-bottom: 5px; }
+    .price-block a { color: var(--accent-cyan); font-size: 0.95rem; text-decoration: underline; font-weight: 600; }
+
+    .btn-action { background-color: var(--accent-cyan); color: var(--bg-app); border: none; padding: 16px; width: 100%; border-radius: 30px; font-weight: 800; font-size: 1.1rem; cursor: pointer; text-align: center; display: block; box-sizing: border-box; text-decoration: none; margin-bottom: 30px; }
+
+    .charity-card { display: flex; gap: 15px; background-color: var(--bg-card); padding: 16px; border-radius: 12px; margin-bottom: 15px; align-items: center; font-size: 0.9rem; line-height: 1.4; color: var(--text-primary); }
+    .charity-icon { font-size: 1.8rem; flex-shrink: 0; }
+    .icon-green { color: #4caf50; }
+    .icon-blue { color: #2196f3; }
+
+    /* =======================================
+       VISTA 2: CHECKOUT (LIGHT THEME) 
+       ======================================= */
+    .view-checkout { background-color: #f7f9fa; color: #333; }
+    .checkout-header { background-color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e0e0e0; }
+    .back-btn { font-size: 1.2rem; color: #333; cursor: pointer; }
+    .checkout-brand { font-weight: 800; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; }
+    .checkout-details-btn { font-size: 0.9rem; color: #666; font-weight: 600; }
+
+    .checkout-body { padding: 30px 20px; overflow-y: auto; }
+    .checkout-summary-title { font-size: 1rem; color: #666; margin-bottom: 5px; font-weight: 600; }
+    .checkout-price-large { font-size: 2.2rem; font-weight: 800; margin-bottom: 5px; color: #111; }
+    .checkout-subprice { color: #666; font-size: 1rem; margin-bottom: 20px; }
+    .add-code { color: #2196f3; font-weight: 700; display: flex; justify-content: space-between; padding-bottom: 25px; border-bottom: 1px solid #ddd; margin-bottom: 25px; font-size: 1.05rem;}
+
+    .form-group { margin-bottom: 18px; }
+    .form-label { display: block; font-size: 0.9rem; color: #444; font-weight: 700; margin-bottom: 8px; }
+    .form-input { width: 100%; padding: 14px; border: 1px solid #ccc; border-radius: 8px; font-size: 1.05rem; background-color: white; color: #333; outline: none; }
+    .form-input:focus { border-color: var(--accent-cyan); }
+
+    /* Estilo de Tarjeta tipo Stripe */
+    .card-element-box { border: 1px solid #ccc; border-radius: 8px; overflow: hidden; background-color: white; }
+    .card-row { display: flex; align-items: center; border-bottom: 1px solid #eee; position: relative; }
+    .card-row:last-child { border-bottom: none; }
+    .card-input-clean { border: none; padding: 14px; font-size: 1.05rem; width: 100%; outline: none; background: transparent; }
+    .card-icons { display: flex; gap: 6px; padding-right: 12px; font-size: 1.4rem; }
+    .col-half { width: 50%; border-right: 1px solid #eee; }
+    
+    .checkbox-group { display: flex; gap: 12px; align-items: flex-start; margin-top: 25px; }
+    .checkbox-group input { width: 20px; height: 20px; margin-top: 2px; accent-color: var(--accent-cyan); }
+    .checkbox-text { font-size: 0.95rem; color: #333; line-height: 1.4; }
+    .checkbox-text span { color: #666; display: block; margin-top: 4px; font-size: 0.85rem;}
+
+    .btn-submit { background-color: var(--accent-cyan); color: white; border: none; padding: 16px; width: 100%; border-radius: 8px; font-weight: 800; font-size: 1.1rem; margin-top: 25px; cursor: pointer; }
+    
+    .checkout-footer { text-align: center; margin-top: 25px; color: #666; font-size: 0.85rem; line-height: 1.5; }
+    .checkout-charity { display: flex; align-items: flex-start; gap: 10px; text-align: left; margin-top: 20px; font-size: 0.85rem; color: #444; }
+  </style>
+</head>
+<body>
+
+  <div class="mobile-app-container">
+    
+    <input type="radio" name="flow-nav" id="step-plan" checked>
+    <input type="radio" name="flow-nav" id="step-checkout">
+
+    <div class="view-plan">
+      <header class="plan-header">
+        <div class="plan-logo"><i class="fa-solid fa-child-reaching" style="color:var(--accent-cyan)"></i> Babysits <span>/ Premium</span></div>
+        <a href="index.html" class="btn-close"><i class="fa-solid fa-xmark"></i></a>
+      </header>
+
+      <main class="plan-body">
+        <p class="plan-subtitle">/ Actualización para empresas</p>
+        <h1 class="plan-title">Cuenta de agencia<br>Premium</h1>
+        
+        <div class="mascot-container">
+          <i class="fa-solid fa-star star1"></i>
+          <i class="fa-solid fa-ghost"></i>
+          <i class="fa-solid fa-star star2"></i>
+        </div>
+
+        <ul class="benefits-list">
+          <li><i class="fa-solid fa-check"></i> Se te permite enviar mensajes como agencia</li>
+          <li><i class="fa-solid fa-check"></i> Crear un perfil de agencia de cuidado de niños</li>
+          <li><i class="fa-solid fa-check"></i> Cada día nuevas niñeras y padres se suscriben a Babysits</li>
+          <li><i class="fa-solid fa-check"></i> Inicia conversaciones con niñera y con padres</li>
+          <li><i class="fa-solid fa-check"></i> Sé el primero en informarte sobre los(as) nuevos(as) niñeras y padres</li>
+          <li><i class="fa-solid fa-check"></i> Entre en contacto rápidamente vía notificaciones push</li>
+        </ul>
+
+        <div class="price-block">
+          <p>Solo $36.000 por mes (excl. IVA)</p>
+          <a href="#">¿Más información sobre precios para empresas?</a>
+        </div>
+
+        <label for="step-checkout" class="btn-action">Empezar Premium</label>
+
+        <div class="charity-card">
+          <i class="fa-solid fa-leaf charity-icon icon-green"></i>
+          <div>Babysits donará una parte de tu compra para eliminar parte del CO₂ de la atmósfera.</div>
+        </div>
+        <div class="charity-card">
+          <i class="fa-solid fa-ribbon charity-icon icon-blue"></i>
+          <div>Babysits es un patrocinador de Make-A-Wish® International. ¿Quieres ayudar a cumplir los deseos de niños con enfermedades graves? <a href="#" style="color: white; text-decoration: underline;">Aprende más</a></div>
+        </div>
+      </main>
+    </div>
+
+    <div class="view-checkout">
+      <header class="checkout-header">
+        <label for="step-plan" class="back-btn"><i class="fa-solid fa-arrow-left"></i></label>
+        <div class="checkout-brand"><i class="fa-solid fa-child-reaching" style="color: var(--accent-cyan);"></i> Babysits</div>
+        <div class="checkout-details-btn">Detalles <i class="fa-solid fa-chevron-down"></i></div>
+      </header>
+
+      <main class="checkout-body">
+        <div class="checkout-summary-title">Suscribirse a Premium business</div>
+        <div class="checkout-price-large">36.000 CLP</div>
+        <div class="checkout-subprice">por mes</div>
+        
+        <div class="add-code">
+          <span>Añadir código</span> <i class="fa-solid fa-chevron-down" style="color:#ccc;"></i>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Correo electrónico</label>
+          <input type="email" class="form-input" value="camila.ivg8@gmail.com">
+        </div>
+
+        <h3 style="font-size: 1.15rem; font-weight: 800; margin: 30px 0 15px 0;">Método de pago</h3>
+
+        <div class="form-group">
+          <label class="form-label">Información de la tarjeta</label>
+          <div class="card-element-box">
+            <div class="card-row">
+              <input type="text" class="card-input-clean" placeholder="1234 1234 1234 1234">
+              <div class="card-icons">
+                <i class="fa-brands fa-cc-visa" style="color:#1a1f71"></i>
+                <i class="fa-brands fa-cc-mastercard" style="color:#eb001b"></i>
+              </div>
+            </div>
+            <div class="card-row">
+              <div class="col-half"><input type="text" class="card-input-clean" placeholder="MM / AA"></div>
+              <div class="col-half" style="border:none;"><input type="text" class="card-input-clean" placeholder="CVC"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Nombre del titular de la tarjeta</label>
+          <input type="text" class="form-input" placeholder="Nombre completo">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">País o región</label>
+          <select class="form-input" style="appearance: none; background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%23666%22%3E%3Cpath%20d%3D%22M7%2010l5%205%205-5z%22%2F%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right 10px center;">
+            <option>Chile</option>
+          </select>
+        </div>
+
+        <label class="checkbox-group">
+          <input type="checkbox">
+          <div class="checkbox-text">
+            <b>Guarda mis datos para un proceso de compra más rápido</b>
+            <span>Paga de forma segura en Babysits y en cualquier lugar donde se acepte Link.</span>
+          </div>
+        </label>
+
+        <button class="btn-submit">Suscribirse</button>
+        
+        <div class="checkout-footer">
+          Al suscribirte, autorizas a Babysits a cobrarte según las condiciones hasta que canceles.
+        </div>
+        
+        <div class="checkout-charity">
+          <i class="fa-solid fa-leaf icon-green" style="font-size:1.2rem;"></i> 
+          <div>Babysits <b>donará una parte de tu suscripción</b> para ayudar a eliminar el CO₂ de la atmósfera.</div>
+        </div>
+      </main>
+    </div>
+
+  </div> </body>
+</html>

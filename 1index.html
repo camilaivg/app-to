@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>UI Mobile - Dark Theme Completo + Wizard Pasos 1 a 8</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    /* =========================================
+       VARIABLES GLOBALES
+       ========================================= */
+    :root {
+      --bg-app: #2c363b;
+      --bg-card: #3a464c;
+      --bg-input: #445158;
+      
+      --text-primary: #ffffff;
+      --text-secondary: #aab8c0;
+      
+      --accent-cyan: #5fa5a1;
+      --accent-pink: #df7b90;
+      --bg-pink-soft: rgba(223, 123, 144, 0.15);
+      
+      --font-main: 'Nunito', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: var(--font-main);
+      background-color: #121212;
+      display: flex; justify-content: center;
+      min-height: 100vh;
+    }
+
+    .mobile-app-container {
+      width: 100%; max-width: 480px;
+      background-color: var(--bg-app);
+      color: var(--text-primary);
+      position: relative; overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    .app-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; background-color: var(--bg-app); position: relative; z-index: 30; }
+    .brand-logo { font-size: 1.5rem; font-weight: 800; color: var(--accent-cyan); display: flex; align-items: center; gap: 8px; }
+    .header-actions { display: flex; gap: 12px; }
+    .btn-icon { background-color: transparent; border: 1px solid var(--text-secondary); border-radius: 50%; width: 36px; height: 36px; color: var(--text-primary); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    .btn-avatar-icon { background-color: #aab8c0; border: none; color: var(--bg-app); }
+
+    /* CONTENIDO PRINCIPAL */
+    .app-content { padding: 0 20px 150px 20px; position: relative; z-index: 20; }
+
+    /* BÚSQUEDA */
+    .search-container { display: flex; gap: 10px; margin-top: 5px; margin-bottom: 25px; }
+    .search-input-wrapper { flex: 1; position: relative; display: flex; align-items: center; }
+    .search-input { width: 100%; background-color: var(--bg-input); border: 1px solid var(--bg-card); border-radius: 25px; padding: 12px 45px 12px 20px; color: var(--text-primary); font-family: inherit; font-size: 0.95rem; }
+    .search-input::placeholder { color: var(--text-secondary); }
+    .btn-search-icon { position: absolute; right: 4px; background-color: var(--accent-cyan); border: none; color: white; width: 34px; height: 34px; border-radius: 50%; display: flex; justify-content: center; align-items: center; }
+    .btn-filter { background-color: var(--bg-input); border: none; color: var(--text-secondary); width: 44px; height: 44px; border-radius: 50%; display: flex; justify-content: center; align-items: center; position: relative; cursor: pointer; }
+    .notification-dot { position: absolute; top: 8px; right: 10px; width: 8px; height: 8px; background-color: var(--accent-pink); border-radius: 50%; }
+
+    /* TEXTOS HERO */
+    .hero-title { font-size: 1.6rem; font-weight: 800; margin-bottom: 12px; }
+    .hero-text { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.5; margin-bottom: 15px; }
+    .btn-primary { background-color: var(--accent-cyan); color: var(--bg-app); border: none; padding: 10px 20px; border-radius: 25px; font-weight: 800; font-size: 0.95rem; margin-bottom: 25px; }
+    .divider { border: none; border-top: 1px solid var(--bg-input); margin-bottom: 20px; }
+
+    /* TARJETAS DE PERFIL */
+    .feed-section { display: flex; flex-direction: column; gap: 12px; }
+    .profile-card { background-color: var(--bg-card); border-radius: 12px; padding: 16px; display: flex; flex-direction: row; gap: 16px; }
+    .card-left { width: 85px; display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+    .avatar-container { position: relative; width: 75px; height: 75px; margin-bottom: 10px; }
+    .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent-cyan); }
+    .play-icon { position: absolute; bottom: 0; right: -4px; background-color: white; color: var(--accent-cyan); width: 26px; height: 26px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 10px; padding-left: 2px; }
+    .badge-family { border: 1px solid var(--text-secondary); color: var(--text-primary); font-size: 0.6rem; font-weight: 700; padding: 4px; border-radius: 8px; text-align: center; margin-bottom: 4px; line-height: 1.1; }
+    .rating-stars { color: var(--accent-cyan); font-size: 0.6rem; margin-bottom: 6px; }
+    .rating-stars span { color: var(--text-secondary); }
+    .distance-tag { background-color: var(--bg-app); font-size: 0.7rem; padding: 2px 8px; border-radius: 10px; }
+    
+    .card-right { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+    .card-header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+    .profile-name { font-size: 1.3rem; font-weight: 800; display: flex; align-items: center; gap: 6px; }
+    .icon-verified { color: var(--accent-pink); font-size: 1rem; }
+    .likes-badge { background-color: var(--bg-pink-soft); color: var(--text-primary); padding: 4px 10px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+    .likes-badge i { color: var(--accent-pink); }
+    .profile-bio { color: var(--text-primary); font-size: 0.95rem; margin-bottom: 12px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .profile-list { list-style: none; font-size: 0.85rem; color: var(--text-primary); display: flex; flex-direction: column; gap: 6px; }
+    .profile-list li { display: flex; align-items: center; gap: 8px; }
+    .profile-list i { color: var(--text-secondary); width: 14px; text-align: center; }
+    .price-tag { align-self: flex-end; font-weight: 800; font-size: 1rem; margin-top: 10px; color: var(--text-primary); }
+
+    /* BOTTOM NAVIGATION */
+    .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background-color: var(--bg-app); display: flex; justify-content: space-around; align-items: center; padding: 12px 0 16px 0; border-top: 1px solid var(--bg-card); z-index: 200; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 6px; text-decoration: none; color: var(--text-secondary); font-size: 0.75rem; font-weight: 600; }
+    .nav-item i { font-size: 1.3rem; }
+    .nav-item.active { color: var(--accent-cyan); }
+
+    /* LÓGICA DE VISTAS (MAPA/LISTA) */
+    #view-toggle { display: none; }
+    #view-toggle:checked ~ .app-content .list-view-content { display: none; }
+    #view-toggle:checked ~ .map-view-container { display: block; }
+    #view-toggle:checked ~ .fab-btn-mapa { display: none; }
+    #view-toggle:checked ~ .fab-btn-lista { display: flex; }
+
+    /* MAPA CONTENEDOR */
+    .map-view-container { display: none; position: absolute; top: 145px; bottom: 72px; left: 0; right: 0; background-color: #1e2528; background-image: linear-gradient(#252e32 1px, transparent 1px), linear-gradient(90deg, #252e32 1px, transparent 1px); background-size: 40px 40px; z-index: 10; overflow: hidden; }
+    .map-controls { position: absolute; top: 20px; right: 15px; display: flex; flex-direction: column; gap: 15px; z-index: 30; }
+    .control-group { background-color: white; border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; }
+    .map-btn { width: 44px; height: 44px; background: white; border: none; color: #333; font-size: 1.3rem; cursor: pointer; display: flex; justify-content: center; align-items: center; }
+    .map-btn:first-child { border-bottom: 1px solid #e0e0e0; }
+    .control-circle { background-color: white; width: 44px; height: 44px; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: #333; font-size: 1.2rem; cursor: pointer; }
+    .pin-container { position: absolute; width: 32px; height: 32px; z-index: 20; }
+    .pin-shape { width: 100%; height: 100%; background-color: var(--accent-cyan); border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 2px solid white; position: absolute; top: 0; left: 0; }
+    .pin-icon { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; color: white; font-size: 14px; z-index: 2; }
+    .pin-badge { position: absolute; top: -6px; right: -6px; background-color: var(--accent-pink); color: white; font-size: 0.65rem; font-weight: 800; padding: 2px 5px; border-radius: 10px; border: 2px solid white; z-index: 3; }
+    .pin-container.home { width: 36px; height: 36px; z-index: 25; }
+    .pin-container.home .pin-shape { background-color: var(--accent-pink); }
+    .pin-container.home .pin-icon { font-size: 16px; }
+
+    /* BOTONES FLOTANTES */
+    .fab-action { position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%); background-color: var(--accent-cyan); color: white; border: none; padding: 12px 28px; border-radius: 30px; font-size: 1.05rem; font-weight: 800; cursor: pointer; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 100; }
+    .fab-btn-mapa { display: flex; }
+    .fab-btn-lista { display: none; }
+
+    /* SCROLL FINAL Y FOOTER */
+    .pagination { display: flex; gap: 15px; align-items: center; justify-content: flex-start; margin: 30px 0; border-bottom: 1px solid var(--bg-input); padding-bottom: 25px; }
+    .page-item { color: var(--text-primary); font-size: 1.1rem; font-weight: 700; cursor: pointer; }
+    .page-item.active { background-color: var(--bg-input); width: 36px; height: 36px; display: flex; justify-content: center; align-items: center; border-radius: 50%; }
+    .page-item.next { background-color: var(--bg-input); width: 44px; height: 44px; display: flex; justify-content: center; align-items: center; border-radius: 50%; }
+    .breadcrumbs { font-size: 1rem; margin-bottom: 40px; border-bottom: 1px solid var(--bg-input); padding-bottom: 30px; }
+    .breadcrumbs a { color: var(--text-secondary); text-decoration: none; font-weight: 600; }
+    .breadcrumbs a.active { color: var(--text-primary); }
+    .breadcrumbs span { color: var(--text-secondary); margin: 0 5px; }
+    .info-section h2 { font-size: 1.5rem; font-weight: 800; margin-bottom: 15px; }
+    .info-section p { color: var(--text-secondary); line-height: 1.5; font-size: 0.95rem; margin-bottom: 30px; }
+    .steps-graphic { background-color: var(--bg-card); border-radius: 50%; width: 160px; height: 160px; margin: 0 auto 50px auto; position: relative; display: flex; justify-content: center; align-items: center; font-size: 4rem; color: var(--accent-cyan); }
+    .step-circle { position: absolute; width: 32px; height: 32px; background-color: var(--accent-cyan); color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: 800; font-size: 0.9rem; }
+    .step-circle.c1 { top: 20px; left: -10px; }
+    .step-circle.c2 { bottom: -10px; left: 50%; transform: translateX(-50%); }
+    .step-circle.c3 { top: 20px; right: -10px; }
+    .steps-text { text-align: center; margin-bottom: 40px; }
+    .steps-text h3 { font-size: 1.2rem; margin-bottom: 10px; }
+    .steps-text p { font-size: 0.9rem; color: var(--text-secondary); }
+    .faq-section { background-color: var(--bg-card); margin: 0 -20px; padding: 30px 20px; }
+    .faq-section h2 { font-size: 1.4rem; font-weight: 800; margin-bottom: 20px; }
+    .faq-item { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; border-bottom: 1px solid var(--bg-input); cursor: pointer; }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-item span { font-size: 0.95rem; font-weight: 600; color: var(--text-primary); padding-right: 20px; }
+    .faq-item i { color: var(--text-secondary); }
+    .discover-section { margin-top: 40px; margin-bottom: 40px; }
+    .discover-section h2 { font-size: 1.4rem; font-weight: 800; margin-bottom: 20px; }
+    .horizontal-scroll { display: flex; overflow-x: auto; gap: 15px; scroll-snap-type: x mandatory; margin: 0 -20px; padding: 0 20px; }
+    .horizontal-scroll::-webkit-scrollbar { display: none; }
+    .discover-card { min-width: 180px; background-color: var(--bg-card); border-radius: 12px; overflow: hidden; scroll-snap-align: start; }
+    .discover-card img { width: 100%; height: 120px; object-fit: cover; }
+    .discover-card-text { padding: 15px; font-weight: 700; font-size: 0.95rem; color: var(--text-primary); }
+    .btn-circle-nav { position: absolute; right: 20px; margin-top: -30px; width: 36px; height: 36px; background-color: var(--accent-cyan); color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; border: none; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+    .footer-seo-links { margin-bottom: 40px; }
+    .footer-seo-links p { color: var(--text-secondary); line-height: 1.8; font-size: 0.9rem; margin-bottom: 20px; }
+    .footer-seo-links h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 10px; margin-top: 20px;}
+    .footer-final-section { display: flex; flex-direction: column; align-items: center; padding-top: 30px; border-top: 1px solid var(--bg-input); margin-bottom: 60px; }
+    .lang-selector-pill { display: flex; width: 100%; background-color: var(--bg-input); border-radius: 25px; margin-bottom: 30px; overflow: hidden; }
+    .lang-flag { padding: 12px 20px; background-color: var(--bg-card); display: flex; align-items: center; gap: 8px; border-right: 1px solid var(--bg-app); cursor: pointer; }
+    .lang-text { flex: 1; padding: 12px; background-color: var(--bg-card); display: flex; justify-content: center; align-items: center; gap: 8px; cursor: pointer; color: var(--text-primary); font-weight: 600; font-size: 1rem; }
+    .footer-links-center { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 20px; margin-bottom: 30px; }
+    .footer-link-row { display: flex; gap: 15px; justify-content: center; width: 100%; }
+    .footer-link-row a { color: var(--text-primary); text-decoration: none; font-size: 0.95rem; }
+    .social-icons-row { display: flex; gap: 12px; margin-bottom: 40px; justify-content: center; }
+    .social-icons-row a { width: 36px; height: 36px; background-color: white; color: var(--bg-app); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.1rem; text-decoration: none; transition: transform 0.2s; }
+    .footer-copyright { color: var(--text-primary); display: flex; align-items: center; gap: 8px; font-size: 0.95rem; font-weight: 600; margin-bottom: 20px; }
+
+    /* MODAL DE FILTROS */
+    #filter-toggle-hack { display: none; }
+    .filter-modal-container { position: fixed; top: 0; left: 50%; height: 100vh; width: 100%; max-width: 480px; background-color: var(--bg-app); z-index: 999; transform: translate(-50%, 100%); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column; }
+    #filter-toggle-hack:checked ~ .filter-modal-container { transform: translate(-50%, 0); }
+    .filter-header { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid var(--bg-input); }
+    .filter-header h2 { font-size: 1.2rem; font-weight: 800; color: var(--text-primary); margin:0;}
+    .btn-close-modal { color: var(--text-primary); font-size: 1.2rem; cursor: pointer; }
+    .filter-scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
+    .btn-outline-full { width: 100%; background-color: transparent; border: 1px solid var(--text-secondary); color: var(--text-primary); padding: 14px; border-radius: 25px; font-weight: 700; font-size: 1rem; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 30px; }
+    .filter-group { margin-bottom: 30px; }
+    .filter-group h3 { font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 15px; }
+    .custom-select { width: 100%; background-color: var(--bg-card); color: var(--text-primary); border: 1px solid var(--bg-input); padding: 14px 20px; border-radius: 8px; font-size: 1rem; appearance: none; background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23aab8c0%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.4-12.8z%22%2F%3E%3C%2Fsvg%3E"); background-repeat: no-repeat; background-position: right 20px top 50%; background-size: 12px auto; }
+    .custom-check-label { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; cursor: pointer; color: var(--text-primary); font-size: 0.95rem; }
+    .custom-check-label input { display: none; }
+    .check-box-ui { width: 22px; height: 22px; border: 2px solid var(--text-secondary); border-radius: 4px; display: flex; justify-content: center; align-items: center; transition: 0.2s; flex-shrink: 0; }
+    .custom-check-label input:checked + .check-box-ui { background-color: var(--accent-cyan); border-color: var(--accent-cyan); }
+    .custom-check-label input:checked + .check-box-ui::after { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--bg-app); font-size: 14px; }
+    .help-text { display: block; font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px; padding-left: 34px; }
+    .slider-text { display: block; color: var(--text-primary); font-size: 0.95rem; margin-bottom: 10px; }
+    .range-slider { width: 100%; -webkit-appearance: none; background: transparent; margin: 15px 0 25px 0; }
+    .range-slider::-webkit-slider-runnable-track { width: 100%; height: 6px; background: var(--bg-card); border-radius: 3px; }
+    .range-slider::-webkit-slider-thumb { -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%; background: var(--accent-cyan); margin-top: -9px; cursor: pointer; }
+    .availability-matrix { display: grid; grid-template-columns: 70px repeat(7, 1fr); gap: 6px; text-align: center; margin-top: 15px; }
+    .matrix-header { font-size: 0.85rem; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; }
+    .matrix-row-title { font-size: 0.85rem; color: var(--text-primary); display: flex; align-items: center; text-align: left; }
+    .matrix-check { display: flex; justify-content: center; align-items: center; cursor: pointer; }
+    .matrix-check input { display: none; }
+    .matrix-box { width: 20px; height: 20px; border: 2px solid var(--text-secondary); border-radius: 4px; display: inline-block; transition: 0.2s; }
+    .matrix-check input:checked + .matrix-box { background-color: var(--accent-cyan); border-color: var(--accent-cyan); position: relative; }
+    .matrix-check input:checked + .matrix-box::after { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--bg-app); font-size: 12px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+    .price-input-wrapper { position: relative; margin-bottom: 5px; }
+    .price-input-wrapper i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-primary); font-style: normal; }
+    .price-input { width: 100%; background-color: transparent; border: none; border-bottom: 2px solid var(--text-secondary); color: var(--text-primary); padding: 10px 10px 10px 30px; font-size: 1rem; }
+    .price-input:focus { outline: none; border-bottom-color: var(--accent-cyan); }
+    .price-subtext { font-size: 0.8rem; color: var(--text-secondary); }
+
+    /* MENÚ LATERAL (MODAL DERECHO) */
+    #menu-toggle-hack { display: none; }
+    .menu-modal-container { position: fixed; top: 0; left: 50%; height: 100vh; width: 100%; max-width: 480px; background-color: var(--bg-app); z-index: 1000; transform: translate(50%, 0); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column; }
+    #menu-toggle-hack:checked ~ .menu-modal-container { transform: translate(-50%, 0); } 
+    .menu-header-box { display: flex; flex-direction: column; align-items: center; position: relative; padding: 30px 20px 20px 20px; }
+    .btn-close-main-menu { position: absolute; top: 20px; left: 20px; font-size: 1.4rem; color: var(--text-primary); cursor: pointer; }
+    .menu-user-avatar { width: 64px; height: 64px; background-color: var(--accent-cyan); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 2rem; color: white; margin-bottom: 12px; }
+    .menu-username { font-size: 1.4rem; font-weight: 800; color: var(--text-primary); margin: 0; }
+    .menu-scroll-area { flex: 1; overflow-y: auto; padding: 0 20px 40px 20px; }
+    .menu-scroll-area::-webkit-scrollbar { display: none; }
+    .menu-card { background-color: var(--bg-card); border-radius: 12px; margin-bottom: 16px; overflow: hidden; }
+    .menu-item { display: flex; align-items: center; padding: 16px; border-bottom: 1px solid var(--bg-input); text-decoration: none; color: var(--text-primary); }
+    .menu-item:last-child { border-bottom: none; }
+    .menu-item-icon { width: 30px; font-size: 1.3rem; margin-right: 12px; color: var(--text-secondary); text-align: center; }
+    .menu-item-icon-custom { font-size: 1.8rem; margin-right: 12px; width: 35px; text-align: center; }
+    .menu-item-content { flex: 1; }
+    .menu-item-title { font-size: 1rem; font-weight: 700; }
+    .menu-item-subtitle { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.3; margin-top: 4px; }
+    .menu-item-arrow { color: var(--text-secondary); font-size: 0.9rem; }
+    .menu-link-center { text-align: center; margin-bottom: 20px; }
+    .menu-section-title { font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin: 25px 0 15px 5px; }
+    .menu-logout-btn { display: flex; align-items: center; gap: 10px; color: var(--text-secondary); text-decoration: none; font-size: 1rem; font-weight: 600; padding: 10px 5px; margin-top: 10px; }
+
+    /* MODAL CENTRAL "TODOS LOS PASOS" */
+    #steps-toggle-hack { display: none; }
+    .steps-modal-overlay { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; height: 100vh; background-color: rgba(0, 0, 0, 0.6); z-index: 2000; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+    #steps-toggle-hack:checked ~ .steps-modal-overlay { opacity: 1; pointer-events: auto; }
+    .steps-modal-box { background-color: var(--bg-app); width: 90%; max-width: 400px; border-radius: 16px; display: flex; flex-direction: column; overflow: hidden; transform: translateY(30px); transition: transform 0.3s ease; }
+    #steps-toggle-hack:checked ~ .steps-modal-overlay .steps-modal-box { transform: translateY(0); }
+    .steps-header { display: flex; align-items: center; padding: 20px; border-bottom: 1px solid var(--bg-input); position: relative; }
+    .steps-header h2 { margin: 0; font-size: 1.2rem; flex: 1; text-align: center; color: var(--text-primary); }
+    .btn-close-steps { position: absolute; right: 20px; font-size: 1.2rem; color: var(--text-primary); cursor: pointer; }
+    .steps-content-area { padding: 20px; overflow-y: auto; max-height: 70vh; }
+    .steps-intro { font-size: 0.95rem; color: var(--text-primary); margin-bottom: 25px; line-height: 1.4; text-align: center; }
+    .step-list-item { display: flex; align-items: flex-start; gap: 15px; margin-bottom: 20px; }
+    .step-check { width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--text-secondary); display: flex; justify-content: center; align-items: center; font-size: 12px; color: transparent; flex-shrink: 0; margin-top: 2px; }
+    .step-check.checked { border-color: var(--text-secondary); color: var(--text-secondary); }
+    .active-step { background-color: var(--bg-card); padding: 16px; border-radius: 12px; border: 1px solid var(--accent-cyan); margin: 0 -10px 20px -10px; }
+    .active-step .step-check { border-color: var(--accent-cyan); color: var(--accent-cyan); background-color: transparent; }
+    .step-details { flex: 1; }
+    .step-details h4 { font-size: 1.05rem; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
+    .active-step .step-details p { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.4; }
+    .btn-empezar { background-color: var(--accent-cyan); color: var(--bg-app); border: none; padding: 8px 24px; border-radius: 20px; font-weight: 800; font-size: 0.95rem; cursor: pointer; display: inline-block; text-align: center; box-sizing: border-box; }
+
+    /* ==================================================================== */
+    /* NUEVO CSS: WIZARD MULTI-PASO (8 PASOS EN TOTAL)                      */
+    /* ==================================================================== */
+    #create-profile-toggle-hack { display: none; }
+    input[name="wizard-nav"] { display: none; }
+
+    .create-profile-modal-container {
+      position: fixed; top: 0; left: 50%; height: 100vh; width: 100%; max-width: 480px;
+      background-color: var(--bg-app); z-index: 3000;
+      transform: translate(-50%, 100%); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      display: flex; flex-direction: column; overflow: hidden;
+    }
+    #create-profile-toggle-hack:checked ~ .create-profile-modal-container { transform: translate(-50%, 0); }
+
+    .cp-header { display: flex; align-items: center; justify-content: center; padding: 20px; position: relative; }
+    .cp-header h2 { font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin: 0; }
+    .btn-close-cp { position: absolute; right: 20px; font-size: 1.2rem; color: var(--text-secondary); cursor: pointer; }
+    
+    .cp-progress-bg { width: 100%; height: 4px; background-color: var(--bg-card); transition: 0.3s; }
+    .cp-progress-fill { height: 100%; background-color: var(--accent-pink); border-radius: 0 3px 3px 0; transition: width 0.3s ease; }
+    
+    /* Control Dinámico de la Barra de Progreso (8 Pasos) */
+    #wizard-step-1:checked ~ .cp-progress-bg .cp-progress-fill { width: 12.5%; }
+    #wizard-step-2:checked ~ .cp-progress-bg .cp-progress-fill { width: 25%; }
+    #wizard-step-3:checked ~ .cp-progress-bg .cp-progress-fill { width: 37.5%; }
+    #wizard-step-4:checked ~ .cp-progress-bg .cp-progress-fill { width: 50%; }
+    #wizard-step-5:checked ~ .cp-progress-bg .cp-progress-fill { width: 62.5%; }
+    #wizard-step-6:checked ~ .cp-progress-bg .cp-progress-fill { width: 75%; }
+    #wizard-step-7:checked ~ .cp-progress-bg .cp-progress-fill { width: 87.5%; }
+    #wizard-step-8:checked ~ .cp-progress-bg .cp-progress-fill { width: 100%; }
+
+    /* Lógica de Visibilidad de los Pasos */
+    .wizard-step-content { display: none; flex-direction: column; flex: 1; min-height: 0; }
+    #wizard-step-1:checked ~ .wizard-step-1-content { display: flex; }
+    #wizard-step-2:checked ~ .wizard-step-2-content { display: flex; }
+    #wizard-step-3:checked ~ .wizard-step-3-content { display: flex; }
+    #wizard-step-4:checked ~ .wizard-step-4-content { display: flex; }
+    #wizard-step-5:checked ~ .wizard-step-5-content { display: flex; }
+    #wizard-step-6:checked ~ .wizard-step-6-content { display: flex; }
+    #wizard-step-7:checked ~ .wizard-step-7-content { display: flex; }
+    #wizard-step-8:checked ~ .wizard-step-8-content { display: flex; }
+
+    .cp-body { flex: 1; padding: 30px 20px; overflow-y: auto; }
+    
+    .mascot-section { display: flex; flex-direction: column; align-items: flex-start; margin-bottom: 40px; position: relative; }
+    .speech-bubble {
+      background-color: var(--bg-card); color: var(--text-primary);
+      padding: 18px 24px; border-radius: 25px; font-size: 1.15rem; font-weight: 700;
+      position: relative; margin-bottom: 20px; margin-left: 20px; max-width: 85%;
+    }
+    .speech-bubble::after {
+      content: ''; position: absolute; bottom: -12px; left: 30px;
+      border-width: 15px 15px 0 0; border-style: solid; border-color: var(--bg-card) transparent transparent transparent;
+    }
+    .mascot-avatar { font-size: 6rem; color: #52a3b0; margin-left: 10px; }
+
+    .cp-form-group { display: flex; flex-direction: column; gap: 10px; }
+    .cp-label { font-size: 1rem; font-weight: 700; color: var(--text-primary); }
+    .cp-input {
+      background-color: transparent; border: 1px solid var(--text-secondary);
+      border-radius: 12px; padding: 15px; color: var(--text-primary); font-size: 1.05rem; font-family: inherit;
+    }
+    .cp-input:focus { border-color: var(--accent-cyan); outline: none; }
+
+    /* ESTILOS PASO 3 (Grid) */
+    .grid-options { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    .option-card { padding: 0; border: none; background: transparent; cursor: pointer; }
+    .option-card input { display: none; }
+    .option-card-inner {
+      background-color: var(--bg-card); border: 2px solid transparent; border-radius: 12px;
+      padding: 25px 15px; text-align: center; color: var(--text-primary);
+      font-weight: 700; transition: 0.2s; display: flex; align-items: center; justify-content: center; min-height: 100px;
+    }
+    .option-card input:checked + .option-card-inner { background-color: #3b5a59; border-color: var(--accent-cyan); }
+
+    /* ESTILOS PASO 4 (Foto) */
+    .photo-upload-area { display: flex; flex-direction: column; align-items: center; gap: 20px; margin-bottom: 40px; }
+    .camera-circle { width: 140px; height: 140px; background-color: var(--bg-card); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 3rem; color: var(--text-secondary); }
+    .btn-outline-pill { background-color: transparent; border: 1px solid var(--accent-cyan); color: var(--accent-cyan); padding: 8px 24px; border-radius: 20px; font-weight: 800; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+    .photo-examples-section { border-top: 1px solid var(--bg-input); padding-top: 25px; }
+    .photo-examples-section p { font-size: 0.9rem; color: var(--text-primary); margin-bottom: 15px; text-align: center;}
+    .photo-examples-row { display: flex; gap: 15px; justify-content: center; }
+    .photo-examples-row img { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; }
+
+    /* ESTILOS PASOS 5 (Radios Lista y Error) */
+    .error-banner { background-color: #4a3c40; color: #e27d8f; padding: 12px 16px; border-radius: 8px; font-weight: 600; font-size: 0.95rem; display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+    .question-title { font-size: 1.05rem; font-weight: 700; color: var(--text-primary); margin-bottom: 15px; margin-top: 10px; line-height: 1.4; }
+    .list-radio-label { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 20px; cursor: pointer; color: var(--text-primary); font-size: 0.95rem; }
+    .list-radio-label input { display: none; }
+    .radio-circle-ui { width: 22px; height: 22px; border: 2px solid var(--text-secondary); border-radius: 50%; display: flex; justify-content: center; align-items: center; transition: 0.2s; flex-shrink: 0; margin-top: 2px; }
+    .list-radio-label input:checked + .radio-circle-ui { border-color: var(--accent-cyan); }
+    .list-radio-label input:checked + .radio-circle-ui::after { content: ''; width: 12px; height: 12px; background-color: var(--accent-cyan); border-radius: 50%; }
+
+    /* ESTILOS PASO 6 (Tarjetas Verticales) */
+    .vertical-options { display: flex; flex-direction: column; gap: 15px; }
+    .v-option-card { padding: 0; border: none; background: transparent; cursor: pointer; text-align: left; }
+    .v-option-card input { display: none; }
+    .v-option-card-inner { background-color: var(--bg-card); border: 2px solid transparent; border-radius: 12px; padding: 20px; transition: 0.2s; display: flex; flex-direction: column; gap: 8px; }
+    .v-option-card-title { font-weight: 800; font-size: 1.1rem; color: var(--text-primary); }
+    .v-option-card-desc { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.4; }
+    .v-option-card input:checked + .v-option-card-inner { background-color: #3b5a59; border-color: var(--accent-cyan); }
+
+    /* ESTILOS PASOS 7 y 8 (Final y Loading) */
+    .congrats-container { display: flex; flex-direction: column; align-items: center; text-align: center; padding-top: 20px; }
+    .congrats-title { font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin-bottom: 12px; line-height: 1.3;}
+    .congrats-sub { color: var(--text-secondary); font-size: 1rem; margin-bottom: 40px; }
+    .monster-confetti { position: relative; font-size: 10rem; color: #52a3b0; margin-top: 20px;}
+    .confetti-piece { position: absolute; font-size: 1.5rem; }
+    .confetti-piece:nth-child(2) { top: -20px; left: -20px; color: var(--accent-pink); transform: rotate(20deg); }
+    .confetti-piece:nth-child(3) { top: 10px; right: -30px; color: var(--accent-cyan); transform: rotate(-15deg); }
+    .confetti-piece:nth-child(4) { bottom: 40px; left: -40px; color: #ffb400; transform: rotate(45deg); }
+    
+    .loading-list { list-style: none; padding: 0; margin-top: 40px; display: flex; flex-direction: column; gap: 15px; width: 100%; text-align: left; }
+    .loading-list li { display: flex; align-items: center; gap: 12px; font-size: 1rem; font-weight: 700; color: var(--text-primary); }
+    .icon-check { color: var(--accent-cyan); }
+    @keyframes fa-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .fa-spin { animation: fa-spin 2s linear infinite; }
+
+    /* FOOTER DE NAVEGACIÓN INFERIOR WIZARD */
+    .cp-footer { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; border-top: 1px solid var(--bg-input); background-color: var(--bg-app); margin-top: auto; }
+    .btn-cp-nav { font-size: 1rem; font-weight: 800; cursor: pointer; display: inline-block; }
+    .btn-cp-atras { color: var(--text-primary); background: transparent; border: none; }
+    .btn-cp-atras.hidden { visibility: hidden; }
+    .btn-cp-siguiente { background-color: var(--accent-cyan); color: var(--bg-app); padding: 12px 28px; border-radius: 25px; border: none; text-decoration: none;}
+    /* =========================================
+       NUEVOS ESTILOS: FLUJO VERIFICACIÓN ID
+       ========================================= */
+    #verify-id-toggle { display: none; }
+    input[name="vid-wizard-nav"] { display: none; }
+
+    .verify-id-modal-container {
+      position: fixed; top: 0; left: 50%; height: 100vh; width: 100%; max-width: 480px;
+      background-color: var(--bg-app); z-index: 4000;
+      transform: translate(-50%, 100%); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      display: flex; flex-direction: column; overflow: hidden;
+    }
+    #verify-id-toggle:checked ~ .verify-id-modal-container { transform: translate(-50%, 0); }
+
+    .vid-progress-bg { width: 100%; height: 4px; background-color: var(--bg-card); }
+    .vid-progress-fill { height: 100%; background-color: var(--accent-pink); transition: width 0.3s ease; }
+    #vid-step-1:checked ~ .vid-progress-bg .vid-progress-fill { width: 16%; }
+    #vid-step-2:checked ~ .vid-progress-bg .vid-progress-fill { width: 33%; }
+    #vid-step-3:checked ~ .vid-progress-bg .vid-progress-fill { width: 50%; }
+    #vid-step-4:checked ~ .vid-progress-bg .vid-progress-fill { width: 66%; }
+    #vid-step-5:checked ~ .vid-progress-bg .vid-progress-fill { width: 83%; }
+    #vid-step-6:checked ~ .vid-progress-bg .vid-progress-fill { width: 100%; }
+
+    .vid-step-content { display: none; flex-direction: column; flex: 1; padding: 30px 20px; overflow-y: auto; text-align: center; }
+    #vid-step-1:checked ~ .vid-step-1-content { display: flex; }
+    #vid-step-2:checked ~ .vid-step-2-content { display: flex; }
+    #vid-step-3:checked ~ .vid-step-3-content { display: flex; }
+    #vid-step-4:checked ~ .vid-step-4-content { display: flex; }
+    #vid-step-5:checked ~ .vid-step-5-content { display: flex; }
+    #vid-step-6:checked ~ .vid-step-6-content { display: flex; }
+
+    .vid-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 30px; color: var(--text-primary); }
+    .vid-info-list { text-align: left; margin-bottom: 40px; }
+    .vid-info-item { display: flex; gap: 15px; margin-bottom: 25px; align-items: flex-start;}
+    .vid-info-item i { font-size: 1.5rem; color: var(--accent-cyan); width: 30px; text-align: center; margin-top: 3px;}
+    .vid-info-text { font-size: 0.95rem; line-height: 1.4; color: var(--text-primary); }
+    
+    .vid-footer { padding: 20px; border-top: 1px solid var(--bg-input); margin-top: auto; }
+    .btn-vid-primary { 
+      background-color: var(--accent-cyan); color: var(--bg-app); border: none; 
+      padding: 14px; width: 100%; border-radius: 25px; font-weight: 800; font-size: 1rem; 
+      cursor: pointer; display: block; text-align: center; text-decoration: none; box-sizing: border-box;
+    }
+
+    .id-option-label { display: flex; align-items: center; gap: 15px; padding: 20px; background-color: var(--bg-card); border-radius: 12px; margin-bottom: 12px; cursor: pointer; color: var(--text-primary); font-weight: 600;}
+    .id-radio-ui { width: 22px; height: 22px; border: 2px solid var(--text-secondary); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    input[name="idtype"]:checked + .id-radio-ui { border-color: var(--accent-cyan); }
+    input[name="idtype"]:checked + .id-radio-ui::after { content: ''; width: 12px; height: 12px; background-color: var(--accent-cyan); border-radius: 50%; }
+
+    .id-frame { width: 100%; aspect-ratio: 16/10; border: 3px dashed var(--text-secondary); border-radius: 12px; margin: 20px 0 40px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background-color: #1a1a1a; overflow: hidden; position: relative;}
+    /* ==================================================================== */
+    /* NUEVO: FLUJO DE VERIFICACIÓN DE IDENTIDAD                            */
+    /* ==================================================================== */
+    #verify-id-toggle { display: none; }
+    input[name="vid-wizard-nav"] { display: none; }
+
+    .verify-id-modal-container {
+      position: fixed; top: 0; left: 50%; height: 100vh; width: 100%; max-width: 480px;
+      background-color: var(--bg-app); z-index: 4000;
+      transform: translate(-50%, 100%); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      display: flex; flex-direction: column; overflow: hidden;
+    }
+    #verify-id-toggle:checked ~ .verify-id-modal-container { transform: translate(-50%, 0); }
+
+    .vid-progress-bg { width: 100%; height: 4px; background-color: var(--bg-card); transition: 0.3s; }
+    .vid-progress-fill { height: 100%; background-color: var(--accent-pink); transition: width 0.3s ease; }
+    
+    #vid-step-1:checked ~ .vid-progress-bg .vid-progress-fill { width: 16.6%; }
+    #vid-step-2:checked ~ .vid-progress-bg .vid-progress-fill { width: 33.3%; }
+    #vid-step-3:checked ~ .vid-progress-bg .vid-progress-fill { width: 50%; }
+    #vid-step-4:checked ~ .vid-progress-bg .vid-progress-fill { width: 66.6%; }
+    #vid-step-5:checked ~ .vid-progress-bg .vid-progress-fill { width: 83.3%; }
+    #vid-step-6:checked ~ .vid-progress-bg .vid-progress-fill { width: 100%; }
+
+    .vid-step-content { display: none; flex-direction: column; flex: 1; padding: 30px 20px; overflow-y: auto; text-align: center; }
+    #vid-step-1:checked ~ .vid-step-1-content { display: flex; }
+    #vid-step-2:checked ~ .vid-step-2-content { display: flex; }
+    #vid-step-3:checked ~ .vid-step-3-content { display: flex; }
+    #vid-step-4:checked ~ .vid-step-4-content { display: flex; }
+    #vid-step-5:checked ~ .vid-step-5-content { display: flex; }
+    #vid-step-6:checked ~ .vid-step-6-content { display: flex; }
+
+    .vid-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 30px; color: var(--text-primary); }
+    .vid-info-list { text-align: left; margin-bottom: 40px; }
+    .vid-info-item { display: flex; gap: 15px; margin-bottom: 25px; align-items: flex-start; }
+    .vid-info-item i { font-size: 1.5rem; color: var(--accent-cyan); width: 30px; text-align: center; margin-top: 3px; }
+    .vid-info-text { font-size: 0.95rem; line-height: 1.4; color: var(--text-primary); }
+    
+    .vid-footer { padding: 20px; border-top: 1px solid var(--bg-input); margin-top: auto; }
+    .btn-vid-primary { 
+      background-color: var(--accent-cyan); color: var(--bg-app); border: none; 
+      padding: 14px; width: 100%; border-radius: 25px; font-weight: 800; font-size: 1rem; 
+      cursor: pointer; display: block; text-align: center; text-decoration: none; box-sizing: border-box;
+    }
+
+    .id-option-label { display: flex; align-items: center; gap: 15px; padding: 20px; background-color: var(--bg-card); border-radius: 12px; margin-bottom: 12px; cursor: pointer; color: var(--text-primary); font-weight: 600;}
+    .id-radio-ui { width: 22px; height: 22px; border: 2px solid var(--text-secondary); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    input[name="idtype"]:checked + .id-radio-ui { border-color: var(--accent-cyan); }
+    input[name="idtype"]:checked + .id-radio-ui::after { content: ''; width: 12px; height: 12px; background-color: var(--accent-cyan); border-radius: 50%; }
+
+    .id-frame { width: 100%; aspect-ratio: 16/10; border: 3px dashed var(--text-secondary); border-radius: 12px; margin: 20px 0 40px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background-color: #1a1a1a; overflow: hidden; position: relative;}
+
+    /* ==================================================================== */
+    /* NUEVO MODAL: FLUJO DE VERIFICACIÓN DE IDENTIDAD                      */
+    /* ==================================================================== */
+    #verify-id-toggle { display: none; }
+    input[name="vid-wizard-nav"] { display: none; }
+
+    /* Contenedor Modal Pantalla Completa */
+    .verify-id-modal-container {
+      position: fixed; top: 0; left: 50%; height: 100vh; width: 100%; max-width: 480px;
+      background-color: var(--bg-app); z-index: 4000;
+      transform: translate(-50%, 100%); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      display: flex; flex-direction: column; overflow: hidden;
+    }
+    
+    /* Animación de subida del modal */
+    #verify-id-toggle:checked ~ .verify-id-modal-container { transform: translate(-50%, 0); }
+
+    /* Barra de Progreso Dinámica (6 Pasos) */
+    .vid-progress-bg { width: 100%; height: 4px; background-color: var(--bg-card); transition: 0.3s; }
+    .vid-progress-fill { height: 100%; background-color: var(--accent-pink); border-radius: 0 3px 3px 0; transition: width 0.3s ease; }
+    #vid-step-1:checked ~ .vid-progress-bg .vid-progress-fill { width: 16%; }
+    #vid-step-2:checked ~ .vid-progress-bg .vid-progress-fill { width: 33%; }
+    #vid-step-3:checked ~ .vid-progress-bg .vid-progress-fill { width: 50%; }
+    #vid-step-4:checked ~ .vid-progress-bg .vid-progress-fill { width: 66%; }
+    #vid-step-5:checked ~ .vid-progress-bg .vid-progress-fill { width: 83%; }
+    #vid-step-6:checked ~ .vid-progress-bg .vid-progress-fill { width: 100%; }
+
+    /* Lógica de Visibilidad de las Pantallas */
+    .vid-step-content { display: none; flex-direction: column; flex: 1; padding: 30px 20px; overflow-y: auto; text-align: center; }
+    #vid-step-1:checked ~ .vid-step-1-content { display: flex; }
+    #vid-step-2:checked ~ .vid-step-2-content { display: flex; }
+    #vid-step-3:checked ~ .vid-step-3-content { display: flex; }
+    #vid-step-4:checked ~ .vid-step-4-content { display: flex; }
+    #vid-step-5:checked ~ .vid-step-5-content { display: flex; }
+    #vid-step-6:checked ~ .vid-step-6-content { display: flex; }
+
+    /* Estilos internos de Verificación ID */
+    .vid-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 30px; color: var(--text-primary); }
+    .vid-info-list { text-align: left; margin-bottom: 40px; }
+    .vid-info-item { display: flex; gap: 15px; margin-bottom: 25px; align-items: flex-start; }
+    .vid-info-item i { font-size: 1.5rem; color: var(--accent-cyan); width: 30px; text-align: center; margin-top: 3px; }
+    .vid-info-text { font-size: 0.95rem; line-height: 1.4; color: var(--text-primary); }
+    
+    .vid-footer { padding: 20px; border-top: 1px solid var(--bg-input); margin-top: auto; }
+    .btn-vid-primary { background-color: var(--accent-cyan); color: var(--bg-app); border: none; padding: 14px; width: 100%; border-radius: 25px; font-weight: 800; font-size: 1rem; cursor: pointer; display: block; text-align: center; text-decoration: none; box-sizing: border-box; }
+
+    .id-option-label { display: flex; align-items: center; gap: 15px; padding: 20px; background-color: var(--bg-card); border-radius: 12px; margin-bottom: 12px; cursor: pointer; color: var(--text-primary); font-weight: 600;}
+    .id-radio-ui { width: 22px; height: 22px; border: 2px solid var(--text-secondary); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    input[name="idtype"]:checked + .id-radio-ui { border-color: var(--accent-cyan); }
+    input[name="idtype"]:checked + .id-radio-ui::after { content: ''; width: 12px; height: 12px; background-color: var(--accent-cyan); border-radius: 50%; }
+
+    .id-frame { width: 100%; aspect-ratio: 16/10; border: 3px dashed var(--text-secondary); border-radius: 12px; margin: 20px 0 40px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background-color: #1a1a1a; overflow: hidden; position: relative; }
+
+    /* ==================================================================== */
+    /* NUEVO: FLUJO OBTÉN PREMIUM                                           */
+    /* ==================================================================== */
+    #premium-toggle-hack { display: none; }
+    input[name="premium-nav"] { display: none; }
+
+    .premium-modal-container {
+      position: fixed; top: 0; left: 50%; height: 100vh; width: 100%; max-width: 480px;
+      background-color: var(--bg-app); z-index: 5000;
+      transform: translate(-50%, 100%); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      display: flex; flex-direction: column; overflow: hidden;
+    }
+    #premium-toggle-hack:checked ~ .premium-modal-container { transform: translate(-50%, 0); }
+
+    .premium-header { display: flex; align-items: center; justify-content: center; padding: 20px; position: relative; border-bottom: 1px solid var(--bg-input); }
+    .premium-header-title { font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin: 0; display: flex; align-items: center; gap: 8px; }
+    .premium-header-title span { color: var(--text-secondary); font-weight: 400; }
+    .btn-close-premium { position: absolute; right: 20px; font-size: 1.2rem; color: var(--text-secondary); cursor: pointer; }
+    
+    /* Control de Vistas (Plan vs Checkout) */
+    .premium-content-plan { display: flex; flex-direction: column; flex: 1; overflow-y: auto; padding: 30px 20px; }
+    .premium-content-checkout { display: none; flex-direction: column; flex: 1; background-color: #f0f4f5; overflow-y: auto; color: #333; }
+    #premium-step-2:checked ~ .premium-content-plan { display: none; }
+    #premium-step-2:checked ~ .premium-content-checkout { display: flex; }
+
+    /* Estilos Vista Plan */
+    .premium-hero-title { font-size: 1.6rem; font-weight: 800; text-align: center; margin-bottom: 10px; color: var(--text-primary); }
+    .premium-mascot { font-size: 6rem; text-align: center; color: var(--accent-pink); margin-bottom: 20px; position: relative; }
+    .premium-mascot i.star1 { position: absolute; top: 10px; left: calc(50% - 60px); font-size: 1.5rem; color: var(--accent-pink); transform: rotate(-15deg); }
+    .premium-mascot i.star2 { position: absolute; top: 20px; right: calc(50% - 60px); font-size: 1.2rem; color: var(--accent-pink); transform: rotate(20deg); }
+    
+    .benefits-list { list-style: none; margin-bottom: 30px; }
+    .benefits-list li { display: flex; gap: 15px; margin-bottom: 15px; align-items: flex-start; font-size: 1.05rem; line-height: 1.4; color: var(--text-primary); }
+    .benefits-list i { color: var(--accent-cyan); font-size: 1.2rem; margin-top: 3px; }
+    
+    .price-info { text-align: center; margin-bottom: 20px; }
+    .price-amount { font-size: 1.2rem; font-weight: 700; color: var(--text-primary); margin-bottom: 5px; }
+    .price-link { color: var(--accent-cyan); text-decoration: underline; font-size: 0.95rem; }
+    
+    .btn-premium-action { background-color: var(--accent-cyan); color: var(--bg-app); border: none; padding: 14px; width: 100%; border-radius: 25px; font-weight: 800; font-size: 1.05rem; cursor: pointer; text-align: center; display: block; margin-bottom: 30px; }
+    
+    .charity-info { display: flex; gap: 15px; background-color: var(--bg-card); padding: 15px; border-radius: 12px; margin-bottom: 15px; align-items: center; font-size: 0.9rem; line-height: 1.4; color: var(--text-primary); }
+    .charity-icon { font-size: 1.8rem; color: #4caf50; }
+    .charity-icon.blue { color: #2196f3; }
+
+    /* Estilos Vista Checkout (Simulada Blanca) */
+    .checkout-header { background-color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e0e0e0; }
+    .checkout-title { font-size: 1.1rem; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+    .checkout-body { padding: 20px; }
+    .checkout-price-large { font-size: 2rem; font-weight: 800; margin-bottom: 5px; }
+    .checkout-price-sub { color: #666; font-size: 1rem; margin-bottom: 20px; }
+    .checkout-discount { color: #2196f3; font-weight: 600; display: flex; align-items: center; justify-content: space-between; padding-bottom: 20px; border-bottom: 1px solid #e0e0e0; margin-bottom: 20px; }
+    .checkout-form-group { margin-bottom: 15px; }
+    .checkout-label { font-size: 0.9rem; color: #666; margin-bottom: 5px; display: block; }
+    .checkout-input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; font-family: inherit; }
+    .checkout-card-box { border: 1px solid #ccc; border-radius: 6px; overflow: hidden; margin-bottom: 15px; }
+    .checkout-card-row { display: flex; border-bottom: 1px solid #ccc; }
+    .checkout-card-row:last-child { border-bottom: none; }
+    .checkout-card-input { border: none; padding: 12px; flex: 1; font-size: 1rem; width: 100%; }
+    .checkout-card-input:focus { outline: none; }
+    .checkout-icons { display: flex; align-items: center; gap: 5px; padding-right: 10px; color: #666; font-size: 1.2rem; }
+    .btn-subscribe { background-color: var(--accent-cyan); color: white; border: none; padding: 15px; width: 100%; border-radius: 6px; font-weight: 700; font-size: 1.1rem; margin-top: 20px; cursor: pointer; text-align: center; display: block; }
+    .checkout-footer-text { font-size: 0.8rem; color: #666; text-align: center; margin-top: 15px; }
+
+    /* ==================================================================== */
+    /* NUEVO: FLUJO OBTÉN PREMIUM                                           */
+    /* ==================================================================== */
+    #premium-toggle-hack { display: none; }
+    input[name="premium-nav"] { display: none; }
+
+    .premium-modal-container {
+      position: fixed; top: 0; left: 50%; height: 100vh; width: 100%; max-width: 480px;
+      background-color: var(--bg-app); z-index: 5000;
+      transform: translate(-50%, 100%); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      display: flex; flex-direction: column; overflow: hidden;
+    }
+    #premium-toggle-hack:checked ~ .premium-modal-container { transform: translate(-50%, 0); }
+
+    .premium-header { display: flex; align-items: center; justify-content: center; padding: 20px; position: relative; border-bottom: 1px solid var(--bg-input); }
+    .premium-header-title { font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin: 0; display: flex; align-items: center; gap: 8px; }
+    .premium-header-title span { color: var(--text-secondary); font-weight: 400; }
+    .btn-close-premium { position: absolute; right: 20px; font-size: 1.2rem; color: var(--text-secondary); cursor: pointer; }
+    
+    .premium-content-plan { display: flex; flex-direction: column; flex: 1; overflow-y: auto; padding: 30px 20px; }
+    .premium-content-checkout { display: none; flex-direction: column; flex: 1; background-color: #f0f4f5; overflow-y: auto; color: #333; }
+    #premium-step-2:checked ~ .premium-content-plan { display: none; }
+    #premium-step-2:checked ~ .premium-content-checkout { display: flex; }
+
+    .premium-hero-title { font-size: 1.6rem; font-weight: 800; text-align: center; margin-bottom: 10px; color: var(--text-primary); }
+    .premium-mascot { font-size: 6rem; text-align: center; color: var(--accent-pink); margin-bottom: 20px; position: relative; }
+    .premium-mascot i.star1 { position: absolute; top: 10px; left: calc(50% - 60px); font-size: 1.5rem; color: var(--accent-pink); transform: rotate(-15deg); }
+    .premium-mascot i.star2 { position: absolute; top: 20px; right: calc(50% - 60px); font-size: 1.2rem; color: var(--accent-pink); transform: rotate(20deg); }
+    
+    .benefits-list { list-style: none; margin-bottom: 30px; }
+    .benefits-list li { display: flex; gap: 15px; margin-bottom: 15px; align-items: flex-start; font-size: 1.05rem; line-height: 1.4; color: var(--text-primary); }
+    .benefits-list i { color: var(--accent-cyan); font-size: 1.2rem; margin-top: 3px; }
+    
+    .price-info { text-align: center; margin-bottom: 20px; }
+    .price-amount { font-size: 1.2rem; font-weight: 700; color: var(--text-primary); margin-bottom: 5px; }
+    .price-link { color: var(--accent-cyan); text-decoration: underline; font-size: 0.95rem; }
+    
+    .btn-premium-action { background-color: var(--accent-cyan); color: var(--bg-app); border: none; padding: 14px; width: 100%; border-radius: 25px; font-weight: 800; font-size: 1.05rem; cursor: pointer; text-align: center; display: block; margin-bottom: 30px; }
+    
+    .charity-info { display: flex; gap: 15px; background-color: var(--bg-card); padding: 15px; border-radius: 12px; margin-bottom: 15px; align-items: center; font-size: 0.9rem; line-height: 1.4; color: var(--text-primary); }
+    .charity-icon { font-size: 1.8rem; color: #4caf50; }
+    .charity-icon.blue { color: #2196f3; }
+
+    .checkout-header { background-color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e0e0e0; }
+    .checkout-title { font-size: 1.1rem; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+    .checkout-body { padding: 20px; }
+    .checkout-price-large { font-size: 2rem; font-weight: 800; margin-bottom: 5px; }
+    .checkout-price-sub { color: #666; font-size: 1rem; margin-bottom: 20px; }
+    .checkout-discount { color: #2196f3; font-weight: 600; display: flex; align-items: center; justify-content: space-between; padding-bottom: 20px; border-bottom: 1px solid #e0e0e0; margin-bottom: 20px; }
+    .checkout-form-group { margin-bottom: 15px; }
+    .checkout-label { font-size: 0.9rem; color: #666; margin-bottom: 5px; display: block; }
+    .checkout-input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; font-family: inherit; }
+    .checkout-card-box { border: 1px solid #ccc; border-radius: 6px; overflow: hidden; margin-bottom: 15px; }
+    .checkout-card-row { display: flex; border-bottom: 1px solid #ccc; }
+    .checkout-card-row:last-child { border-bottom: none; }
+    .checkout-card-input { border: none; padding: 12px; flex: 1; font-size: 1rem; width: 100%; }
+    .checkout-card-input:focus { outline: none; }
+    .checkout-icons { display: flex; align-items: center; gap: 5px; padding-right: 10px; color: #666; font-size: 1.2rem; }
+    .btn-subscribe { background-color: var(--accent-cyan); color: white; border: none; padding: 15px; width: 100%; border-radius: 6px; font-weight: 700; font-size: 1.1rem; margin-top: 20px; cursor: pointer; text-align: center; display: block; }
+    .checkout-footer-text { font-size: 0.8rem; color: #666; text-align: center; margin-top: 15px; }
+
+    /* MODAL VISIBILIDAD (BOTTOM SHEET) */
+    #visibility-toggle-hack { display: none; }
+    .visibility-modal-overlay { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; height: 100vh; background-color: rgba(0, 0, 0, 0.7); z-index: 6000; display: none; justify-content: center; align-items: flex-end; }
+    #visibility-toggle-hack:checked ~ .visibility-modal-overlay { display: flex; }
+    .visibility-modal-box { background-color: var(--bg-app); width: 100%; border-radius: 24px 24px 0 0; padding: 25px 20px 40px 20px; animation: slideUp 0.3s ease; }
+    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+    .vis-header { display: flex; align-items: center; margin-bottom: 10px; position: relative;}
+    .vis-header h2 { font-size: 1.3rem; font-weight: 800; color: var(--text-primary); text-align: center; width: 100%; margin: 0;}
+    .btn-close-vis { position: absolute; right: 0; font-size: 1.4rem; color: var(--text-secondary); cursor: pointer; }
+    .vis-desc { text-align: center; color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 25px; }
+    .vis-option-inner { display: flex; align-items: center; justify-content: space-between; gap: 15px; }
+    .vis-text-content { flex: 1; }
+    .vis-radio-circle { width: 24px; height: 24px; border: 2px solid var(--text-secondary); border-radius: 50%; display: flex; justify-content: center; align-items: center; flex-shrink: 0; }
+    .v-option-card input:checked + .vis-option-inner .vis-radio-circle { border-color: var(--accent-cyan); }
+    .v-option-card input:checked + .vis-option-inner .vis-radio-circle::after { content: ''; width: 14px; height: 14px; background-color: var(--accent-cyan); border-radius: 50%; }
+
+  </style>
+</head>
+<body>
+
+    <div class="mobile-app-container">
+    <input type="checkbox" id="premium-toggle-hack">
+        <input type="checkbox" id="visibility-toggle-hack">
+
+    <input type="checkbox" id="view-toggle"> 
+
+    <input type="checkbox" id="filter-toggle-hack"> 
+    <input type="checkbox" id="menu-toggle-hack"> 
+    <input type="checkbox" id="steps-toggle-hack"> 
+    <input type="checkbox" id="create-profile-toggle-hack"> 
+    <input type="checkbox" id="verify-id-toggle"> 
+    
+
+
+
+    <header class="app-header">
+      <div class="brand-logo"><i class="fa-solid fa-child-reaching"></i> Babysits</div>
+      <div class="header-actions">
+        <label for="menu-toggle-hack" class="btn-icon"><i class="fa-solid fa-bars"></i></label>
+       <a href="yo.html" class="btn-icon btn-avatar-icon" style="text-decoration: none;"><i class="fa-solid fa-user"></i></a>
+
+      </div>
+    </header>
+
+    <main class="app-content">
+      <div class="search-container">
+        <div class="search-input-wrapper"><input type="text" placeholder="Ciudad o código postal" class="search-input"><button class="btn-search-icon"><i class="fa-solid fa-magnifying-glass"></i></button></div>
+        <label for="filter-toggle-hack" class="btn-filter"><i class="fa-solid fa-filter"></i><span class="notification-dot"></span></label>
+      </div>
+
+      <div class="list-view-content">
+        <h1 class="hero-title">Encuentra un(a) profesional</h1>
+        <p class="hero-text">¿Estás buscando a alguien de confianza? Actualmente tenemos 2.332 perfiles activos.</p>
+        <p class="hero-text">Una cita nocturna, el trabajo o cuando simplemente necesitas un descanso: encuentra a los mejores perfiles en menos tiempo del que te lleva negociar.</p>
+               <a href="premium.html" class="btn-primary" style="display: inline-block; text-align: center; text-decoration: none; box-sizing: border-box;">Obtén Premium</a>
+
+
+        <hr class="divider">
+
+               <section class="feed-section">
+          <a href="ofrezcoservicios.html" style="text-decoration: none; color: inherit; display: block;">
+            <article class="profile-card">
+              <div class="card-left"><div class="avatar-container"><img src="https://picsum.photos/100/100?random=1" alt="Avatar" class="avatar-img"><div class="play-icon"><i class="fa-solid fa-play"></i></div></div><div class="badge-family">Favorito de las familias</div><div class="rating-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i><span>(19)</span></div><div class="distance-tag">~ 1,0 km</div></div>
+              <div class="card-right"><div class="card-header-top"><h2 class="profile-name">Ándre <i class="fa-solid fa-circle-check icon-verified"></i></h2><div class="likes-badge"><i class="fa-solid fa-heart"></i> 380</div></div><p class="profile-bio">Especialista en Santiago...<br>HOLA FAMILIAS !!! Soy [Nombre], Cuidadora/...</p><ul class="profile-list"><li><i class="fa-solid fa-briefcase"></i> Experiencia: > 4 años <i class="fa-solid fa-chevron-right" style="margin-left: auto;"></i></li><li><i class="fa-regular fa-file-lines"></i> Certificado de Antecedentes Penales</li><li><i class="fa-regular fa-comment"></i> Referencias: 1</li><li><i class="fa-regular fa-clock"></i> Tiempo promedio de respuesta: 8 horas</li></ul><div class="price-tag">$6.000/hora</div></div>
+            </article>
+          </a>
+
+          <a href="ofrezcoservicios.html" style="text-decoration: none; color: inherit; display: block;">
+            <article class="profile-card">
+              <div class="card-left"><div class="avatar-container"><img src="https://picsum.photos/100/100?random=2" alt="Avatar" class="avatar-img" style="border-color: transparent;"></div><div class="badge-family" style="border-color: #8c73c4; color: #a496c9;">Superperfil</div><div class="rating-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><span>(1)</span></div><div class="distance-tag">~ 5,0 km</div></div>
+              <div class="card-right"><div class="card-header-top"><h2 class="profile-name">Grace <i class="fa-solid fa-circle-check icon-verified"></i></h2><div class="likes-badge"><i class="fa-solid fa-heart"></i> 14</div></div><p class="profile-bio">Niñera en Santia...<br>¡Hola! Soy una niñera apasionada con más d...</p><ul class="profile-list"><li><i class="fa-solid fa-briefcase"></i> Experiencia: > 10 años <i class="fa-solid fa-chevron-right" style="margin-left: auto;"></i></li><li><i class="fa-regular fa-file-lines"></i> Certificado de Antecedentes Penales</li><li><i class="fa-regular fa-comment"></i> Referencias: 1</li><li><i class="fa-regular fa-clock"></i> Tiempo promedio de respuesta: 1 hora</li></ul><div class="price-tag">$4.500/hora</div></div>
+            </article>
+          </a>
+
+          <a href="ofrezcoservicios.html" style="text-decoration: none; color: inherit; display: block;">
+            <article class="profile-card">
+              <div class="card-left"><div class="avatar-container"><img src="https://picsum.photos/100/100?random=3" alt="Avatar" class="avatar-img" style="border-color: transparent;"><div class="play-icon"><i class="fa-solid fa-play"></i></div></div><div class="badge-family">Favorito de las familias</div><div class="rating-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><span>(4)</span></div><div class="distance-tag">~ 5,0 km</div></div>
+              <div class="card-right"><div class="card-header-top"><h2 class="profile-name">Gery <i class="fa-solid fa-circle-check icon-verified"></i></h2><div class="likes-badge"><i class="fa-solid fa-heart"></i> 61</div></div><p class="profile-bio">Niñera en Santia...<br>Hola, mi nombre es Gery poseo amplia...</p><ul class="profile-list"><li><i class="fa-solid fa-briefcase"></i> Experiencia: 11 años <i class="fa-solid fa-chevron-right" style="margin-left: auto;"></i></li><li><i class="fa-regular fa-comment"></i> Referencias: 2</li></ul><div class="price-tag">$7.000/hora</div></div>
+            </article>
+          </a>
+        </section>
+
+
+        <div class="pagination"><span class="page-item active">1</span><span class="page-item">2</span><span class="page-item">3</span><span class="page-item">4</span><span class="page-item" style="color:var(--text-secondary);">...</span><span class="page-item">28</span><span class="page-item next"><i class="fa-solid fa-chevron-right"></i></span></div>
+        <div class="breadcrumbs"><a href="#">Babysits</a> <span>/</span> <a href="#" class="active">Niñera</a></div>
+        <section class="info-section"><h2>Encuentra una niñera de confianza</h2><p>¿Buscas niñera? Encuentra la niñera perfecta para tu familia de forma rápida y sencilla a través de Babysits.</p><div class="steps-graphic"><i class="fa-solid fa-ghost"></i><div class="step-circle c1">1</div><div class="step-circle c2">2</div><div class="step-circle c3">3</div></div><div class="steps-text"><h3>Buscar</h3><p>Filtra según tus necesidades y revisa perfiles detallados.</p></div></section>
+        <section class="faq-section"><h2>Preguntas Frecuentes</h2><div class="faq-item"><span>¿Cuántas niñeras hay disponibles en Babysits?</span><i class="fa-solid fa-chevron-down"></i></div><div class="faq-item"><span>¿Cuál es el salario medio por hora de una niñera?</span><i class="fa-solid fa-chevron-down"></i></div><div class="faq-item"><span>¿Cuántos años de experiencia laboral tiene una niñera promedio?</span><i class="fa-solid fa-chevron-down"></i></div><div class="faq-item"><span>¿Cuál es la edad promedio de una niñera?</span><i class="fa-solid fa-chevron-down"></i></div></section>
+        <section class="discover-section"><h2>Descubre más</h2><div style="position: relative;"><div class="horizontal-scroll"><div class="discover-card"><img src="https://picsum.photos/300/200?random=10" alt="Consejos"><div class="discover-card-text">Consejos sobre la plataforma</div></div><div class="discover-card"><img src="https://picsum.photos/300/200?random=11" alt="Padres"><div class="discover-card-text">Consejos para padres</div></div></div><button class="btn-circle-nav"><i class="fa-solid fa-chevron-right"></i></button></div></section>
+        <section class="footer-seo-links"><p>Niñera por la tarde &middot; Niñera de noche &middot; Niñera de guardia &middot; Niñera después de la escuela &middot; Niñera entre semana &middot; Niñera de fin de semana</p><h3>Niñeras en las grandes ciudades</h3><p>Santiago de Chile &middot; Puente Alto &middot; Antofagasta &middot; Viña del Mar &middot; Valparaíso &middot; Talcahuano &middot; San Bernardo &middot; Puerto Montt &middot; Temuco &middot; Concepción &middot; Arica &middot; Rancagua &middot; La Pintana &middot; Talca &middot;</p></section>
+        
+        <div class="footer-final-section"><div class="lang-selector-pill"><div class="lang-flag">🇨🇱 <i class="fa-solid fa-caret-down"></i></div><div class="lang-text">Español <i class="fa-solid fa-caret-down"></i></div></div><div class="footer-links-center"><div class="footer-link-row"><a href="#">Cómo funciona</a><a href="#">Ayuda</a></div><div class="footer-link-row"><a href="#">Términos y Privacidad</a><a href="#">Precios</a></div><div class="footer-link-row"><a href="#">Datos de la empresa</a></div><div class="footer-link-row"><a href="#">Babysits para Empresas</a></div><div class="footer-link-row"><a href="#">Normas de la comunidad</a></div></div><div class="social-icons-row"><a href="#"><i class="fa-brands fa-facebook-f"></i></a><a href="#"><i class="fa-brands fa-instagram"></i></a><a href="#"><i class="fa-brands fa-tiktok"></i></a><a href="#"><i class="fa-brands fa-linkedin-in"></i></a><a href="#"><i class="fa-brands fa-pinterest-p"></i></a><a href="#"><i class="fa-brands fa-youtube"></i></a></div><div class="footer-copyright"><i class="fa-solid fa-child-reaching" style="font-size: 1.2rem; margin-right: 5px;"></i>© Babysits B.V.</div></div>
+      </div>
+    </main>
+
+    <div class="map-view-container"><div class="map-controls"><div class="control-group"><button class="map-btn"><i class="fa-solid fa-plus"></i></button><button class="map-btn"><i class="fa-solid fa-minus"></i></button></div><div class="control-circle"><i class="fa-solid fa-crosshairs"></i></div></div><div class="pin-container home" style="top: 55%; left: 45%;"><div class="pin-shape"></div><div class="pin-icon"><i class="fa-solid fa-house"></i></div></div><div class="pin-container" style="top: 15%; left: 30%;"><div class="pin-shape"></div><div class="pin-icon"><i class="fa-solid fa-user"></i></div><div class="pin-badge">9+</div></div><div class="pin-container" style="top: 25%; left: 65%;"><div class="pin-shape"></div><div class="pin-icon"><i class="fa-solid fa-user"></i></div><div class="pin-badge">2</div></div><div class="pin-container" style="top: 70%; left: 55%;"><div class="pin-shape"></div><div class="pin-icon"><i class="fa-solid fa-user"></i></div><div class="pin-badge">5</div></div><div class="pin-container" style="top: 10%; left: 60%;"><div class="pin-shape"></div><div class="pin-icon"><i class="fa-solid fa-user"></i></div></div><div class="pin-container" style="top: 35%; left: 20%;"><div class="pin-shape"></div><div class="pin-icon"><i class="fa-solid fa-user"></i></div></div><div class="pin-container" style="top: 80%; left: 40%;"><div class="pin-shape"></div><div class="pin-icon"><i class="fa-solid fa-user"></i></div></div></div>
+
+    <label for="view-toggle" class="fab-action fab-btn-mapa"><i class="fa-solid fa-map"></i> Mapa</label>
+    <label for="view-toggle" class="fab-action fab-btn-lista"><i class="fa-solid fa-list-ul"></i> Lista</label>
+
+    <nav class="bottom-nav"><a href="inicio.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Inicio</span></a>
+<a href="#" class="nav-item active"><i class="fa-solid fa-magnifying-glass"></i><span>Buscar</span></a><a href="mensajes.html" class="nav-item"><i class="fa-regular fa-comment"></i><span>Mensajes</span></a><a href="#" class="nav-item"><i class="fa-regular fa-heart"></i><span>Favoritos</span></a></nav>
+
+
+    <div class="filter-modal-container">
+      <div class="filter-header"><h2>Filtrar resultados</h2><label for="filter-toggle-hack" class="btn-close-modal"><i class="fa-solid fa-xmark"></i></label></div>
+      <div class="filter-scroll-area">
+        <button class="btn-outline-full"><i class="fa-regular fa-bell"></i> Guardar esta búsqueda</button>
+        <div class="filter-group"><h3>Ordenar</h3><select class="custom-select"><option>Importancia</option><option>Última actividad</option><option>Miembro desde</option><option>Precio promedio</option></select></div><hr class="divider">
+        <div class="filter-group"><h3>Tipo</h3><label class="custom-check-label"><input type="checkbox" checked><span class="check-box-ui"></span> Niñera</label><label class="custom-check-label"><input type="checkbox"><span class="check-box-ui"></span> Otros padres</label></div><hr class="divider">
+        <div class="filter-group"><h3>Experiencia</h3><span class="slider-text">0 a 11+ años</span><input type="range" class="range-slider" min="0" max="11" value="0"></div><hr class="divider">
+        <div class="filter-group"><h3>Experiencia con esta(s) edad(es)</h3><label class="custom-check-label"><input type="checkbox"><span class="check-box-ui"></span> Bebé</label><label class="custom-check-label"><input type="checkbox"><span class="check-box-ui"></span> Niño pequeño</label><label class="custom-check-label"><input type="checkbox"><span class="check-box-ui"></span> Niño de edad preescolar</label><label class="custom-check-label"><input type="checkbox"><span class="check-box-ui"></span> Niño de primaria</label><label class="custom-check-label"><input type="checkbox"><span class="check-box-ui"></span> Adolescente</label></div><hr class="divider">
+        <div class="filter-group">
+          <h3>Verificaciones</h3><label class="custom-check-label"><input type="checkbox"><span class="check-box-ui"></span> Documento de identidad oficial</label><label class="custom-check-label"><input type="checkbox"><span class="check-box-ui"></span> Certificado de Antecedentes Penales</label><label class="custom-check-label"><input type="checkbox"><span class="check-box-ui"></span> Tiene reseñas o referencias</label>
+          <label class="custom-check-label" style="align-items: flex-start; margin-bottom: 20px;"><input type="checkbox" checked><span class="check-box-ui" style="margin-top: 2px;"></span><div>Supersitter<span class="help-text" style="padding-left:0; margin-top:2px;">Ver niñeras altamente recomendadas. <span style="color:var(--accent-cyan);">Aprende más</span></span></div></label>
+          <label class="custom-check-label" style="align-items: flex-start;"><input type="checkbox"><span class="check-box-ui" style="margin-top: 2px;"></span><div>Favorito de las familias<span class="help-text" style="padding-left:0; margin-top:2px;">Las niñeras más populares en Babysits. <span style="color:var(--accent-cyan);">Aprende más</span></span></div></label>
+        </div><hr class="divider">
+        <div class="filter-group">
+          <h3>Disponibilidad</h3>
+          <div class="availability-matrix">
+            <div>Hora</div><div class="matrix-header">Lu</div><div class="matrix-header">Ma</div><div class="matrix-header">Mi</div><div class="matrix-header">Ju</div><div class="matrix-header">Vi</div><div class="matrix-header">Sá</div><div class="matrix-header">Do</div>
+            <div class="matrix-row-title">Mañana</div><label class="matrix-check"><input type="checkbox"><span class="matrix-box"></span></label><label class="matrix-check"><input type="checkbox"><span class="matrix-box"></span></label><label class="matrix-check"><input type="checkbox"><span class="matrix-box"></span></label><label class="matrix-check"><input type="checkbox"><span class="matrix-box"></span></label><label class="matrix-check"><input type="checkbox"><span class="matrix-box"></span></label><label class="matrix-check"><input type="checkbox"><span class="matrix-box"></span></label><label class="matrix-check"><input type="checkbox"><span class="matrix-box"></span></label>
+            <div class="matrix-row-title">Mediodía</div><label class="matrix-check"><input type="checkbox"><span class="matrix-box"></span></label><label class="matrix-check"><input type="checkbox"><span class="matrix-box"></span></label><label class="matrix-check"><input type="checkbox" checked><span class="matrix-box"></span></label><label class="matrix-check"><input type="checkbox" checked><span class="matrix-box"></span></label><label class="matrix-check"><input type="checkbox"><span class="matrix-box"></span></label><label class="matrix-check"><input type="checkbox"><span class="matrix-box"></span></label><label class="matrix-check"><input type="checkbox"><span class="matrix-box"></span></label>
+            <div class="matrix-row-title">Tarde</div><label class="matrix-check"><input type="checkbox"><span class="matrix-box"></span></label><label class="matrix-check"><input type="checkbox"><span class="matrix-box"></span></label><label class="matrix-check"><input type="checkbox"><span class="matrix-box"></span></label><label class="matrix-check"><input type="checkbox" checked><span class="matrix-box"></span></label><label class="matrix-check"><input type="checkbox" checked><span class="matrix-box"></span></label><label class="matrix-check"><input type="checkbox"><span class="matrix-box"></span></label><label class="matrix-check"><input type="checkbox"><span class="matrix-box"></span></label>
+            <div class="matrix-row-title">Noche</div><label class="matrix-check"><input type="checkbox"><span class="matrix-box"></span></label><label class="matrix-check"><input type="checkbox"><span class="matrix-box"></span></label><label class="matrix-check"><input type="checkbox"><span class="matrix-box"></span></label><label class="matrix-check"><input type="checkbox"><span class="matrix-box"></span></label><label class="matrix-check"><input type="checkbox"><span class="matrix-box"></span></label><label class="matrix-check"><input type="checkbox"><span class="matrix-box"></span></label><label class="matrix-check"><input type="checkbox"><span class="matrix-box"></span></label>
+          </div>
+        </div><hr class="divider">
+        <div class="filter-group">
+          <h3>Tarifa máxima por hora</h3>
+          <div class="price-input-wrapper"><i>$</i><input type="text" class="price-input" placeholder=""></div>
+          <p class="price-subtext">Según su búsqueda, las niñeras piden de promedio $5.576 por hora.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-modal-container">
+      <div class="menu-header-box"><label for="menu-toggle-hack" class="btn-close-main-menu"><i class="fa-solid fa-xmark"></i></label><div class="menu-user-avatar"><i class="fa-solid fa-user"></i></div><h2 class="menu-username">Camilaivg</h2></div>
+      <div class="menu-scroll-area">
+        <div class="menu-card">
+          <label for="steps-toggle-hack" class="menu-item" style="cursor: pointer;">
+            <div class="menu-item-icon-custom"><i class="fa-solid fa-address-card" style="color: #6fb5b0;"></i></div><div class="menu-item-content"><div class="menu-item-title">Completa tu perfil</div><div class="menu-item-subtitle">Completa tu perfil para contactar con niñeras geniales.</div></div><i class="fa-solid fa-chevron-right menu-item-arrow"></i>
+          </label>
+          <a href="#" class="menu-item"><div class="menu-item-icon-custom"><i class="fa-solid fa-id-badge" style="color: #e27d8f;"></i></div><div class="menu-item-content"><div class="menu-item-title">Verifica tu identidad</div></div><i class="fa-solid fa-chevron-right menu-item-arrow"></i></a>
+        </div>
+        <div class="menu-link-center" style="margin-bottom: 20px;"><label for="steps-toggle-hack" style="cursor:pointer; color: var(--accent-cyan); text-decoration: underline; font-size: 0.95rem; font-weight: 600;">Ver todos los pasos</label></div>
+        <div class="menu-card"><a href="#" class="menu-item"><div class="menu-item-icon" style="color: var(--accent-pink);"><i class="fa-solid fa-star"></i></div><div class="menu-item-content"><div class="menu-item-title">Obtén Premium</div><div class="menu-item-subtitle">Acceso prioritario a las mejores niñeras.</div></div><i class="fa-solid fa-chevron-right menu-item-arrow"></i></a><a href="#" class="menu-item"><div class="menu-item-icon"><i class="fa-solid fa-download"></i></div><div class="menu-item-content"><div class="menu-item-title">Descárgate la aplicación</div></div><i class="fa-solid fa-chevron-right menu-item-arrow"></i></a></div>
+        <div class="menu-card">
+          <a href="#" class="menu-item"><div class="menu-item-icon"><i class="fa-regular fa-user"></i></div><div class="menu-item-content"><div class="menu-item-title">Editar perfil</div></div><i class="fa-solid fa-chevron-right menu-item-arrow"></i></a>
+               <label for="visibility-toggle-hack" class="menu-item" style="flex-direction: column; align-items: stretch; cursor: pointer;">
+            <div style="display: flex; align-items: center;"><div class="menu-item-icon"><i class="fa-regular fa-eye"></i></div><div class="menu-item-content"><div class="menu-item-title">Cambiar visibilidad</div></div><i class="fa-solid fa-chevron-right menu-item-arrow"></i></div>
+            <div class="menu-item-subtitle" style="padding-left: 42px; margin-top: 8px; font-style: italic;">Tu perfil es privado. Hazlo visible para recibir mensajes y contactar con otros miembros.</div>
+          </label>
+
+        </div>
+                <div class="menu-card"><a href="insignias.html" class="menu-item"><div class="menu-item-icon"><i class="fa-solid fa-trophy"></i></div><div class="menu-item-content"><div class="menu-item-title">Insignias</div></div><i class="fa-solid fa-chevron-right menu-item-arrow"></i></a><a href="micuenta.html" class="menu-item"><div class="menu-item-icon"><i class="fa-solid fa-gear"></i></div><div class="menu-item-content"><div class="menu-item-title">Mi cuenta</div></div><i class="fa-solid fa-chevron-right menu-item-arrow"></i></a>
+</div>
+
+        <h3 class="menu-section-title">Soporte</h3>
+       <div class="menu-card"><a href="sobrenosotros.html" class="menu-item"><div class="menu-item-icon"><i class="fa-regular fa-file-lines"></i></div><div class="menu-item-content"><div class="menu-item-title">Sobre nosotros</div></div><i class="fa-solid fa-chevron-right menu-item-arrow"></i></a><a href="comofunciona.html" class="menu-item"><div class="menu-item-icon"><i class="fa-regular fa-clock"></i></div><div class="menu-item-content"><div class="menu-item-title">Cómo funciona</div></div><i class="fa-solid fa-chevron-right menu-item-arrow"></i></a>
+
+<a href="precios.html" class="menu-item"><div class="menu-item-icon"><i class="fa-solid fa-money-bill-wave"></i></div><div class="menu-item-content"><div class="menu-item-title">Precios</div></div><i class="fa-solid fa-chevron-right menu-item-arrow"></i></a>
+<a href="confianzayseguridad.html" class="menu-item"><div class="menu-item-icon"><i class="fa-solid fa-shield-halved"></i></div><div class="menu-item-content"><div class="menu-item-title">Confianza y seguridad</div></div><i class="fa-solid fa-chevron-right menu-item-arrow"></i></a>
+<a href="ayuda.html" class="menu-item"><div class="menu-item-icon"><i class="fa-regular fa-circle-question"></i></div><div class="menu-item-content"><div class="menu-item-title">Ayuda</div></div><i class="fa-solid fa-chevron-right menu-item-arrow"></i></a>
+</div>
+        <a href="#" class="menu-logout-btn"><i class="fa-solid fa-arrow-right-from-bracket"></i> Cerrar sesión</a>
+      </div>
+    </div>
+
+    <div class="steps-modal-overlay">
+      <div class="steps-modal-box">
+        <div class="steps-header"><h2>Todos los pasos</h2><label for="steps-toggle-hack" class="btn-close-steps"><i class="fa-solid fa-xmark"></i></label></div>
+        <div class="steps-content-area">
+          <p class="steps-intro">¡Sigue estos pasos para utilizar Babysits de la mejor manera y obtener una gran experiencia!</p>
+          <div class="step-list-item active-step">
+            <div class="step-check checked"><i class="fa-solid fa-check"></i></div>
+            <div class="step-details">
+              <h4>Completa tu perfil</h4><p>Completa tu perfil para contactar con niñeras geniales.</p>
+              <label for="create-profile-toggle-hack" class="btn-empezar">Empezar</label>
+            </div>
+            <i class="fa-solid fa-address-card" style="font-size: 2.5rem; color: #6fb5b0; margin-top: 10px;"></i>
+          </div>
+                  <div class="step-list-item active-step">
+            <div class="step-check checked"><i class="fa-solid fa-check"></i></div>
+            <div class="step-details">
+              <h4>Verifica tu identidad</h4>
+              <p>Muestra tu identificación oficial para que sepamos que eres tú.</p>
+              <label for="verify-id-toggle" class="btn-empezar">Empezar</label>
+            </div>
+            <i class="fa-solid fa-id-badge" style="font-size: 2.5rem; color: #e27d8f; margin-top: 10px;"></i>
+          </div>
+
+                    
+          <div class="step-list-item active-step">
+            <div class="step-check checked"><i class="fa-solid fa-check"></i></div>
+            <div class="step-details">
+              <h4>Obtén Premium</h4>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 5px;">Encuentra a la niñera ideal más rápido.</p>
+              <p style="font-weight: 700; font-size: 0.9rem; margin-bottom: 10px; color: var(--text-primary);">Desde $3.067 por mes</p>
+                            <a href="premium.html" class="btn-empezar" style="text-decoration: none; color: var(--bg-app);">Obtén Premium</a>
+
+            </div>
+            <div style="position: relative;">
+              <i class="fa-solid fa-ghost" style="font-size: 2.5rem; color: var(--accent-pink); margin-top: 10px;"></i>
+            </div>
+          </div>
+
+                    <div class="step-list-item active-step">
+            <div class="step-check"><i class="fa-solid fa-check"></i></div>
+            <div class="step-details">
+              <h4>Envía tu primer mensaje</h4>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 15px;">Envía tu primer mensaje a una niñera.</p>
+              <a href="mensajes.html" class="btn-empezar" style="text-decoration: none; color: var(--bg-app);">Buscar</a>
+
+            </div>
+            <i class="fa-solid fa-comment-dots" style="font-size: 2.5rem; color: var(--accent-cyan); margin-top: 10px;"></i>
+          </div>
+
+          <div class="step-list-item active-step">
+            <div class="step-check"><i class="fa-solid fa-check"></i></div>
+            <div class="step-details">
+              <h4>Descargar la aplicación</h4>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.4;">¡Desbloquea todo el potencial de Babysits con nuestra aplicación! ¡Activa las notificaciones push y no te pierdas ningún mensaje!</p>
+              <a href="#" class="btn-empezar" style="text-decoration: none; color: var(--bg-app);">Descárgate la aplicación</a>
+            </div>
+            <i class="fa-solid fa-mobile-screen-button" style="font-size: 2.5rem; color: var(--accent-cyan); margin-top: 10px;"></i>
+          </div>
+
+          <label for="steps-toggle-hack" style="display: block; width: 100%; background-color: var(--accent-cyan); color: var(--bg-app); text-align: center; padding: 16px; border-radius: 12px; font-weight: 800; font-size: 1.1rem; cursor: pointer; margin-top: 10px; box-sizing: border-box;">
+            Cerrar
+          </label>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="create-profile-modal-container">
+      
+      <input type="radio" name="wizard-nav" id="wizard-step-1" checked>
+      <input type="radio" name="wizard-nav" id="wizard-step-2">
+      <input type="radio" name="wizard-nav" id="wizard-step-3">
+      <input type="radio" name="wizard-nav" id="wizard-step-4">
+      <input type="radio" name="wizard-nav" id="wizard-step-5">
+      <input type="radio" name="wizard-nav" id="wizard-step-6">
+      <input type="radio" name="wizard-nav" id="wizard-step-7">
+      <input type="radio" name="wizard-nav" id="wizard-step-8">
+
+      <div class="cp-header">
+        <h2>Crea Tu Perfil</h2>
+        <label for="create-profile-toggle-hack" class="btn-close-cp"><i class="fa-solid fa-xmark"></i></label>
+      </div>
+
+      <div class="cp-progress-bg"><div class="cp-progress-fill"></div></div>
+
+      <div class="wizard-step-content wizard-step-1-content">
+        <div class="cp-body">
+          <div class="mascot-section"><div class="speech-bubble">¿Cómo te llamas?</div><div class="mascot-avatar"><i class="fa-solid fa-ghost"></i></div></div>
+          <div class="cp-form-group"><label class="cp-label">Nombre</label><input type="text" class="cp-input" value="Camilaivg"></div>
+        </div>
+        <div class="cp-footer">
+          <span class="btn-cp-nav btn-cp-atras hidden">Atrás</span>
+          <label for="wizard-step-2" class="btn-cp-nav btn-cp-siguiente">Siguiente</label>
+        </div>
+      </div>
+
+      <div class="wizard-step-content wizard-step-2-content">
+        <div class="cp-body">
+          <div class="mascot-section"><div class="speech-bubble">¿Dónde vives?</div><div class="mascot-avatar"><i class="fa-solid fa-ghost"></i></div></div>
+          <div class="cp-form-group">
+            <label class="cp-label">Dirección completa</label>
+            <input type="text" class="cp-input" value="Brown Sur 48, Ñuñoa">
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 5px;">Nunca compartiremos tu dirección. Los demás solo verán una ubicación aproximada en tu perfil.</p>
+          </div>
+        </div>
+        <div class="cp-footer">
+          <label for="wizard-step-1" class="btn-cp-nav btn-cp-atras">Atrás</label>
+          <label for="wizard-step-3" class="btn-cp-nav btn-cp-siguiente">Siguiente</label>
+        </div>
+      </div>
+
+      <div class="wizard-step-content wizard-step-3-content">
+        <div class="cp-body">
+          <div class="mascot-section"><div class="speech-bubble">¿Qué estás buscando?</div><div class="mascot-avatar"><i class="fa-solid fa-ghost"></i></div></div>
+          <div class="grid-options">
+            <label class="option-card"><input type="radio" name="service_type" checked><div class="option-card-inner">Niñera</div></label>
+            <label class="option-card"><input type="radio" name="service_type"><div class="option-card-inner">Nanny</div></label>
+            <label class="option-card"><input type="radio" name="service_type"><div class="option-card-inner">Cuidador(a)</div></label>
+            <label class="option-card"><input type="radio" name="service_type"><div class="option-card-inner">Otros padres</div></label>
+          </div>
+        </div>
+        <div class="cp-footer">
+          <label for="wizard-step-2" class="btn-cp-nav btn-cp-atras">Atrás</label>
+          <label for="wizard-step-4" class="btn-cp-nav btn-cp-siguiente">Siguiente</label>
+        </div>
+      </div>
+
+      <div class="wizard-step-content wizard-step-4-content">
+        <div class="cp-body">
+          <div class="mascot-section"><div class="speech-bubble">¡Es hora de una foto tuya!</div><div class="mascot-avatar"><i class="fa-solid fa-ghost"></i></div></div>
+          <div class="photo-upload-area">
+            <div class="camera-circle"><i class="fa-solid fa-camera"></i></div>
+            <button class="btn-outline-pill"><i class="fa-solid fa-camera"></i> Añadir</button>
+          </div>
+          <div class="photo-examples-section">
+            <p>Ejemplos de fotos de perfil que puedes agregar:</p>
+            <div class="photo-examples-row">
+              <img src="https://picsum.photos/100/100?random=20" alt="Ej"><img src="https://picsum.photos/100/100?random=21" alt="Ej"><img src="https://picsum.photos/100/100?random=22" alt="Ej">
+            </div>
+          </div>
+        </div>
+        <div class="cp-footer">
+          <label for="wizard-step-3" class="btn-cp-nav btn-cp-atras">Atrás</label>
+          <label for="wizard-step-5" class="btn-cp-nav btn-cp-siguiente">Siguiente</label>
+        </div>
+      </div>
+
+      <div class="wizard-step-content wizard-step-5-content">
+        <div class="cp-body">
+          <div class="mascot-section">
+            <div class="speech-bubble">¡Algunas últimas preguntas!</div>
+            <div class="mascot-avatar"><i class="fa-solid fa-ghost"></i></div>
+          </div>
+
+          <h3 class="question-title">¿Quieres recibir notificaciones cuándo haya nuevas niñeras en tu área?</h3>
+          <div class="grid-options" style="margin-bottom: 30px;">
+            <label class="option-card"><input type="radio" name="notifs"><div class="option-card-inner">Sí</div></label>
+            <label class="option-card"><input type="radio" name="notifs"><div class="option-card-inner">No</div></label>
+          </div>
+
+          <h3 class="question-title">¿Dónde escuchaste por primera vez sobre Babysits?</h3>
+          <div class="error-banner"><i class="fa-solid fa-circle-exclamation"></i> Es necesario agregar.</div>
+          
+          <div style="display:flex; flex-direction:column;">
+            <label class="list-radio-label"><input type="radio" name="source"><span class="radio-circle-ui"></span> Redes sociales (Facebook, Instagram, TikTok, LinkedIn)</label>
+            <label class="list-radio-label"><input type="radio" name="source"><span class="radio-circle-ui"></span> Motor de búsqueda (Google, Bing, etc.)</label>
+            <label class="list-radio-label"><input type="radio" name="source"><span class="radio-circle-ui"></span> El boca a boca (familia, amigos, etc.)</label>
+            <label class="list-radio-label"><input type="radio" name="source"><span class="radio-circle-ui"></span> En las noticias (artículo, tv, etc.)</label>
+            <label class="list-radio-label"><input type="radio" name="source"><span class="radio-circle-ui"></span> Otro</label>
+          </div>
+        </div>
+        <div class="cp-footer">
+          <label for="wizard-step-4" class="btn-cp-nav btn-cp-atras">Atrás</label>
+          <label for="wizard-step-6" class="btn-cp-nav btn-cp-siguiente">Siguiente</label>
+        </div>
+      </div>
+
+      <div class="wizard-step-content wizard-step-6-content">
+        <div class="cp-body">
+          <div class="mascot-section">
+            <div class="speech-bubble">¿Quién puede ver tu perfil?</div>
+            <div class="mascot-avatar"><i class="fa-solid fa-ghost"></i></div>
+          </div>
+          <p style="color:var(--text-secondary); font-size:0.95rem; margin-bottom: 20px;">Para contactar con otros miembros, haz visible su perfil.</p>
+          <div class="vertical-options">
+            <label class="v-option-card"><input type="radio" name="privacy"><div class="v-option-card-inner"><span class="v-option-card-title">Todo el mundo</span><span class="v-option-card-desc">Los miembros de Babysits, los motores de búsqueda públicos y las bolsas de trabajo pueden ver su perfil.</span></div></label>
+            <label class="v-option-card"><input type="radio" name="privacy" checked><div class="v-option-card-inner"><span class="v-option-card-title">Solo miembros de Babysits</span><span class="v-option-card-desc">Sólo los miembros de Babysits pueden ver tu perfil. Esto puede reducir los mensajes que recibes.</span></div></label>
+            <label class="v-option-card"><input type="radio" name="privacy"><div class="v-option-card-inner"><span class="v-option-card-title">Privado</span><span class="v-option-card-desc">Solo los miembros con los que has intercambiado mensajes y agregado como favoritos pueden ver tu perfil.</span></div></label>
+          </div>
+        </div>
+        <div class="cp-footer">
+          <label for="wizard-step-5" class="btn-cp-nav btn-cp-atras">Atrás</label>
+          <label for="wizard-step-7" class="btn-cp-nav btn-cp-siguiente">Siguiente</label>
+        </div>
+      </div>
+
+      <div class="wizard-step-content wizard-step-7-content">
+        <div class="cp-body">
+          <div class="congrats-container">
+            <h2 class="congrats-title">¡Felicitaciones por completar tu perfil!</h2>
+            <p class="congrats-sub">Pronto podrás descansar y relajarte.</p>
+            <div class="monster-confetti">
+              <i class="fa-solid fa-ghost"></i>
+              <i class="fa-solid fa-star confetti-piece"></i>
+              <i class="fa-solid fa-certificate confetti-piece"></i>
+              <i class="fa-solid fa-heart confetti-piece"></i>
+            </div>
+          </div>
+        </div>
+        <div class="cp-footer">
+          <label for="wizard-step-6" class="btn-cp-nav btn-cp-atras">Atrás</label>
+          <label for="wizard-step-8" class="btn-cp-nav btn-cp-siguiente">Siguiente</label>
+        </div>
+      </div>
+
+      <div class="wizard-step-content wizard-step-8-content">
+        <div class="cp-body">
+          <h2 class="congrats-title" style="text-align: left;">Danos un momento para encontrar la combinación perfecta.</h2>
+          <ul class="loading-list">
+            <li><i class="fa-solid fa-check icon-check"></i> Buscando en tu zona</li>
+            <li><i class="fa-solid fa-check icon-check"></i> Encontrando niñeras con experiencia</li>
+            <li><i class="fa-solid fa-circle-notch fa-spin" style="color:var(--text-secondary)"></i> Comprobando verificaciones</li>
+            <li><i class="fa-solid fa-circle-notch fa-spin" style="color:var(--text-secondary)"></i> Encontrando niñeras adecuadas</li>
+          </ul>
+        </div>
+        <div class="cp-footer" style="justify-content: flex-end;">
+          <label for="create-profile-toggle-hack" class="btn-cp-nav btn-cp-siguiente">Cerrar</label>
+        </div>
+      </div>
+
+    </div>
+    <div class="verify-id-modal-container">
+      
+      <input type="radio" name="vid-wizard-nav" id="vid-step-1" checked>
+      <input type="radio" name="vid-wizard-nav" id="vid-step-2">
+      <input type="radio" name="vid-wizard-nav" id="vid-step-3">
+      <input type="radio" name="vid-wizard-nav" id="vid-step-4">
+      <input type="radio" name="vid-wizard-nav" id="vid-step-5">
+      <input type="radio" name="vid-wizard-nav" id="vid-step-6">
+
+      <div class="app-header" style="background-color: var(--bg-app); border-bottom: none;">
+        <div class="brand-logo" style="font-size: 1.1rem; color: var(--text-primary);">Verificación de identidad</div>
+        <label for="verify-id-toggle" class="btn-close-cp"><i class="fa-solid fa-xmark" style="font-size: 1.2rem; color: var(--text-secondary); cursor: pointer;"></i></label>
+      </div>
+
+      <div class="vid-progress-bg"><div class="vid-progress-fill"></div></div>
+
+      <div class="vid-step-content vid-step-1-content">
+        <i class="fa-solid fa-ghost" style="font-size: 5rem; color: var(--accent-cyan); margin-top: 10px;"></i>
+        <h2 class="vid-title">¡Verifiquemos tu identificación!</h2>
+        <div class="vid-info-list">
+          <div class="vid-info-item"><i class="fa-solid fa-camera"></i><div class="vid-info-text">Mostrarás una identificación válida y luego te tomarás una selfie para asegurarnos de que eres tú.</div></div>
+          <div class="vid-info-item"><i class="fa-solid fa-lock"></i><div class="vid-info-text">Babysits solo usará esto para verificación y seguridad de la plataforma.</div></div>
+          <div class="vid-info-item"><i class="fa-solid fa-database"></i><div class="vid-info-text">Los datos biométricos y de identificación son procesados por Amazon Web Services.</div></div>
+        </div>
+        <a href="#" style="color: var(--text-secondary); text-decoration: underline; font-size: 0.9rem; margin-bottom: 20px;">Política de privacidad</a>
+        <div class="vid-footer"><label for="vid-step-2" class="btn-vid-primary">Estoy de acuerdo y continúo</label></div>
+      </div>
+
+      <div class="vid-step-content vid-step-2-content">
+        <h2 class="vid-title" style="text-align: left; font-size: 1.3rem;">Selecciona el tipo de identificación</h2>
+        <label class="id-option-label"><input type="radio" name="idtype" style="display:none"><span class="id-radio-ui"></span> Pasaporte</label>
+        <label class="id-option-label"><input type="radio" name="idtype" style="display:none"><span class="id-radio-ui"></span> Licencia de conducir</label>
+        <label class="id-option-label"><input type="radio" name="idtype" checked style="display:none"><span class="id-radio-ui"></span> Documento de identidad</label>
+        <div class="vid-footer"><label for="vid-step-3" class="btn-vid-primary">Siguiente</label></div>
+      </div>
+
+      <div class="vid-step-content vid-step-3-content">
+        <i class="fa-solid fa-camera-retro" style="font-size: 8rem; margin: 60px 0 40px 0; color: var(--text-secondary);"></i>
+        <h2 class="vid-title" style="font-size: 1.6rem; margin-bottom: 10px;">Permita el acceso a la cámara</h2>
+        <p style="color: var(--text-secondary); font-size: 1rem;">Su navegador necesita permiso para activar su cámara.</p>
+        <div class="vid-footer"><label for="vid-step-4" class="btn-vid-primary">Permitir</label></div>
+      </div>
+
+      <div class="vid-step-content vid-step-4-content">
+        <h2 class="vid-title" style="font-size: 1.4rem; text-align: left; margin-bottom: 10px;">Frente de la identificación</h2>
+        <p style="text-align: left; color: var(--text-secondary); margin:0;">Coloque el frente de su identificación que muestra su foto en el marco.</p>
+        <div class="id-frame">
+          <i class="fa-solid fa-id-card" style="font-size: 6rem; opacity: 0.2; color: white;"></i>
+        </div>
+        <p style="text-align: left; color: var(--text-primary); font-size: 0.9rem;">Revise el anverso de su identificación<br><span style="color:var(--text-secondary); font-weight:normal;">Asegúrese de que el texto y su foto sean claramente legibles.</span></p>
+        <div class="vid-footer"><label for="vid-step-5" class="btn-vid-primary"><i class="fa-solid fa-rotate-right" style="margin-right: 8px;"></i> Se ve bien</label></div>
+      </div>
+
+      <div class="vid-step-content vid-step-5-content">
+        <h2 class="vid-title" style="font-size: 1.4rem; text-align: left; margin-bottom: 10px;">Parte posterior de la identificación</h2>
+        <p style="text-align: left; color: var(--text-secondary); margin:0;">Coloque el reverso de su identificación en el marco.</p>
+        <div class="id-frame">
+          <i class="fa-solid fa-id-card" style="font-size: 6rem; opacity: 0.2; color: white; transform: scaleX(-1);"></i>
+        </div>
+        <p style="text-align: left; color: var(--text-primary); font-size: 0.9rem;">Revise el revés de su identificación<br><span style="color:var(--text-secondary); font-weight:normal;">Asegúrese de que el texto de la identificación sea claramente legible.</span></p>
+        <div class="vid-footer"><label for="vid-step-6" class="btn-vid-primary"><i class="fa-solid fa-rotate-right" style="margin-right: 8px;"></i> Se ve bien</label></div>
+      </div>
+
+      <div class="vid-step-content vid-step-6-content" style="justify-content: center;">
+        <i class="fa-solid fa-circle-check" style="font-size: 6rem; color: var(--accent-cyan); margin-bottom: 30px;"></i>
+        <h2 class="vid-title" style="margin-bottom: 10px;">Verificación de identidad exitosa</h2>
+        <p style="color: var(--text-secondary);">Su identificación ha sido verificada.<br>¡Buen trabajo!</p>
+        <div class="vid-footer" style="margin-top: 40px;"><label for="verify-id-toggle" class="btn-vid-primary">Cerrar</label></div>
+        
+        
+            <div class="vid-step-content vid-step-6-content" style="justify-content: center;">
+        <i class="fa-solid fa-circle-check" style="font-size: 6rem; color: var(--accent-cyan); margin-bottom: 30px;"></i>
+        <h2 class="vid-title" style="margin-bottom: 10px;">Verificación de identidad exitosa</h2>
+        <p style="color: var(--text-secondary);">Su identificación ha sido verificada.<br>¡Buen trabajo!</p>
+            <div class="vid-footer" style="margin-top: 40px;"><label for="verify-id-toggle" class="btn-vid-primary">Cerrar</label></div>
+      </div>
+    </div> <input type="checkbox" id="premium-toggle-hack">
+
+<div class="premium-modal-container">
+
+
+
+      <input type="radio" name="premium-nav" id="premium-step-1" checked>
+
+      <input type="radio" name="premium-nav" id="premium-step-2">
+
+      <div class="premium-header">
+        <h2 class="premium-header-title" style="font-size: 0.95rem;">Babysits <span style="color:var(--text-secondary)">/ Premium</span></h2>
+        <label for="premium-toggle-hack" class="btn-close-premium"><i class="fa-solid fa-xmark"></i></label>
+      </div>
+
+      <div class="premium-content-plan">
+        <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 10px;">/ Actualización para empresas</p>
+        <h2 class="premium-hero-title">Cuenta de agencia Premium</h2>
+        
+        <div class="premium-mascot">
+          <i class="fa-solid fa-star star1"></i>
+          <i class="fa-solid fa-ghost"></i>
+          <i class="fa-solid fa-star star2"></i>
+        </div>
+
+        <ul class="benefits-list">
+          <li><i class="fa-solid fa-check"></i> Se te permite enviar mensajes como agencia</li>
+          <li><i class="fa-solid fa-check"></i> Crear un perfil de agencia de cuidado de niños</li>
+          <li><i class="fa-solid fa-check"></i> Cada día nuevas niñeras y padres se suscriben a Babysits</li>
+          <li><i class="fa-solid fa-check"></i> Inicia conversaciones con niñera y con padres</li>
+          <li><i class="fa-solid fa-check"></i> Sé el primero en informarte sobre los(as) nuevos(as) niñeras y padres</li>
+          <li><i class="fa-solid fa-check"></i> Entre en contacto rápidamente vía notificaciones push</li>
+        </ul>
+
+        <div class="price-info">
+          <div class="price-amount">Solo $36.000 por mes (excl. IVA)</div>
+          <a href="#" class="price-link">¿Más información sobre precios para empresas?</a>
+        </div>
+
+        <label for="premium-step-2" class="btn-premium-action">Empezar Premium</label>
+
+        <div class="charity-info">
+          <i class="fa-solid fa-leaf charity-icon"></i>
+          <div>Babysits donará una parte de tu compra para eliminar parte del CO₂ de la atmósfera.</div>
+        </div>
+        <div class="charity-info">
+          <i class="fa-solid fa-ribbon charity-icon blue"></i>
+          <div>Babysits es un patrocinador de Make-A-Wish® International. ¿Quieres ayudar a cumplir los deseos de niños con enfermedades graves? <a href="#" style="color: var(--text-primary); text-decoration: underline;">Aprende más</a></div>
+        </div>
+      </div>
+
+      <div class="premium-content-checkout">
+        <div class="checkout-header">
+          <label for="premium-step-1" style="cursor:pointer; font-size:1.2rem;"><i class="fa-solid fa-arrow-left"></i></label>
+          <div class="checkout-title"><i class="fa-solid fa-child-reaching" style="color: var(--accent-cyan);"></i> Babysits</div>
+          <div style="font-size: 0.9rem; color: #666; cursor:pointer;">Detalles <i class="fa-solid fa-chevron-down"></i></div>
+        </div>
+
+        <div class="checkout-body">
+          <div style="font-size: 0.9rem; color: #666; margin-bottom: 5px;">Suscribirse a Premium business</div>
+          <div class="checkout-price-large">36.000 CLP</div>
+          <div class="checkout-price-sub">por mes</div>
+          
+          <div class="checkout-discount">
+            <span>Añadir código</span> <i class="fa-solid fa-chevron-down"></i>
+          </div>
+
+          <div class="checkout-form-group">
+            <label class="checkout-label">Correo electrónico</label>
+            <input type="email" class="checkout-input" value="camila.ivg8@gmail.com">
+          </div>
+
+          <h3 style="font-size: 1.1rem; font-weight: 700; margin: 20px 0 10px 0;">Método de pago</h3>
+
+          <div class="checkout-form-group">
+            <label class="checkout-label">Información de la tarjeta</label>
+            <div class="checkout-card-box">
+              <div class="checkout-card-row">
+                <input type="text" class="checkout-card-input" placeholder="1234 1234 1234 1234">
+                <div class="checkout-icons"><i class="fa-brands fa-cc-visa" style="color:#1a1f71"></i> <i class="fa-brands fa-cc-mastercard" style="color:#eb001b"></i></div>
+              </div>
+              <div class="checkout-card-row" style="display:flex;">
+                <input type="text" class="checkout-card-input" placeholder="MM / AA" style="border-right: 1px solid #ccc; width: 50%;">
+                <input type="text" class="checkout-card-input" placeholder="CVC" style="width: 50%;">
+              </div>
+            </div>
+          </div>
+
+          <div class="checkout-form-group">
+            <label class="checkout-label">Nombre del titular de la tarjeta</label>
+            <input type="text" class="checkout-input" placeholder="Nombre completo">
+          </div>
+
+          <div class="checkout-form-group">
+            <label class="checkout-label">País o región</label>
+            <select class="checkout-input" style="background-color: white;">
+              <option>Chile</option>
+            </select>
+          </div>
+
+          <div style="display: flex; gap: 10px; margin-top: 20px; align-items: flex-start;">
+            <input type="checkbox" style="margin-top: 4px;">
+            <label style="font-size: 0.9rem; color: #333;"><b>Guarda mis datos para un proceso de compra más rápido</b><br><span style="color:#666;">Paga de forma segura en Babysits y en cualquier lugar donde se acepte Link.</span></label>
+          </div>
+
+          <label for="premium-toggle-hack" class="btn-subscribe">Suscribirse</label>
+          
+          <div class="checkout-footer-text" style="margin-top: 20px; text-align: left;">
+            Al suscribirte, autorizas a Babysits a cobrarte según las condiciones hasta que canceles.
+          </div>
+          <div class="checkout-footer-text" style="text-align: left; margin-top: 15px;">
+            <i class="fa-solid fa-leaf" style="color:#4caf50;"></i> Babysits <b>donará una parte de tu suscripción</b> para ayudar a eliminar el CO₂ de la atmósfera.
+                        </div>
+        </div>
+      </div>
+
+    </div> 
+  </div> 
+      <div class="visibility-modal-overlay">
+      <div class="visibility-modal-box">
+        <div class="vis-header">
+          <h2>¿Quién puede ver tu perfil?</h2>
+          <label for="visibility-toggle-hack" class="btn-close-vis"><i class="fa-solid fa-xmark"></i></label>
+        </div>
+        <p class="vis-desc">Para contactar con otros miembros, haz visible su perfil.</p>
+        
+        <div class="vertical-options">
+          <label class="v-option-card">
+            <input type="radio" name="vis_status">
+            <div class="v-option-card-inner vis-option-inner">
+              <div class="vis-text-content">
+                <span class="v-option-card-title">Todo el mundo</span>
+                <span class="v-option-card-desc">Los miembros de Babysits, los motores de búsqueda públicos y las bolsas de trabajo pueden ver su perfil.</span>
+              </div>
+              <span class="vis-radio-circle"></span>
+            </div>
+          </label>
+          
+          <label class="v-option-card">
+            <input type="radio" name="vis_status" checked>
+            <div class="v-option-card-inner vis-option-inner">
+              <div class="vis-text-content">
+                <span class="v-option-card-title">Solo miembros de Babysits</span>
+                <span class="v-option-card-desc">Sólo los miembros de Babysits pueden ver tu perfil. Esto puede reducir los mensajes que recibes.</span>
+              </div>
+              <span class="vis-radio-circle"></span>
+            </div>
+          </label>
+          
+          <label class="v-option-card">
+            <input type="radio" name="vis_status">
+            <div class="v-option-card-inner vis-option-inner">
+              <div class="vis-text-content">
+                <span class="v-option-card-title">Privado</span>
+                <span class="v-option-card-desc">Solo los miembros con los que has intercambiado mensajes y agregado como favoritos pueden ver tu perfil.</span>
+              </div>
+              <span class="vis-radio-circle"></span>
+            </div>
+          </label>
+        </div>
+      </div>
+    </div>
+
+</body>
+</html>

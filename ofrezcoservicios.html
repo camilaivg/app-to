@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>BAPPSEARCH - Ofrezco Servicios</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    /* VARIABLES GLOBALES */
+    :root {
+      --bg-app: #2c363b;
+      --bg-card: #3a464c;
+      --bg-input: #445158;
+      --text-primary: #ffffff;
+      --text-secondary: #aab8c0;
+      --accent-cyan: #5fa5a1;
+      --accent-pink: #df7b90;
+      --font-main: 'Nunito', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-main); }
+    body { background-color: #121212; display: flex; justify-content: center; min-height: 100vh; }
+
+    .mobile-app-container {
+      width: 100%; max-width: 480px; background-color: var(--bg-app); color: var(--text-primary);
+      position: relative; overflow-x: hidden; display: flex; flex-direction: column;
+      padding-bottom: 90px;
+    }
+
+    /* HEADER DE PERFIL */
+    .profile-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; background-color: var(--bg-app); position: sticky; top: 0; z-index: 50; border-bottom: 1px solid var(--bg-input); }
+    .btn-back, .btn-share { color: var(--text-primary); text-decoration: none; font-size: 1.05rem; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+
+    /* INFO PRINCIPAL */
+    .profile-hero { display: flex; flex-direction: column; align-items: center; padding: 25px 20px; text-align: center; }
+    .avatar-wrapper { position: relative; width: 140px; height: 140px; margin-bottom: 15px; }
+    .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent-cyan); }
+    .play-icon-large { position: absolute; bottom: 0; right: 5px; width: 40px; height: 40px; background-color: white; color: var(--accent-cyan); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; padding-left: 3px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+    
+    .profile-name { font-size: 1.8rem; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 5px; }
+    .icon-verified { color: var(--accent-pink); font-size: 1.2rem; }
+    .profile-subtitle { color: var(--text-primary); font-size: 1.1rem; margin-bottom: 25px; }
+
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; width: 100%; gap: 10px; margin-bottom: 25px; }
+    .stat-col { display: flex; flex-direction: column; }
+    .stat-label { color: var(--text-primary); font-size: 1.05rem; font-weight: 600;}
+    .stat-value { color: var(--text-primary); font-size: 1.1rem; font-weight: 800; }
+
+    .reviews-summary { display: flex; align-items: center; gap: 15px; width: 100%; font-size: 1rem; font-weight: 700; margin-bottom: 15px; }
+    .stars { color: var(--accent-cyan); }
+    .stars i { margin-right: 2px; }
+    .last-active { display: flex; align-items: center; gap: 8px; color: var(--text-primary); font-size: 0.95rem; width: 100%; font-weight: 700; margin-bottom: 20px;}
+
+    /* TARJETAS DE INFORMACIÓN */
+    .info-card { background-color: var(--bg-card); border-radius: 16px; padding: 20px; margin: 0 20px 20px 20px; }
+    .badge-card { display: flex; align-items: flex-start; gap: 15px; }
+    .badge-icon { font-size: 1.8rem; color: var(--text-primary); margin-top: 5px; }
+    .badge-title { font-weight: 800; font-size: 1.1rem; margin-bottom: 5px; }
+    .badge-desc { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.4; }
+    .link-cyan { color: var(--text-primary); text-decoration: underline; font-weight: 700; cursor: pointer; }
+
+    /* LÓGICA DE VER MÁS / LEER MENOS CON CSS PURO */
+    #toggle-about { display: none; }
+    .about-text-content { font-size: 1.05rem; line-height: 1.5; color: var(--text-primary); font-weight: 600; padding: 0 20px 20px 20px; }
+    .about-text-content .text-hidden { display: none; }
+    .label-read-less { display: none; }
+    
+    #toggle-about:checked ~ .about-text-content .text-hidden { display: inline; }
+    #toggle-about:checked ~ .about-text-content .label-read-more { display: none; }
+    #toggle-about:checked ~ .about-text-content .label-read-less { display: inline; }
+    
+    .video-preview { width: calc(100% - 40px); margin: 0 20px 30px 20px; height: 200px; border-radius: 12px; background: url('https://picsum.photos/400/300?random=50') center/cover; position: relative; display: flex; justify-content: center; align-items: center; }
+    .btn-play-video { width: 60px; height: 60px; background-color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.8rem; color: #111; padding-left: 5px; border: none; }
+
+    /* SECCIONES Y LISTAS */
+    .section-title { font-size: 1.3rem; font-weight: 800; padding: 20px; margin-top: 10px; border-top: 1px solid var(--bg-input); line-height: 1.3;}
+    
+    .list-item { display: flex; gap: 15px; padding: 0 20px 20px 20px; align-items: flex-start; }
+    .list-icon { font-size: 1.3rem; color: var(--accent-cyan); width: 24px; text-align: center; margin-top: 2px;}
+    .list-content { flex: 1; }
+    .list-title { font-weight: 800; font-size: 1.05rem; margin-bottom: 4px; }
+    .list-desc { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.4; }
+
+    /* MATRIZ DE DISPONIBILIDAD */
+    .availability-matrix { display: grid; grid-template-columns: 80px repeat(7, 1fr); gap: 8px; text-align: center; padding: 0 20px 30px 20px; }
+    .matrix-header { font-size: 0.9rem; font-weight: 700; color: var(--text-primary); margin-bottom: 10px; }
+    .matrix-row-title { font-size: 0.95rem; color: var(--text-primary); display: flex; align-items: center; text-align: left; }
+    .matrix-dot { width: 22px; height: 22px; border-radius: 50%; background-color: var(--bg-input); display: inline-block; margin: auto; }
+    .matrix-dot.active { background-color: var(--accent-cyan); position: relative; }
+    .matrix-dot.active::after { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--bg-app); font-size: 12px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+    .updated-text { padding: 0 20px; color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 20px; display: flex; gap: 8px; align-items: center;}
+
+    /* LISTA SOBRE MÍ */
+    .about-me-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 0 20px 20px 20px; }
+    .about-item { display: flex; gap: 12px; align-items: flex-start; }
+    .about-icon { color: var(--text-secondary); font-size: 1.2rem; width: 20px; text-align: center; }
+    .about-details { display: flex; flex-direction: column; }
+    .about-label { font-size: 0.9rem; color: var(--text-primary); margin-bottom: 2px;}
+    .about-val { font-weight: 800; font-size: 0.95rem; }
+
+    /* RESEÑAS HORIZONTALES */
+    .horizontal-scroll { display: flex; overflow-x: auto; gap: 15px; padding: 0 20px 30px 20px; scroll-snap-type: x mandatory; scrollbar-width: none; }
+    .horizontal-scroll::-webkit-scrollbar { display: none; }
+    .review-card { min-width: 260px; background-color: var(--bg-card); border-radius: 12px; padding: 20px; scroll-snap-align: center; }
+    .reviewer-info { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .reviewer-img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+    .reviewer-name { font-weight: 800; font-size: 1.05rem; display: block; }
+    .review-text { font-size: 0.95rem; line-height: 1.4; margin-bottom: 10px; }
+    .review-date { font-size: 0.85rem; color: var(--text-secondary); }
+
+    /* NUEVO: SECCIÓN UBICACIÓN (MAPA) */
+    .location-subtitle { padding: 0 20px; color: var(--text-primary); font-size: 0.95rem; margin-bottom: 15px; }
+    .map-container { width: calc(100% - 40px); margin: 0 20px 20px 20px; height: 200px; border-radius: 12px; background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/SantiagodeChile_mapa.png/640px-SantiagodeChile_mapa.png') center/cover; position: relative; overflow: hidden; filter: grayscale(50%) brightness(0.7); }
+    .map-controls { position: absolute; right: 10px; top: 10px; display: flex; flex-direction: column; gap: 10px; }
+    .map-btn-group { background-color: white; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; }
+    .map-btn { width: 36px; height: 36px; background-color: white; border: none; font-size: 1.2rem; color: #333; display: flex; justify-content: center; align-items: center; cursor: pointer; }
+    .map-btn:first-child { border-bottom: 1px solid #ccc; }
+    .map-btn-single { width: 36px; height: 36px; background-color: white; border-radius: 50%; border: none; font-size: 1.1rem; color: #333; display: flex; justify-content: center; align-items: center; cursor: pointer; }
+    .map-btn-info { position: absolute; bottom: 10px; right: 10px; width: 24px; height: 24px; background-color: white; border-radius: 50%; color: #333; display: flex; justify-content: center; align-items: center; font-size: 0.9rem; font-weight: bold;}
+    
+    /* NUEVO: LISTA DE VERIFICACIONES Y ACTIVIDAD */
+    .verifications-list, .activity-list { list-style: none; padding: 0 20px 20px 20px; }
+    .verifications-list li, .activity-list li { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; font-size: 1rem; color: var(--text-primary); font-weight: 600;}
+    .verifications-list i { color: var(--accent-cyan); font-size: 1.2rem; }
+    .activity-list i { color: var(--text-secondary); font-size: 1.2rem; width: 24px; text-align: center; }
+    .activity-val { margin-left: auto; font-weight: 700; color: var(--text-primary); }
+
+    /* NUEVO: COMPARTIR Y REDES SOCIALES */
+    .share-container { padding: 0 20px 20px 20px; display: flex; gap: 10px; flex-wrap: wrap; }
+    .share-btn { width: 40px; height: 40px; background-color: var(--accent-cyan); color: var(--bg-app); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; text-decoration: none; }
+    .share-btn.fb { background-color: #1877f2; color: white;}
+    .share-btn.x { background-color: #000000; color: white;}
+    .share-btn.in { background-color: #0a66c2; color: white;}
+    .share-btn.msg { background-color: #00b2ff; color: white;}
+    .share-btn.wa { background-color: #25d366; color: white;}
+    
+    /* NUEVO: TARJETAS SIMILARES */
+    .similar-card { min-width: 140px; background-color: var(--bg-card); border-radius: 12px; overflow: hidden; scroll-snap-align: center; position: relative;}
+    .similar-img-box { position: relative; height: 120px; }
+    .similar-img { width: 100%; height: 100%; object-fit: cover; }
+    .similar-fav { position: absolute; bottom: -15px; right: 10px; width: 34px; height: 34px; background-color: var(--bg-card); color: var(--accent-pink); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.1rem; box-shadow: 0 2px 5px rgba(0,0,0,0.2);}
+    .similar-info { padding: 15px 10px; text-align: center; }
+    .similar-name { font-weight: 800; font-size: 1rem; margin-bottom: 5px; color: var(--text-primary); }
+
+    /* FOOTER DE PERFIL */
+    .profile-footer-links { padding: 20px; border-top: 1px solid var(--bg-input); }
+    .profile-footer-links a { color: var(--text-primary); text-decoration: none; font-size: 0.95rem; font-weight: 600; display: block; margin-bottom: 15px;}
+    .report-link { color: var(--text-secondary); text-decoration: none; font-size: 0.95rem; display: flex; align-items: center; gap: 8px; margin-top: 20px; }
+
+    /* BARRA FLOTANTE DE CONTACTO */
+    .sticky-contact-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background-color: var(--bg-card); padding: 15px 20px; display: flex; gap: 15px; z-index: 100; border-top: 1px solid var(--bg-input); }
+    .btn-contact { flex: 1; background-color: var(--accent-cyan); color: var(--bg-app); border: none; border-radius: 25px; font-weight: 800; font-size: 1.05rem; padding: 14px; cursor: pointer; text-align: center; }
+    .btn-fav-bottom { width: 50px; height: 50px; background-color: var(--bg-input); border: none; border-radius: 25px; color: var(--text-primary); font-size: 1.3rem; display: flex; justify-content: center; align-items: center; cursor: pointer; }
+
+    /* MODAL DE ADVERTENCIA */
+    #contact-modal-toggle { display: none; }
+    .modal-overlay { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; height: 100vh; background-color: rgba(0,0,0,0.6); z-index: 2000; display: flex; justify-content: center; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+    #contact-modal-toggle:checked ~ .modal-overlay { opacity: 1; pointer-events: auto; }
+    .modal-box { background-color: var(--bg-app); width: 100%; border-radius: 20px 20px 0 0; padding: 25px 20px 40px 20px; transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
+    #contact-modal-toggle:checked ~ .modal-overlay .modal-box { transform: translateY(0); }
+    
+    .modal-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
+    .modal-title { font-size: 1.25rem; font-weight: 800; color: var(--text-primary); line-height: 1.3; padding-right: 20px;}
+    .btn-close-modal { color: var(--text-secondary); font-size: 1.4rem; cursor: pointer; }
+    
+    .modal-warning-box { display: flex; gap: 15px; padding: 15px 0; }
+    .warning-icon { color: #ffb400; font-size: 1.5rem; }
+    .warning-text { font-size: 1rem; color: var(--text-primary); line-height: 1.5; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+  <div class="mobile-app-container">
+    
+    <header class="profile-header">
+      <a href="index.html" class="btn-back"><i class="fa-solid fa-chevron-left"></i> Niñera Santiago de Chile</a>
+      <a href="#" class="btn-share"><i class="fa-solid fa-arrow-up-from-bracket"></i> Compartir</a>
+    </header>
+
+    <section class="profile-hero">
+      <div class="avatar-wrapper">
+        <img src="https://picsum.photos/200/200?random=1" alt="Foto de perfil" class="avatar-img">
+        <div class="play-icon-large"><i class="fa-solid fa-play"></i></div>
+      </div>
+      <h1 class="profile-name">Monserrat <i class="fa-solid fa-circle-check icon-verified"></i></h1>
+      <div class="profile-subtitle">Niñera en Santiago de Chile</div>
+      
+      <div class="stats-grid">
+        <div class="stat-col"><span class="stat-label">Edad</span><span class="stat-value">23</span></div>
+        <div class="stat-col"><span class="stat-label">Tarifa por hora</span><span class="stat-value">$6.000/hora</span></div>
+      </div>
+
+      <div class="reviews-summary">
+        <span class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></span>
+        <span>2 Reseñas</span>
+        <span style="color:var(--text-secondary)">|</span>
+        <span><i class="fa-regular fa-comment"></i> 1 Referencia</span>
+      </div>
+
+      <div class="last-active"><i class="fa-solid fa-bolt"></i> Última actividad: Hace 1 día</div>
+    </section>
+
+    <div class="info-card badge-card">
+      <i class="fa-solid fa-sun badge-icon"></i>
+      <div>
+        <div class="badge-title">Favorito de las familias</div>
+        <div class="badge-desc">Una de las niñeras más populares en Babysits, según las familias. <a href="#" class="link-cyan" style="font-weight:normal;">Aprende más</a></div>
+      </div>
+    </div>
+
+    <input type="checkbox" id="toggle-about">
+    <div class="about-text-content">
+      Soy estudiante de último año de Pedagogía en Educación Parvularia en la Pontificia Universidad Católica de Chile. Mi enfoque es la educación temprana desde una mirada respetuosa, intercultural e inclusiva. Tengo experiencia en el cuidado de niños y niñas de distintos contextos,<span class="text-hidden"> habiendo trabajado en jardines infantiles, Fundación Integra y Corporación PRODEL. He realizado prácticas profesionales en... con metodologías como Reggio Emilia y Montessori. Me caracterizo por ser amorosa, responsable y atenta, con sólidos conocimientos pedagógicos y curso de primeros auxilios.</span>
+      <label for="toggle-about" class="link-cyan label-read-more">Ver más</label>
+      <label for="toggle-about" class="link-cyan label-read-less">Leer menos</label>
+    </div>
+
+    <div class="video-preview">
+      <button class="btn-play-video"><i class="fa-solid fa-play"></i></button>
+      <div style="position: absolute; bottom: 10px; left: 15px; font-size: 0.85rem; font-weight: 700;">0:00 / 0:40</div>
+      <div style="position: absolute; bottom: 10px; right: 15px; font-size: 1.2rem;"><i class="fa-solid fa-volume-high"></i> <i class="fa-solid fa-expand" style="margin-left: 10px;"></i></div>
+    </div>
+
+    <div class="list-item">
+      <i class="fa-solid fa-briefcase list-icon"></i>
+      <div class="list-content">
+        <div class="list-title">Experiencia</div>
+        <div class="list-desc">> 5 años</div>
+      </div>
+    </div>
+
+    <div class="list-item">
+      <i class="fa-solid fa-cake-candles list-icon"></i>
+      <div class="list-content">
+        <div class="list-title">Experiencia con esta(s) edad(es)</div>
+        <div class="list-desc">Bebé • Niño de edad preescolar • Niño pequeño • Niño de primaria</div>
+      </div>
+    </div>
+
+    <div class="list-item">
+      <i class="fa-solid fa-wheelchair list-icon"></i>
+      <div class="list-content">
+        <div class="list-title">Experiencia con niños con necesidades especiales</div>
+        <div class="list-desc" style="margin-bottom: 10px;">Monserrat está certificado en el cuidado de niños con necesidades especiales. Contacta con Monserrat directamente para verificar las certificaciones. <a href="#" class="link-cyan" style="font-weight:normal;">Aprende más</a></div>
+        <div class="list-title" style="font-size: 0.95rem;">Experiencia específica</div>
+        <div class="list-desc">Trastorno del espectro autista (TEA) • Trastorno por déficit de atención con hiperactividad (TDAH) • Limitaciones físicas • Trastorno del sueño • Retraso global del desarrollo • Trastorno de ansiedad...</div>
+      </div>
+    </div>
+
+    <div class="list-item">
+      <i class="fa-solid fa-circle-check list-icon" style="color: var(--accent-pink);"></i>
+      <div class="list-content">
+        <div class="list-title">Documento de identidad oficial</div>
+        <div class="list-desc">Monserrat proporcionó con éxito una identificación gubernamental y pasó las verificaciones de verificación con fotografía. <a href="#" class="link-cyan" style="font-weight:normal;">Aprende más</a></div>
+      </div>
+    </div>
+
+    <div class="list-item">
+      <i class="fa-solid fa-file-shield list-icon"></i>
+      <div class="list-content">
+        <div class="list-title">Certificado de Antecedentes Penales</div>
+        <div class="list-desc">Monserrat tiene un Certificado de Antecedentes Penales, comprobado por Babysits. <a href="#" class="link-cyan" style="font-weight:normal;">Aprende más</a><br><br>Emitido el: 22 de diciembre de 2025</div>
+      </div>
+    </div>
+
+    <h2 class="section-title">Disponibilidad</h2>
+    <div class="availability-matrix">
+      <div></div><div class="matrix-header">Lu</div><div class="matrix-header">Ma</div><div class="matrix-header">Mi</div><div class="matrix-header">Ju</div><div class="matrix-header">Vi</div><div class="matrix-header">Sá</div><div class="matrix-header">Do</div>
+      
+      <div class="matrix-row-title">Mañana</div>
+      <span class="matrix-dot"></span><span class="matrix-dot"></span><span class="matrix-dot"></span><span class="matrix-dot"></span><span class="matrix-dot"></span><span class="matrix-dot active"></span><span class="matrix-dot active"></span>
+      
+      <div class="matrix-row-title">Mediodía</div>
+      <span class="matrix-dot"></span><span class="matrix-dot"></span><span class="matrix-dot"></span><span class="matrix-dot"></span><span class="matrix-dot"></span><span class="matrix-dot active"></span><span class="matrix-dot active"></span>
+      
+      <div class="matrix-row-title">Tarde</div>
+      <span class="matrix-dot"></span><span class="matrix-dot"></span><span class="matrix-dot"></span><span class="matrix-dot"></span><span class="matrix-dot"></span><span class="matrix-dot active"></span><span class="matrix-dot active"></span>
+      
+      <div class="matrix-row-title">Noche</div>
+      <span class="matrix-dot"></span><span class="matrix-dot"></span><span class="matrix-dot"></span><span class="matrix-dot"></span><span class="matrix-dot"></span><span class="matrix-dot active"></span><span class="matrix-dot active"></span>
+    </div>
+    <div class="updated-text"><i class="fa-regular fa-calendar"></i> Actualizado: 22 de febrero de 2026</div>
+
+    <h2 class="section-title">Sobre mí</h2>
+    <div class="about-me-grid">
+      <div class="about-item"><i class="fa-regular fa-id-card about-icon"></i><div class="about-details"><span class="about-label">Carnet de conducir</span><span class="about-val">No</span></div></div>
+      <div class="about-item"><i class="fa-solid fa-car about-icon"></i><div class="about-details"><span class="about-label">Coche</span><span class="about-val">No</span></div></div>
+      <div class="about-item"><i class="fa-solid fa-children about-icon"></i><div class="about-details"><span class="about-label">Tiene niños</span><span class="about-val">No</span></div></div>
+      <div class="about-item"><i class="fa-solid fa-smoking about-icon"></i><div class="about-details"><span class="about-label">Fumador</span><span class="about-val">No</span></div></div>
+      <div class="about-item"><i class="fa-solid fa-house about-icon"></i><div class="about-details"><span class="about-label">Ubicación preferida</span><span class="about-val">En casa de la familia</span></div></div>
+      <div class="about-item"><i class="fa-solid fa-language about-icon"></i><div class="about-details"><span class="about-label">Idiomas</span><span class="about-val">Español</span></div></div>
+      <div class="about-item"><i class="fa-regular fa-heart about-icon"></i><div class="about-details"><span class="about-label">Favorito</span><span class="about-val">12 veces</span></div></div>
+    </div>
+    
+    <h2 class="section-title">Mis superpoderes de niñera</h2>
+    <div class="list-item" style="padding-bottom: 10px;"><i class="fa-solid fa-scissors list-icon"></i><div class="list-title">Manualidades</div></div>
+    <div class="list-item" style="padding-bottom: 10px;"><i class="fa-solid fa-pencil list-icon"></i><div class="list-title">Dibujar</div></div>
+    <div class="list-item" style="padding-bottom: 10px;"><i class="fa-solid fa-book list-icon"></i><div class="list-title">Leer a los niños</div></div>
+    <div class="list-item"><i class="fa-solid fa-puzzle-piece list-icon"></i><div class="list-title">Juegos</div></div>
+
+    <h2 class="section-title">Estoy cómodo con</h2>
+    <div class="list-item" style="padding-bottom: 10px;"><i class="fa-solid fa-paw list-icon"></i><div class="list-title">Mascotas</div></div>
+    <div class="list-item" style="padding-bottom: 10px;"><i class="fa-solid fa-utensils list-icon"></i><div class="list-title">Cocinar</div></div>
+    <div class="list-item"><i class="fa-solid fa-book-open list-icon"></i><div class="list-title">Ayuda con la tarea</div></div>
+
+    <h2 class="section-title">2 Reseñas</h2>
+    <div class="horizontal-scroll" style="margin-bottom: 10px;">
+      <div class="review-card">
+        <div class="reviewer-info">
+          <img src="https://picsum.photos/50/50?random=10" class="reviewer-img">
+          <div><span class="reviewer-name">Ana</span><div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div>
+        </div>
+        <p class="review-text">Muy buena experiencia. Llegó a la entrevista a la hora acordada. Conversamos sobre su experiencia y nos presentó su CV y documentación corre <a href="#" class="link-cyan">Ver más</a></p>
+        <div class="review-date">Enero 2026</div>
+      </div>
+      <div class="review-card">
+        <div class="reviewer-info">
+          <img src="https://picsum.photos/50/50?random=11" class="reviewer-img">
+          <div><span class="reviewer-name">Catherinne</span><div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div>
+        </div>
+        <p class="review-text">Monserrat fue puntual, llegó a la entrevista tal como lo acordamos. Explicó su experiencia y cualidades. Un trato muy cordial</p>
+        <div class="review-date">Diciembre 2025</div>
+      </div>
+    </div>
+
+    <h2 class="section-title">1 Referencia</h2>
+    <div class="info-card" style="margin-bottom: 0;">
+      <div class="reviewer-info">
+        <img src="https://picsum.photos/50/50?random=12" class="reviewer-img">
+        <div><span class="reviewer-name">Carlos</span><span style="font-size: 0.85rem; color: var(--text-secondary);">Amigo(a)</span></div>
+      </div>
+      <p class="review-text">Persona alegre, cariñosa y carismática, con excelentes habilidades comunicativas y una gran capacidad para conectar con los demás.</p>
+      <div class="review-date">Diciembre 2025</div>
+    </div>
+
+    <h2 class="section-title" style="border-top: none; margin-top:0;">Ubicación</h2>
+    <p class="location-subtitle">Niñera en Santiago de Chile, Santiago, Región Metropolitana de Santiago de Chile</p>
+    <div class="map-container">
+      <div class="map-controls">
+        <div class="map-btn-group">
+          <button class="map-btn"><i class="fa-solid fa-plus"></i></button>
+          <button class="map-btn"><i class="fa-solid fa-minus"></i></button>
+        </div>
+        <button class="map-btn-single"><i class="fa-solid fa-crosshairs"></i></button>
+      </div>
+      <div class="map-btn-info">i</div>
+    </div>
+
+    <h2 class="section-title">Verificaciones</h2>
+    <ul class="verifications-list">
+      <li><i class="fa-solid fa-check"></i> Documento de identidad oficial</li>
+      <li><i class="fa-solid fa-check"></i> Dirección de correo electrónico</li>
+      <li><i class="fa-solid fa-check"></i> Cuenta de Facebook</li>
+      <li><i class="fa-solid fa-check"></i> Cuenta de Google</li>
+    </ul>
+
+    <h2 class="section-title">Actividad</h2>
+    <ul class="activity-list">
+      <li><i class="fa-solid fa-tag"></i> Miembro desde <span class="activity-val">Mayo 2022</span></li>
+      <li><i class="fa-solid fa-bolt"></i> Última actividad <span class="activity-val">Hace 1 día</span></li>
+      <li><i class="fa-regular fa-thumbs-up"></i> Mensajes contestados <span class="activity-val">86%</span></li>
+      <li><i class="fa-regular fa-clock"></i> Tiempo promedio de respuesta <span class="activity-val">5 horas</span></li>
+    </ul>
+
+    <h2 class="section-title">Comparte este perfil</h2>
+    <div class="share-container">
+      <a href="#" class="share-btn fb"><i class="fa-brands fa-facebook-f"></i></a>
+      <a href="#" class="share-btn x"><i class="fa-brands fa-x-twitter"></i></a>
+      <a href="#" class="share-btn in"><i class="fa-brands fa-linkedin-in"></i></a>
+      <a href="#" class="share-btn msg"><i class="fa-brands fa-facebook-messenger"></i></a>
+      <a href="#" class="share-btn wa"><i class="fa-brands fa-whatsapp"></i></a>
+      <a href="#" class="share-btn" style="background-color:var(--bg-input);"><i class="fa-regular fa-envelope"></i></a>
+      <a href="#" class="share-btn" style="background-color:var(--bg-input);"><i class="fa-solid fa-link"></i></a>
+    </div>
+
+    <h2 class="section-title" style="border-top: none;">Descubra otras opciones en Santiago de Chile y sus alrededores</h2>
+    <div class="horizontal-scroll" style="padding-bottom: 20px;">
+      
+      <div class="similar-card">
+        <div class="similar-img-box"><img src="https://picsum.photos/150/150?random=1" class="similar-img"><button class="similar-fav"><i class="fa-regular fa-heart"></i></button></div>
+        <div class="similar-info">
+          <div class="similar-name">Ándre</div>
+          <div class="stars" style="font-size:0.8rem;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i> <span style="color:var(--text-secondary)">(19)</span></div>
+        </div>
+      </div>
+
+      <div class="similar-card">
+        <div class="similar-img-box"><img src="https://picsum.photos/150/150?random=30" class="similar-img"><button class="similar-fav"><i class="fa-regular fa-heart"></i></button></div>
+        <div class="similar-info">
+          <div class="similar-name">Ayleen</div>
+          <div class="stars" style="font-size:0.8rem;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i> <span style="color:var(--text-secondary)">(2)</span></div>
+        </div>
+      </div>
+
+      <div class="similar-card">
+        <div class="similar-img-box"><img src="https://picsum.photos/150/150?random=31" class="similar-img"><button class="similar-fav"><i class="fa-regular fa-heart"></i></button></div>
+        <div class="similar-info">
+          <div class="similar-name">Anaís</div>
+          <div class="stars" style="font-size:0.8rem;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i> <span style="color:var(--text-secondary)">(2)</span></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="profile-footer-links">
+      <a href="#">Niñeras · Trabajos de niñera</a>
+      <a href="#" class="report-link"><i class="fa-regular fa-flag"></i> Reportar miembro · Miembro bloqueado</a>
+    </div>
+
+    <div style="padding: 30px 20px 40px 20px; background-color: var(--bg-card); display:flex; flex-direction:column; align-items:center;">
+      <div style="display: flex; width: 100%; background-color: var(--bg-input); border-radius: 25px; margin-bottom: 30px; overflow: hidden;">
+        <div style="padding: 12px 20px; background-color: var(--bg-input); display: flex; align-items: center; gap: 8px; border-right: 1px solid var(--bg-card);">🇨🇱 <i class="fa-solid fa-caret-down"></i></div>
+        <div style="flex: 1; padding: 12px; background-color: var(--bg-input); display: flex; justify-content: center; align-items: center; gap: 8px; font-weight: 600;">Español <i class="fa-solid fa-caret-down"></i></div>
+      </div>
+      <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:15px; margin-bottom: 30px;">
+        <a href="comofunciona.html" style="color:var(--text-primary); text-decoration:none; font-size:0.95rem;">Cómo funciona</a>
+        <a href="ayuda.html" style="color:var(--text-primary); text-decoration:none; font-size:0.95rem;">Ayuda</a>
+        <a href="#" style="color:var(--text-primary); text-decoration:none; font-size:0.95rem;">Términos y Privacidad</a>
+        <a href="precios.html" style="color:var(--text-primary); text-decoration:none; font-size:0.95rem;">Precios</a>
+      </div>
+    </div>
+
+    <div class="sticky-contact-bar">
+      <label for="contact-modal-toggle" class="btn-contact">Contacta con este perfil</label>
+      <button class="btn-fav-bottom"><i class="fa-regular fa-heart"></i></button>
+    </div>
+
+    <input type="checkbox" id="contact-modal-toggle">
+    <div class="modal-overlay">
+      <div class="modal-box">
+        <div class="modal-header">
+          <h2 class="modal-title">¿Quieres ponerte en contacto con este perfil?</h2>
+          <label for="contact-modal-toggle" class="btn-close-modal"><i class="fa-solid fa-xmark"></i></label>
+        </div>
+        <div class="modal-warning-box">
+          <i class="fa-solid fa-triangle-exclamation warning-icon"></i>
+          <div class="warning-text">Completa tu perfil para contactar a esta persona y a otros miembros.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

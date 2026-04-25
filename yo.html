@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>BAPPSEARCH - Editar Perfil</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    /* VARIABLES GLOBALES */
+    :root {
+      --bg-app: #2c363b;
+      --bg-card: #3a464c;
+      --bg-input: #445158;
+      --text-primary: #ffffff;
+      --text-secondary: #aab8c0;
+      --accent-cyan: #5fa5a1;
+      --accent-pink: #df7b90;
+      --font-main: 'Nunito', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-main); }
+    body { background-color: #121212; display: flex; justify-content: center; min-height: 100vh; }
+
+    .mobile-app-container {
+      width: 100%; max-width: 480px; background-color: var(--bg-app); color: var(--text-primary);
+      position: relative; overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh;
+    }
+
+    /* HEADER */
+    .app-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; background-color: var(--bg-app); position: sticky; top: 0; z-index: 50; border-bottom: 1px solid var(--bg-input); }
+    .brand-logo { font-size: 1.5rem; font-weight: 800; color: var(--accent-cyan); display: flex; align-items: center; gap: 8px; text-decoration: none;}
+    .header-actions { display: flex; gap: 12px; align-items: center; }
+    .btn-icon { background-color: transparent; border: 1px solid var(--text-secondary); border-radius: 50%; width: 36px; height: 36px; color: var(--text-primary); display: flex; align-items: center; justify-content: center; cursor: pointer; text-decoration: none;}
+    .btn-share { color: var(--text-primary); font-size: 1.2rem; background: none; border: none; cursor: pointer;}
+    .page-title { flex: 1; text-align: center; font-size: 1.1rem; font-weight: 700; margin-left: 20px;}
+
+    /* AVATAR Y NOMBRE */
+    .edit-hero { display: flex; flex-direction: column; align-items: center; padding: 30px 20px 20px 20px; text-align: center; }
+    .avatar-edit-box { position: relative; width: 140px; height: 140px; margin-bottom: 15px; cursor: pointer;}
+    .avatar-circle { width: 100%; height: 100%; border-radius: 50%; border: 2px solid var(--accent-cyan); background-color: var(--bg-input); display: flex; justify-content: center; align-items: center; font-size: 3rem; color: var(--text-secondary); }
+    .btn-edit-badge { position: absolute; bottom: 5px; right: 5px; width: 38px; height: 38px; background-color: var(--bg-card); color: var(--text-primary); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1rem; border: 3px solid var(--bg-app); }
+    
+    .name-edit-box { display: flex; align-items: center; gap: 10px; margin-bottom: 5px; cursor: pointer;}
+    .profile-name { font-size: 1.8rem; font-weight: 800; color: var(--text-primary); }
+    .btn-edit-name { width: 32px; height: 32px; background-color: var(--bg-card); color: var(--text-primary); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 0.9rem; border: none; cursor: pointer; pointer-events: none;}
+    .profile-subtitle { color: var(--text-primary); font-size: 1.05rem; }
+
+    /* TARJETA VISIBILIDAD */
+    .visibility-card { background-color: #3b484f; border-radius: 16px; padding: 20px; margin: 20px; display: flex; flex-direction: column; gap: 15px; border-left: 4px solid #f2c94c;}
+    .vis-card-text { font-size: 1rem; color: var(--text-primary); line-height: 1.4; display: flex; gap: 12px; font-weight: 600; align-items: flex-start;}
+    .vis-card-text i { color: #f2c94c; font-size: 1.3rem; margin-top: 2px; }
+    .btn-vis { background-color: var(--accent-cyan); color: var(--bg-app); border: none; padding: 12px; border-radius: 25px; font-weight: 800; font-size: 1rem; cursor: pointer; text-align: center; }
+
+    /* ==========================================
+       TARJETAS DE SECCIÓN (CORREGIDO A CUADROS)
+       ========================================== */
+    .section-card { background-color: var(--bg-card); border-radius: 16px; padding: 20px; margin: 0 20px 20px 20px; }
+    .section-title { font-size: 1.3rem; font-weight: 800; margin-bottom: 10px; color: var(--text-primary); }
+    .section-desc { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.4; margin-bottom: 15px; }
+    
+    .input-line-trigger { display: flex; align-items: center; gap: 15px; border-bottom: 1px solid var(--bg-input); padding: 15px 0; cursor: pointer;}
+    .input-line-trigger i { color: var(--text-secondary); font-size: 1.2rem; width: 24px; text-align: center; transform: rotate(-45deg);}
+    .input-line-trigger span { flex: 1; color: var(--text-secondary); font-size: 1rem; }
+
+    /* BOTONES ACCIÓN */
+    .btn-outline { background-color: transparent; border: 1px solid var(--accent-cyan); color: var(--accent-cyan); padding: 10px 20px; border-radius: 25px; font-weight: 800; font-size: 0.95rem; cursor: pointer; display: inline-block; text-align: center; width: auto;}
+
+    /* MAPA */
+    .map-container { width: 100%; height: 200px; border-radius: 12px; background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/SantiagodeChile_mapa.png/640px-SantiagodeChile_mapa.png') center/cover; position: relative; overflow: hidden; filter: grayscale(50%) brightness(0.7); margin-top: 15px;}
+    .map-controls { position: absolute; right: 10px; top: 10px; display: flex; flex-direction: column; gap: 10px; }
+    .map-btn-group { background-color: white; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; }
+    .map-btn { width: 36px; height: 36px; background-color: white; border: none; font-size: 1.2rem; color: #333; display: flex; justify-content: center; align-items: center; cursor: pointer; }
+    .map-btn:first-child { border-bottom: 1px solid #ccc; }
+    .map-btn-single { width: 36px; height: 36px; background-color: white; border-radius: 50%; border: none; font-size: 1.1rem; color: #333; display: flex; justify-content: center; align-items: center; cursor: pointer; }
+    .pin-home { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; background-color: var(--accent-pink); border-radius: 50% 50% 50% 0; transform: translate(-50%, -100%) rotate(-45deg); border: 2px solid white; display: flex; justify-content: center; align-items: center; }
+    .pin-home i { color: white; font-size: 16px; transform: rotate(45deg); }
+
+    /* VERIFICACIONES Y ACTIVIDAD */
+    .verifications-list, .activity-list { list-style: none; padding: 0; }
+    .verifications-list li, .activity-list li { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; font-size: 1rem; color: var(--text-primary); border-bottom: 1px solid var(--bg-input); }
+    .verifications-list li:last-child, .activity-list li:last-child { border-bottom: none; padding-bottom: 0;}
+    .verifications-list li:first-child, .activity-list li:first-child { padding-top: 5px;}
+    
+    .verif-action { font-weight: 700; color: var(--accent-cyan); text-decoration: none; font-size: 0.95rem; }
+    .verif-action.disabled { color: var(--text-secondary); pointer-events: none;}
+    .icon-check { color: var(--accent-cyan); font-size: 1.2rem; }
+    
+    .activity-list { justify-content: flex-start; }
+    .activity-list li { justify-content: flex-start; gap: 15px; }
+    .activity-list i { color: var(--text-secondary); font-size: 1.2rem; width: 24px; text-align: center; }
+    .activity-val { margin-left: auto; font-weight: 700; color: var(--text-primary); }
+
+    /* REDES SOCIALES */
+    .share-container { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 15px; }
+    .share-btn { width: 40px; height: 40px; background-color: var(--accent-cyan); color: var(--bg-app); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; text-decoration: none; }
+    .share-btn.fb { background-color: #1877f2; color: white;}
+    .share-btn.x { background-color: #000000; color: white;}
+    .share-btn.in { background-color: #0a66c2; color: white;}
+    .share-btn.msg { background-color: #00b2ff; color: white;}
+    .share-btn.wa { background-color: #25d366; color: white;}
+
+    /* ========================================================
+       SISTEMA DE MODALES (POP-UPS) - ESTO SE QUEDA IGUAL
+       ======================================================== */
+    input[type="checkbox"][id$="-toggle"] { display: none; }
+    
+    .center-modal-overlay { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; height: 100vh; background-color: rgba(0, 0, 0, 0.7); z-index: 6000; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+    .center-modal-box { background-color: var(--bg-app); width: 90%; max-width: 380px; border-radius: 16px; padding: 20px; transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column;}
+    
+    #photo-toggle:checked ~ #photo-modal { opacity: 1; pointer-events: auto; }
+    #photo-toggle:checked ~ #photo-modal .center-modal-box { transform: scale(1); }
+    #name-toggle:checked ~ #name-modal { opacity: 1; pointer-events: auto; }
+    #name-toggle:checked ~ #name-modal .center-modal-box { transform: scale(1); }
+    #desc-toggle:checked ~ #desc-modal { opacity: 1; pointer-events: auto; }
+    #desc-toggle:checked ~ #desc-modal .center-modal-box { transform: scale(1); }
+    #web-toggle:checked ~ #web-modal { opacity: 1; pointer-events: auto; }
+    #web-toggle:checked ~ #web-modal .center-modal-box { transform: scale(1); }
+
+    .cm-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+    .cm-header h2 { font-size: 1.2rem; font-weight: 800; color: var(--text-primary); margin: 0; text-align: center; flex: 1;}
+    .cm-close { color: var(--text-secondary); font-size: 1.4rem; cursor: pointer; }
+
+    .photo-preview-big { width: 140px; height: 140px; background-color: var(--bg-card); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 3.5rem; color: var(--text-secondary); margin: 0 auto 20px auto; }
+    .btn-add-photo { background-color: var(--bg-card); color: var(--text-primary); border: 1px solid var(--accent-cyan); padding: 10px 20px; border-radius: 25px; font-weight: 700; margin: 0 auto 30px auto; display: flex; align-items: center; gap: 8px; width: fit-content;}
+    .photo-examples-text { font-size: 0.9rem; color: var(--text-primary); margin-bottom: 15px; }
+    .examples-row { display: flex; gap: 15px; justify-content: space-between; }
+    .examples-row img { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; }
+
+    .cm-input-wrapper { position: relative; margin-bottom: 10px; }
+    .cm-input { width: 100%; background-color: transparent; border: none; border-bottom: 2px solid var(--accent-cyan); color: var(--text-primary); padding: 10px 30px 10px 0; font-size: 1rem; outline: none; font-family: inherit;}
+    .cm-input-check { position: absolute; right: 0; top: 10px; color: var(--accent-cyan); font-size: 1.1rem; cursor: pointer;}
+    
+    .cm-textarea { width: 100%; background-color: transparent; border: none; color: var(--text-primary); font-size: 1rem; outline: none; font-family: inherit; resize: none; height: 60px;}
+    .cm-textarea::placeholder { color: var(--text-secondary); }
+    .btn-magic { background-color: var(--bg-card); border: 1px solid var(--text-secondary); color: var(--text-primary); padding: 8px 15px; border-radius: 20px; font-size: 0.9rem; font-weight: 700; display: flex; align-items: center; gap: 8px; width: fit-content;}
+    .char-count { text-align: right; color: var(--accent-pink); font-size: 0.85rem; margin-top: 10px;}
+    .info-box-desc { background-color: var(--bg-card); border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 10px; margin-top: 15px; font-size: 0.85rem; color: var(--text-primary); line-height: 1.4;}
+    
+    #examples-expand { display: none; }
+    .examples-content { display: none; margin-top: 10px; }
+    .label-ver { color: var(--accent-cyan); text-decoration: underline; cursor: pointer; display: inline-block; font-weight: 700;}
+    .label-ocultar { color: var(--accent-cyan); text-decoration: underline; cursor: pointer; display: none; font-weight: 700;}
+    #examples-expand:checked ~ .examples-content { display: block; }
+    #examples-expand:checked ~ .label-ver { display: none; }
+    #examples-expand:checked ~ .label-ocultar { display: inline-block; }
+
+    .horizontal-scroll { display: flex; overflow-x: auto; gap: 15px; scroll-snap-type: x mandatory; padding-bottom: 10px; scrollbar-width: none;}
+    .horizontal-scroll::-webkit-scrollbar { display: none; }
+    .example-card { min-width: 250px; background-color: var(--bg-app); border-radius: 8px; padding: 15px; scroll-snap-align: center; }
+
+    .bottom-modal-overlay { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; height: 100vh; background-color: rgba(0, 0, 0, 0.7); z-index: 6000; display: flex; justify-content: center; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+    .bottom-modal-box { background-color: var(--bg-app); width: 100%; border-radius: 24px 24px 0 0; padding: 25px 20px 40px 20px; transform: translateY(100%); transition: transform 0.3s ease;}
+    #vis-toggle:checked ~ #vis-modal { opacity: 1; pointer-events: auto; }
+    #vis-toggle:checked ~ #vis-modal .bottom-modal-box { transform: translateY(0); }
+
+    .v-option-card { padding: 0; border: none; background: transparent; cursor: pointer; display: block; margin-bottom: 15px;}
+    .v-option-card input { display: none; }
+    .v-option-card-inner { background-color: var(--bg-card); border: 2px solid transparent; border-radius: 12px; padding: 20px; transition: 0.2s; display: flex; align-items: center; justify-content: space-between; gap: 15px;}
+    .vis-text-content { flex: 1; text-align: left;}
+    .v-option-card-title { font-weight: 800; font-size: 1.1rem; color: var(--text-primary); display: block; margin-bottom: 5px;}
+    .v-option-card-desc { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.4; display: block;}
+    .vis-radio-circle { width: 24px; height: 24px; border: 2px solid var(--text-secondary); border-radius: 50%; display: flex; justify-content: center; align-items: center; flex-shrink: 0; }
+    .v-option-card input:checked + .v-option-card-inner { background-color: #3b5a59; border-color: var(--accent-cyan); }
+    .v-option-card input:checked + .v-option-card-inner .vis-radio-circle { border-color: var(--accent-cyan); }
+    .v-option-card input:checked + .v-option-card-inner .vis-radio-circle::after { content: ''; width: 14px; height: 14px; background-color: var(--accent-cyan); border-radius: 50%; }
+
+    .fullscreen-modal { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; height: 100vh; background-color: var(--bg-app); z-index: 8000; display: flex; flex-direction: column; opacity: 0; pointer-events: none; transition: opacity 0.2s; overflow-y: auto;}
+    #ref-toggle:checked ~ #ref-modal { opacity: 1; pointer-events: auto; }
+
+    input[name="ref-tab"] { display: none; }
+    .ref-tabs-header { display: flex; border-bottom: 1px solid var(--bg-input); background-color: var(--bg-app); }
+    .ref-tab-label { flex: 1; text-align: center; padding: 16px 0; font-weight: 700; color: var(--text-secondary); cursor: pointer; border-bottom: 3px solid transparent; font-size: 1.05rem; transition: 0.3s; }
+    
+    #tab-sol:checked ~ .ref-tabs-header .label-sol { color: var(--text-primary); border-bottom-color: var(--accent-cyan); }
+    #tab-sobre:checked ~ .ref-tabs-header .label-sobre { color: var(--text-primary); border-bottom-color: var(--accent-cyan); }
+    #tab-por:checked ~ .ref-tabs-header .label-por { color: var(--text-primary); border-bottom-color: var(--accent-cyan); }
+    
+    .ref-tab-content { display: none; padding: 25px 20px; flex-direction: column; flex: 1;}
+    #tab-sol:checked ~ .content-sol { display: flex; }
+    #tab-sobre:checked ~ .content-sobre { display: flex; }
+    #tab-por:checked ~ .content-por { display: flex; }
+
+    .ref-title { font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin-bottom: 15px; line-height: 1.3; }
+    .ref-text { color: var(--text-primary); font-size: 1rem; line-height: 1.5; margin-bottom: 20px; }
+    .ref-input-box { background-color: transparent; border: 1px solid var(--text-secondary); border-radius: 25px; padding: 12px 20px; margin-bottom: 20px; }
+    .ref-input-box input { width: 100%; background: transparent; border: none; color: var(--text-primary); font-size: 1.05rem; outline: none; font-family: inherit;}
+    .btn-ref-primary { background-color: var(--accent-cyan); color: var(--bg-app); border: none; padding: 15px; border-radius: 25px; font-weight: 800; font-size: 1.05rem; cursor: pointer; text-align: center; width: 100%; margin-bottom: 30px; display: block;}
+    
+    .ref-box { background-color: var(--bg-card); border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+    .ref-box h3 { font-size: 1.2rem; font-weight: 800; margin-bottom: 10px; color: var(--text-primary); }
+    .ref-box p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.4; margin-bottom: 15px;}
+    
+    #ref-continue-toggle { display: none; }
+    .ref-step-2 { display: none; flex-direction: column; }
+    #ref-continue-toggle:checked ~ .ref-step-2 { display: flex; }
+    #ref-continue-toggle:checked ~ .btn-ref-primary { display: none; }
+    #ref-continue-toggle:checked ~ .ref-text-bottom { display: none; }
+  </style>
+</head>
+<body>
+
+  <input type="checkbox" id="photo-toggle">
+  <input type="checkbox" id="name-toggle">
+  <input type="checkbox" id="desc-toggle">
+  <input type="checkbox" id="web-toggle">
+  <input type="checkbox" id="vis-toggle">
+  <input type="checkbox" id="ref-toggle">
+
+  <div class="mobile-app-container">
+    
+    <header class="app-header">
+      <a href="index.html" class="brand-logo"><i class="fa-solid fa-child-reaching"></i> Babysits</a>
+      <div class="page-title">Editar perfil</div>
+      <div class="header-actions">
+        <button class="btn-share"><i class="fa-solid fa-arrow-up-from-bracket"></i></button>
+      </div>
+    </header>
+
+    <section class="edit-hero">
+      <label for="photo-toggle" class="avatar-edit-box">
+        <div class="avatar-circle"><i class="fa-solid fa-camera"></i></div>
+        <div class="btn-edit-badge"><i class="fa-solid fa-pencil" style="transform: rotate(-45deg);"></i></div>
+      </label>
+      
+      <label for="name-toggle" class="name-edit-box">
+        <h1 class="profile-name">Camila</h1>
+        <div class="btn-edit-name"><i class="fa-solid fa-pencil" style="transform: rotate(-45deg);"></i></div>
+      </label>
+      <div class="profile-subtitle">Agencia de cuidado de niños.</div>
+    </section>
+
+    <div class="visibility-card">
+      <div class="vis-card-text">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span>Tu perfil es privado. ¿Quieres cambiar la visibilidad de tu perfil?</span>
+      </div>
+      <label for="vis-toggle" class="btn-vis"><i class="fa-regular fa-eye"></i> Cambiar visibilidad</label>
+    </div>
+
+    <div class="section-card">
+      <div style="display: flex; align-items: center; gap: 10px; color: var(--text-primary); font-weight: 700; margin-bottom: 5px;">
+        <i class="fa-solid fa-bolt" style="color: var(--text-secondary);"></i> Última actividad: hoy
+      </div>
+      
+      <label for="desc-toggle" class="input-line-trigger">
+        <i class="fa-solid fa-pencil"></i>
+        <span></span>
+      </label>
+      
+      <label for="web-toggle" class="input-line-trigger" style="border-bottom: none; padding-bottom: 0;">
+        <i class="fa-solid fa-link" style="transform: none;"></i>
+        <span>Página web</span>
+      </label>
+    </div>
+
+    <div class="section-card">
+      <h2 class="section-title">0 Reseñas</h2>
+      <p class="section-desc" style="margin-bottom: 0;">Cuando te hayas comunicado con este miembro, aquí es donde aparecerá tu reseña.</p>
+    </div>
+
+    <div class="section-card">
+      <h2 class="section-title">0 Referencias</h2>
+      <p class="section-desc">Cuando hayas recibido una invitación de referencia de este miembro, aquí es donde aparecerá tu referencia.</p>
+      <label for="ref-toggle" class="btn-outline">Solicitar referencias</label>
+    </div>
+
+    <div class="section-card">
+      <h2 class="section-title">Ubicación <button style="background:none; border:none; color:var(--text-secondary); float:right;"><i class="fa-solid fa-pencil" style="transform: rotate(-45deg);"></i></button></h2>
+      <div class="map-container">
+        <div class="pin-home"><i class="fa-solid fa-house"></i></div>
+        <div class="map-controls">
+          <div class="map-btn-group">
+            <button class="map-btn"><i class="fa-solid fa-plus"></i></button>
+            <button class="map-btn"><i class="fa-solid fa-minus"></i></button>
+          </div>
+          <button class="map-btn-single"><i class="fa-solid fa-crosshairs"></i></button>
+        </div>
+        <button class="map-btn-single" style="position:absolute; bottom:10px; right:10px; width:24px; height:24px; font-size:0.9rem; font-weight:bold;">i</button>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <h2 class="section-title">Verificaciones</h2>
+      <ul class="verifications-list">
+        <li>Documento de identidad oficial <a href="#" class="verif-action disabled" style="color:var(--text-secondary);">Añadir</a></li>
+        <li>Dirección de correo electrónico <i class="fa-solid fa-check icon-check"></i></li>
+        <li>Número de teléfono <a href="#" class="verif-action">Añadir</a></li>
+        <li>Cuenta de Apple <a href="#" class="verif-action disabled">Conectar</a></li>
+        <li>Cuenta de Facebook <a href="#" class="verif-action">Conectar</a></li>
+        <li>Cuenta de Google <i class="fa-solid fa-check icon-check"></i></li>
+        <li>Cuenta LinkedIn <a href="#" class="verif-action">Conectar</a></li>
+      </ul>
+    </div>
+
+    <div class="section-card">
+      <h2 class="section-title">Actividad</h2>
+      <ul class="activity-list">
+        <li><i class="fa-solid fa-tag" style="transform: rotate(-45deg);"></i> Miembro desde <span class="activity-val">febrero de 2026</span></li>
+        <li><i class="fa-solid fa-bolt"></i> Última actividad <span class="activity-val">hoy</span></li>
+        <li><i class="fa-regular fa-thumbs-up"></i> Mensajes contestados <span class="activity-val">-</span></li>
+        <li><i class="fa-regular fa-clock"></i> Tiempo promedio de respuesta <span class="activity-val">-</span></li>
+      </ul>
+    </div>
+
+    <div class="section-card" style="margin-bottom: 40px;">
+      <h2 class="section-title">Comparte este perfil</h2>
+      <div class="share-container">
+        <a href="#" class="share-btn fb"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="#" class="share-btn wa"><i class="fa-brands fa-whatsapp"></i></a>
+        <a href="#" class="share-btn msg"><i class="fa-brands fa-facebook-messenger"></i></a>
+        <a href="#" class="share-btn" style="background-color:var(--bg-input);"><i class="fa-solid fa-link"></i></a>
+      </div>
+    </div>
+
+    <div style="padding: 30px 20px 40px 20px; background-color: var(--bg-app); display:flex; flex-direction:column; align-items:center; border-top: 1px solid var(--bg-input);">
+      <div style="display: flex; width: 100%; background-color: var(--bg-input); border-radius: 25px; margin-bottom: 30px; overflow: hidden;">
+        <div style="padding: 12px 20px; background-color: var(--bg-card); display: flex; align-items: center; gap: 8px; border-right: 1px solid var(--bg-app);">🇨🇱 <i class="fa-solid fa-caret-down"></i></div>
+        <div style="flex: 1; padding: 12px; background-color: var(--bg-card); display: flex; justify-content: center; align-items: center; gap: 8px; font-weight: 600;">Español <i class="fa-solid fa-caret-down"></i></div>
+      </div>
+      <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:15px; margin-bottom: 30px;">
+        <a href="comofunciona.html" style="color:var(--text-primary); text-decoration:none; font-size:0.95rem;">Cómo funciona</a>
+        <a href="ayuda.html" style="color:var(--text-primary); text-decoration:none; font-size:0.95rem;">Ayuda</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="center-modal-overlay" id="photo-modal">
+    <div class="center-modal-box">
+      <div class="cm-header"><h2>Foto de perfil</h2><label for="photo-toggle" class="cm-close"><i class="fa-solid fa-xmark"></i></label></div>
+      <div class="photo-preview-big"><i class="fa-solid fa-camera"></i></div>
+      <button class="btn-add-photo"><i class="fa-solid fa-camera"></i> Añadir</button>
+      <hr style="border:none; border-top:1px solid var(--bg-input); margin-bottom:20px;">
+      <div class="photo-examples-text">Ejemplos de fotos de perfil que puedes agregar:</div>
+      <div class="examples-row">
+        <img src="https://picsum.photos/100/100?random=50">
+        <img src="https://picsum.photos/100/100?random=51">
+        <img src="https://picsum.photos/100/100?random=52">
+      </div>
+    </div>
+  </div>
+
+  <div class="center-modal-overlay" id="name-modal">
+    <div class="center-modal-box">
+      <div class="cm-header"><h2>Nombre de agencia</h2><label for="name-toggle" class="cm-close"><i class="fa-solid fa-xmark"></i></label></div>
+      <div style="font-size: 0.9rem; color:var(--text-primary); margin-bottom: 5px;">Nombre de agencia</div>
+      <div class="cm-input-wrapper">
+        <input type="text" class="cm-input" value="Camila">
+        <label for="name-toggle" class="cm-input-check"><i class="fa-solid fa-check"></i></label>
+      </div>
+    </div>
+  </div>
+
+  <div class="center-modal-overlay" id="desc-modal">
+    <div class="center-modal-box">
+      <div class="cm-header"><h2>Cuéntanos un poco sobre tu agencia</h2><label for="desc-toggle" class="cm-close"><i class="fa-solid fa-xmark"></i></label></div>
+      <div style="border-bottom: 2px solid var(--bg-input); padding-bottom: 10px; margin-bottom: 15px;">
+        <textarea class="cm-textarea" placeholder="Escribe tu descripción"></textarea>
+        <button class="btn-magic"><i class="fa-solid fa-wand-magic-sparkles"></i> Escríbelo por mí</button>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:0.85rem; color:var(--text-primary);">Mínimo 60 caracteres.</span>
+        <span class="char-count" style="margin-top:0;">0/60</span>
+      </div>
+      
+      <div class="info-box-desc">
+        <div style="display:flex; gap:10px;">
+          <i class="fa-solid fa-circle-info" style="color:var(--accent-cyan); margin-top:2px;"></i>
+          <div>Por su propia seguridad, no incluya sus datos de contacto.</div>
+        </div>
+        
+        <input type="checkbox" id="examples-expand">
+        <div style="text-align: center; margin-top: 10px;">
+          <label for="examples-expand" class="label-ver">Ver ejemplos</label>
+          <label for="examples-expand" class="label-ocultar">Ocultar ejemplos</label>
+        </div>
+        
+        <div class="examples-content">
+          <div class="horizontal-scroll">
+            <div class="example-card">Amo trabajar con niños. Tengo 3 años de experiencia cuidando niños, principalmente con bebés y niños pequeños. También tengo experiencia con necesidades especiales, particularmente epilepsia.</div>
+            <div class="example-card">Comencé a cuidar niños cuando tenía 15 años. Cuidé a mis primos y hermanos. Actualmente soy maestra de primaria. En mi tiempo libre me gustaría volver a cuidar niños porque disfruto.</div>
+            <div class="example-card">¡Hola! Además de mis estudios de pedagogía me gustaría trabajar como niñera. Soy creativa, divertida y enérgica. Me siento cómoda con las mascotas y ayudando con la tarea.</div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <div class="center-modal-overlay" id="web-modal">
+    <div class="center-modal-box">
+      <div class="cm-header"><h2>Página web</h2><label for="web-toggle" class="cm-close"><i class="fa-solid fa-xmark"></i></label></div>
+      <div style="font-size: 0.9rem; color:var(--text-primary); margin-bottom: 5px;">Página web</div>
+      <div class="cm-input-wrapper">
+        <input type="text" class="cm-input" value="www.domain.com">
+        <label for="web-toggle" class="cm-input-check"><i class="fa-solid fa-check"></i></label>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-modal-overlay" id="vis-modal">
+    <div class="bottom-modal-box">
+      <div class="cm-header" style="margin-bottom: 10px;">
+        <h2>¿Quién puede ver tu perfil?</h2>
+        <label for="vis-toggle" class="cm-close" style="font-size: 1.4rem;"><i class="fa-solid fa-xmark"></i></label>
+      </div>
+      <p style="text-align: center; color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 25px;">Para contactar con otros miembros, haz visible su perfil.</p>
+      
+      <div style="display:flex; flex-direction:column;">
+        <label class="v-option-card"><input type="radio" name="vis_status"><div class="v-option-card-inner"><div class="vis-text-content"><span class="v-option-card-title">Todo el mundo</span><span class="v-option-card-desc">Los miembros de Babysits, los motores de búsqueda públicos y las bolsas de trabajo pueden ver su perfil.</span></div><span class="vis-radio-circle"></span></div></label>
+        <label class="v-option-card"><input type="radio" name="vis_status"><div class="v-option-card-inner"><div class="vis-text-content"><span class="v-option-card-title">Solo miembros de Babysits</span><span class="v-option-card-desc">Sólo los miembros de Babysits pueden ver tu perfil. Esto puede reducir los mensajes que recibes.</span></div><span class="vis-radio-circle"></span></div></label>
+        <label class="v-option-card"><input type="radio" name="vis_status" checked><div class="v-option-card-inner"><div class="vis-text-content"><span class="v-option-card-title">Privado</span><span class="v-option-card-desc">Solo los miembros con los que has intercambiado mensajes y agregado como favoritos pueden ver tu perfil.</span></div><span class="vis-radio-circle"></span></div></label>
+      </div>
+    </div>
+  </div>
+
+  <div class="fullscreen-modal" id="ref-modal">
+    <header class="app-header">
+      <div class="brand-logo"><i class="fa-solid fa-child-reaching"></i> Babysits</div>
+      <div class="page-title" style="text-align: left;">Referencias</div>
+      <div class="header-actions">
+        <label for="ref-toggle" class="btn-icon" style="border:none;"><i class="fa-solid fa-bars"></i></label>
+        <label for="ref-toggle" class="btn-icon" style="background-color: #aab8c0; border: none; color: var(--bg-app);"><i class="fa-solid fa-user"></i></label>
+      </div>
+    </header>
+
+    <input type="radio" name="ref-tab" id="tab-sol" checked>
+    <input type="radio" name="ref-tab" id="tab-sobre">
+    <input type="radio" name="ref-tab" id="tab-por">
+    
+    <div class="ref-tabs-header">
+      <label for="tab-sol" class="ref-tab-label label-sol">Solicitud</label>
+      <label for="tab-sobre" class="ref-tab-label label-sobre">Sobre ti</label>
+      <label for="tab-por" class="ref-tab-label label-por">Por ti</label>
+    </div>
+
+    <div class="ref-tab-content content-sol">
+      <h2 class="ref-title">¿A quién quiere pedirle una referencia?</h2>
+      <p class="ref-text">Las referencias ayudan a los padres a sentirse seguros. ¡Las niñeras que agregan 2 referencias encuentran trabajo más rápido!</p>
+      
+      <div class="ref-input-box"><input type="text" placeholder="Nombre" value="Cami"></div>
+      
+      <input type="checkbox" id="ref-continue-toggle">
+      
+      <p class="ref-text ref-text-bottom" style="color:var(--text-secondary);">Babysits se basa en la confianza y la reputación. Pide referencias únicamente a personas que conozcan bien tus habilidades y tu carácter, como tu familia, amigos o, preferiblemente, alguien para quien hayas trabajado.</p>
+      
+      <label for="ref-continue-toggle" class="btn-ref-primary">Continuar</label>
+      
+      <div class="ref-step-2">
+        <h2 class="ref-title" style="font-size: 1.3rem;">Invitación</h2>
+        <div class="ref-box">
+          <p>Hola Cami, soy un miembro activo de Babysits, una plataforma comunitaria construida sobre la confianza y la reputación que conecta a las niñeras y a los padres. Me ayudaría enormemente si pudiera escribir una referencia para mí a través de este enlace:</p>
+          <a href="#" style="color:var(--accent-cyan); word-break: break-all; display:block; margin-bottom:15px;">https://www.babysits.cl/user/7976991/reference/?refid=iqqnjNqq</a>
+          <p>Simplemente envía este mensaje a través de tu aplicación de mensajería favorita, correo electrónico o cópialo en otro lugar:</p>
+          <button class="btn-outline" style="width: 100%; border-color: var(--text-secondary); color: var(--text-primary);"><i class="fa-solid fa-arrow-up-from-bracket"></i> Compartir</button>
+        </div>
+        
+        <div style="text-align: center; margin-top: 15px;">
+          <p style="color:var(--text-primary); font-weight:700; margin-bottom: 5px;">¿Conoces a alguien más que pueda escribir una referencia sobre ti?</p>
+          <label for="ref-continue-toggle" style="color:var(--accent-cyan); cursor:pointer; font-weight:700;">Pregunta a alguien más</label>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="ref-tab-content content-sobre">
+      <div class="ref-box">
+        <h3>Referencias en tu perfil público</h3>
+        <p>Cuando recibas una referencia, aparecerá en tu perfil público. Si ignoras la referencia, no aparecerá en tu perfil y no se informará a la persona que escribió la referencia. ¡Ten en cuenta que una referencia solo se mostrará en tu perfil público si la persona que la escribió adjuntó una foto a la referencia!</p>
+        <div style="color:var(--text-primary); font-size:0.95rem;">No se han recibido referencias</div>
+      </div>
+      <div class="ref-box" style="margin-top:20px;">
+        <h3>Referencias que has ignorado</h3>
+        <p>Estas son las referencias que has ignorado. Estas no se mostrarán en tu perfil público.</p>
+        <div style="color:var(--text-primary); font-size:0.95rem;">No has ignorado ninguna referencia.</div>
+      </div>
+    </div>
+
+    <div class="ref-tab-content content-por">
+      <div class="ref-box">
+        <h3>Referencias que has escrito anteriormente</h3>
+        <div style="color:var(--text-primary); font-size:0.95rem;">Todavía no has escrito ninguna referencia.</div>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
