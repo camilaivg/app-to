@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>TO connect - Aspectos Legales Avanzados</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --bg-app: #2c363b;
+      --bg-card: #3a464c;
+      --bg-input: #445158;
+      --text-primary: #ffffff;
+      --text-secondary: #aab8c0;
+      --accent-cyan: #5fa5a1;
+      --accent-pink: #df7b90;
+      --font-main: 'Nunito', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-main); }
+    html, body { width: 100%; height: 100%; background-color: var(--bg-app); overflow-x: hidden; }
+    body { display: flex; justify-content: center; }
+
+    .mobile-app-container {
+      width: 100%; max-width: 480px; min-height: 100vh;
+      background-color: var(--bg-app); color: var(--text-primary);
+      display: flex; flex-direction: column; position: relative;
+    }
+
+    /* HEADER MASTER (Referencia 65877.jpg) */
+    .app-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; background-color: var(--bg-app); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--bg-input); }
+    .brand-logo { font-size: 1.4rem; font-weight: 800; color: var(--accent-cyan); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+    .header-actions { display: flex; align-items: center; gap: 12px; }
+    .btn-hollow { width: 38px; height: 38px; border-radius: 50%; border: 1.5px solid var(--text-secondary); display: flex; justify-content: center; align-items: center; color: white; }
+    .btn-solid-user { width: 38px; height: 38px; border-radius: 50%; background-color: var(--text-secondary); color: var(--bg-app); display: flex; justify-content: center; align-items: center; font-size: 1.2rem; }
+
+    /* CONTROLES SUPERIORES */
+    .top-controls { display: flex; justify-content: space-between; align-items: center; padding: 25px 20px; gap: 10px; }
+    .segmented-control { display: flex; background: var(--bg-card); padding: 4px; border-radius: 12px; flex: 1; border: 1px solid var(--bg-input); }
+    .seg-label { flex: 1; padding: 10px; text-align: center; font-size: 0.9rem; font-weight: 800; color: var(--text-secondary); cursor: pointer; border-radius: 8px; transition: 0.3s; }
+    
+    .btn-print { background: transparent; border: 1px solid var(--text-secondary); color: var(--text-primary); padding: 10px 16px; border-radius: 30px; font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; cursor: pointer; }
+
+    /* LÓGICA DE TABS */
+    input[name="legal-tabs"] { display: none; }
+    #tab-terms:checked ~ .top-controls .label-terms { background: var(--bg-input); color: white; }
+    #tab-privacy:checked ~ .top-controls .label-privacy { background: var(--bg-input); color: white; }
+    
+    .legal-content-section { display: none; padding: 0 20px 50px 20px; flex: 1; line-height: 1.6; }
+    #tab-terms:checked ~ .content-terms { display: block; animation: fadeIn 0.3s ease; }
+    #tab-privacy:checked ~ .content-privacy { display: block; animation: fadeIn 0.3s ease; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* TEXTO LEGAL */
+    .legal-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 20px; color: var(--accent-cyan); }
+    .legal-subtitle { font-size: 1.2rem; font-weight: 800; margin: 30px 0 15px; color: white; border-left: 3px solid var(--accent-pink); padding-left: 12px; }
+    .legal-text { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 15px; }
+    .legal-text strong { color: white; }
+    .legal-list { padding-left: 20px; margin-bottom: 20px; color: var(--text-secondary); }
+    .legal-list li { margin-bottom: 10px; font-size: 0.95rem; }
+
+    /* FOOTER */
+    .footer-app { padding: 50px 20px 100px 20px; background-color: var(--bg-card); text-align: center; border-top: 1px solid var(--bg-input); }
+    .lang-pill { background-color: var(--bg-input); border-radius: 30px; display: flex; overflow: hidden; margin: 0 auto 30px; max-width: 300px; }
+    .lang-item { flex: 1; padding: 12px; font-weight: 800; font-size: 0.9rem; }
+    .copyright { font-weight: 800; color: var(--accent-cyan); font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+
+  <div class="mobile-app-container">
+    
+    <header class="app-header">
+      <a href="inicio.html" class="brand-logo"><i class="fa-solid fa-hand-holding-medical"></i> TO connect</a>
+      <div class="header-actions">
+        <div class="btn-hollow"><i class="fa-solid fa-bars"></i></div>
+        <div class="btn-solid-user"><i class="fa-solid fa-user"></i></div>
+      </div>
+    </header>
+
+    <input type="radio" name="legal-tabs" id="tab-terms" checked>
+    <input type="radio" name="legal-tabs" id="tab-privacy">
+
+    <div class="top-controls">
+      <div class="segmented-control">
+        <label for="tab-terms" class="seg-label label-terms">Términos</label>
+        <label for="tab-privacy" class="seg-label label-privacy">Privacidad</label>
+      </div>
+      <button class="btn-print"><i class="fa-solid fa-print"></i></button>
+    </div>
+
+    <main class="legal-content-section content-terms">
+      <h1 class="legal-title">Términos y Condiciones</h1>
+      
+      <h2 class="legal-subtitle">1. Marketplace de Ayudas Técnicas</h2>
+      <p class="legal-text"><strong>1.1 Objeto:</strong> TO connect facilita un espacio para el intercambio, venta o donación de artículos de rehabilitación (sillas de ruedas, órtesis, material didáctico, etc.).</p>
+      <p class="legal-text"><strong>1.2 Responsabilidad del Producto:</strong> La plataforma no garantiza el estado, higiene o funcionamiento de los artículos. El vendedor es responsable de la veracidad de la descripción.</p>
+      <p class="legal-text"><strong>1.3 Prohibiciones:</strong> Queda estrictamente prohibida la venta de fármacos, sustancias controladas o dispositivos médicos que requieran prescripción médica obligatoria según la normativa de salud vigente.</p>
+      <p class="legal-text"><strong>1.4 Límites de Publicación:</strong> Los usuarios gratuitos podrán publicar hasta 1 artículo simultáneo. Los usuarios <strong>Plus</strong> tienen un límite extendido de hasta 15 artículos.</p>
+
+      <h2 class="legal-subtitle">2. Sistema de Mensajería</h2>
+      <p class="legal-text"><strong>2.1 Uso Profesional:</strong> El chat debe utilizarse exclusivamente para coordinar evaluaciones, seguimientos y consultas clínicas. Se prohíbe el uso para fines ajenos a la rehabilitación.</p>
+      <p class="legal-text"><strong>2.2 Conducta y Ética:</strong> Los terapeutas deben mantener el código de ética profesional. Los pacientes deben dirigirse con respeto. El acoso o spam resultará en la baja inmediata de la cuenta.</p>
+      <p class="legal-text"><strong>2.3 Desintermediación:</strong> Queda prohibido compartir datos de contacto externos para evitar la pasarela de pagos de la aplicación. Las conversaciones son monitoreadas por algoritmos de seguridad para evitar fraudes.</p>
+
+      <h2 class="legal-subtitle">3. Validación y Registro SIS</h2>
+      <p class="legal-text">3.1 Todo profesional que ofrezca servicios debe mantener su registro en la <strong>Superintendencia de Salud</strong> activo. TO connect revocará perfiles que no cumplan con esta validación técnica.</p>
+
+      <h2 class="legal-subtitle">4. Propiedad Intelectual</h2>
+      <p class="legal-text">4.1 Las <strong>Guías de Ejercicios</strong> proporcionadas en el plan Plus son para uso personal del paciente. Queda prohibida su reproducción o venta comercial fuera de la plataforma.</p>
+    </main>
+
+    <main class="legal-content-section content-privacy">
+      <h1 class="legal-title">Política de Privacidad</h1>
+      
+      <h2 class="legal-subtitle">Protección de Datos Sensibles</h2>
+      <p class="legal-text">Dada la naturaleza clínica de <strong>TO connect</strong>, procesamos datos de salud (Categoría Sensible). Cumplimos con la Ley de Protección de la Vida Privada.</p>
+      
+      <h2 class="legal-subtitle">Privacidad en Mensajería</h2>
+      <p class="legal-text">Los archivos clínicos compartidos en el chat (radiografías, informes, pautas) están cifrados en reposo. Solo el Terapeuta Ocupacional asignado y el Usuario tienen acceso a esta información visual.</p>
+      
+      <h2 class="legal-subtitle">Geolocalización</h2>
+      <p class="legal-text">Para servicios domiciliarios, la ubicación exacta solo se comparte con el terapeuta una vez que la sesión ha sido confirmada y pagada, garantizando la seguridad de la vivienda del paciente.</p>
+
+      <h2 class="legal-subtitle">Comunicaciones Marketplace</h2>
+      <p class="legal-text">Al publicar un artículo, su nombre de usuario será visible. Recomendamos no incluir números de teléfono personales en la descripción pública del producto.</p>
+    </main>
+
+    <footer class="footer-app">
+      <div class="lang-pill">
+        <div class="lang-item" style="border-right: 1px solid var(--bg-app);">🇨🇱</div>
+        <div class="lang-item">Español</div>
+      </div>
+      <p class="copyright"><i class="fa-solid fa-hand-holding-medical"></i> © 2026 TO connect Chile</p>
+    </footer>
+
+    <nav style="position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background: var(--bg-app); display: flex; justify-content: space-around; padding: 12px 0 25px; border-top: 1px solid var(--bg-input); z-index: 500;">
+      <a href="inicio.html" style="text-decoration:none; color:var(--text-secondary); display:flex; flex-direction:column; align-items:center; gap:5px; font-weight:700; font-size:0.8rem;"><i class="fa-solid fa-house" style="font-size:1.4rem;"></i><span>Inicio</span></a>
+      <a href="buscar.html" style="text-decoration:none; color:var(--text-secondary); display:flex; flex-direction:column; align-items:center; gap:5px; font-weight:700; font-size:0.8rem;"><i class="fa-solid fa-magnifying-glass" style="font-size:1.4rem;"></i><span>Buscar</span></a>
+      <a href="mensajes.html" style="text-decoration:none; color:var(--text-secondary); display:flex; flex-direction:column; align-items:center; gap:5px; font-weight:700; font-size:0.8rem;"><i class="fa-solid fa-comment-dots" style="font-size:1.4rem;"></i><span>Mensajes</span></a>
+      <a href="cuenta.html" style="text-decoration:none; color:var(--accent-cyan); display:flex; flex-direction:column; align-items:center; gap:5px; font-weight:700; font-size:0.8rem;"><i class="fa-solid fa-circle-user" style="font-size:1.4rem;"></i><span>Mi Cuenta</span></a>
+    </nav>
+
+  </div>
+</body>
+</html>

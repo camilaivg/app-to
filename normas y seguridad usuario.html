@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>TO connect - Normas y Seguridad</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --bg-app: #2c363b;
+      --bg-card: #3a464c;
+      --bg-input: #445158;
+      --text-primary: #ffffff;
+      --text-secondary: #aab8c0;
+      --accent-cyan: #5fa5a1;
+      --accent-pink: #df7b90;
+      --font-main: 'Nunito', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-main); -webkit-tap-highlight-color: transparent; }
+    body { background-color: #121212; display: flex; justify-content: center; min-height: 100vh; }
+
+    .mobile-app-container {
+      width: 100%; max-width: 480px; background-color: var(--bg-app); color: var(--text-primary);
+      position: relative; overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh;
+    }
+
+    /* HEADER MASTER (Referencia 65877.jpg) */
+    .app-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; background-color: var(--bg-app); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--bg-input); }
+    .brand-logo { font-size: 1.4rem; font-weight: 800; color: var(--accent-cyan); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+    .header-actions { display: flex; align-items: center; gap: 12px; }
+    .btn-hollow { width: 38px; height: 38px; border-radius: 50%; border: 1.5px solid var(--text-secondary); display: flex; justify-content: center; align-items: center; color: white; cursor: pointer; }
+    .btn-solid-user { width: 38px; height: 38px; border-radius: 50%; background-color: var(--text-secondary); color: var(--bg-app); display: flex; justify-content: center; align-items: center; font-size: 1.1rem; cursor: pointer; }
+
+    /* CONTROLES TABS */
+    .top-controls { display: flex; background-color: var(--bg-app); border-bottom: 1px solid var(--bg-input); position: sticky; top: 71px; z-index: 90; }
+    .seg-label { flex: 1; padding: 16px 0; font-size: 1rem; font-weight: 700; color: var(--text-secondary); cursor: pointer; text-align: center; border-bottom: 3px solid transparent; transition: 0.3s; }
+    
+    input[name="safety-tabs"] { display: none; }
+    #tab-trust:checked ~ .top-controls .label-trust { color: var(--text-primary); border-bottom-color: var(--accent-cyan); }
+    #tab-rules:checked ~ .top-controls .label-rules { color: var(--text-primary); border-bottom-color: var(--accent-cyan); }
+    
+    .tab-content { display: none; flex: 1; animation: fadeIn 0.4s ease; }
+    #tab-trust:checked ~ .content-trust { display: block; }
+    #tab-rules:checked ~ .content-rules { display: block; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* HERO CLINICO */
+    .hero-box { position: relative; width: 100%; height: 200px; margin-bottom: 25px; overflow: hidden; }
+    .hero-box img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.7); border-radius: 0 0 40px 40px; }
+
+    /* ESTILOS DE TEXTO MAGISTER */
+    .content-padding { padding: 0 24px 40px; }
+    .main-title { font-size: 1.8rem; font-weight: 800; line-height: 1.2; margin-bottom: 15px; }
+    .section-title { font-size: 1.4rem; font-weight: 800; margin: 35px 0 15px; color: var(--accent-cyan); }
+    .body-text { font-size: 1rem; line-height: 1.6; color: var(--text-secondary); margin-bottom: 20px; }
+    
+    .rule-card { background: var(--bg-card); padding: 20px; border-radius: 16px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.05); }
+    .rule-card strong { display: block; font-size: 1.1rem; color: white; margin-bottom: 8px; }
+    
+    .info-pill { background: rgba(95, 165, 161, 0.1); border-left: 4px solid var(--accent-cyan); padding: 20px; border-radius: 0 12px 12px 0; margin: 25px 0; }
+    .info-pill p { font-size: 0.95rem; font-weight: 600; line-height: 1.5; }
+
+    /* FOOTER MAGISTER (Referencia 65826.jpg) */
+    .footer-app { padding: 50px 20px 100px; background-color: var(--bg-card); text-align: center; border-top: 1px solid var(--bg-input); }
+    .social-row { display: flex; justify-content: center; gap: 20px; margin-top: 30px; }
+    .social-link { width: 40px; height: 40px; border-radius: 50%; background: var(--bg-app); display: flex; justify-content: center; align-items: center; color: white; text-decoration: none; font-size: 1.2rem; }
+    .copyright { margin-top: 40px; font-weight: 800; color: var(--accent-cyan); font-size: 0.85rem; }
+
+    /* NAV INFERIOR (ESTÁNDAR TO CONNECT) */
+    .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background: var(--bg-app); display: flex; justify-content: space-around; padding: 12px 0 25px; border-top: 1px solid var(--bg-input); z-index: 500; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 5px; text-decoration: none; color: var(--text-secondary); font-weight: 700; font-size: 0.8rem; }
+    .nav-item.active { color: var(--accent-cyan); }
+    .nav-item i { font-size: 1.4rem; }
+  </style>
+</head>
+<body>
+
+  <div class="mobile-app-container">
+    
+    <header class="app-header">
+      <a href="inicio.html" class="brand-logo"><i class="fa-solid fa-hand-holding-medical"></i> TO connect</a>
+      <div class="header-actions">
+        <div class="btn-hollow"><i class="fa-solid fa-bars"></i></div>
+        <div class="btn-solid-user"><i class="fa-solid fa-user"></i></div>
+      </div>
+    </header>
+
+    <input type="radio" name="safety-tabs" id="tab-trust">
+    <input type="radio" name="safety-tabs" id="tab-rules" checked>
+
+    <div class="top-controls">
+      <label for="tab-trust" class="seg-label label-trust">Confianza y seguridad</label>
+      <label for="tab-rules" class="seg-label label-rules">Normas de la comunidad</label>
+    </div>
+
+    <main class="tab-content content-trust">
+      <div class="hero-box">
+        <img src="https://images.unsplash.com/photo-1581056771107-24ca5f033842?q=80&w=600" alt="Salud Segura">
+      </div>
+      <div class="content-padding">
+        <h1 class="main-title">Tu bienestar es nuestro compromiso</h1>
+        <p class="body-text">En TO connect, implementamos protocolos de nivel clínico para asegurar que cada interacción sea profesional y segura.</p>
+        
+        <div class="rule-card">
+          <strong>Validación SIS Obligatoria</strong>
+          <p class="body-text" style="margin:0; font-size:0.9rem;">No permitimos perfiles sin registro vigente en la Superintendencia de Salud. Tu terapeuta es un profesional real.</p>
+        </div>
+        <div class="rule-card">
+          <strong>Protocolo SOS Domiciliario</strong>
+          <p class="body-text" style="margin:0; font-size:0.9rem;">Geolocalización activa y botón de pánico durante las sesiones para proteger tanto al paciente como al TO.</p>
+        </div>
+      </div>
+    </main>
+
+    <main class="tab-content content-rules">
+      <div class="hero-box">
+        <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=600" alt="Rehabilitación">
+      </div>
+
+      <div class="content-padding">
+        <h1 class="main-title">Normas de Ética y Convivencia</h1>
+        <p class="body-text">Nuestra comunidad se basa en el respeto mutuo, la transparencia clínica y el compromiso con la rehabilitación integral.</p>
+
+        <div class="info-pill">
+          <p><i class="fa-solid fa-shield-halved" style="margin-right:10px;"></i> Por tu seguridad, utiliza siempre el chat de TO connect. Solo así podemos respaldar tus sesiones con nuestro Protocolo SOS y seguros técnicos.</p>
+        </div>
+
+        <h2 class="section-title">Estándares para Especialistas (TO)</h2>
+        <div class="rule-card">
+          <strong>Praxis Ética</strong>
+          <p class="body-text" style="margin:0; font-size:0.9rem;">Debes actuar bajo los principios de beneficencia y justicia, respetando siempre la autonomía del paciente.</p>
+        </div>
+        <div class="rule-card">
+          <strong>Preparación de Sesión</strong>
+          <p class="body-text" style="margin:0; font-size:0.9rem;">Es obligatorio revisar la Ficha Maestra del paciente antes de la primera evaluación para garantizar una atención segura.</p>
+        </div>
+
+        <h2 class="section-title">Estándares para Usuarios</h2>
+        <div class="rule-card">
+          <strong>Entorno de Terapia Seguro</strong>
+          <p class="body-text" style="margin:0; font-size:0.9rem;">Al recibir a un profesional en casa, garantizas un espacio digno, libre de riesgos y respetuoso para la intervención.</p>
+        </div>
+        <div class="rule-card">
+          <strong>Transparencia Diagnóstica</strong>
+          <p class="body-text" style="margin:0; font-size:0.9rem;">Comparte información honesta sobre tu estado de salud para evitar complicaciones durante los ejercicios de rehabilitación.</p>
+        </div>
+
+        <h2 class="section-title">Infracciones y Sanciones</h2>
+        <p class="body-text">El incumplimiento de estas normas afecta la calidad clínica de la red. Manejamos tres niveles de resolución:</p>
+        <ul style="padding-left:20px; color:var(--text-secondary); line-height:1.6;">
+          <li style="margin-bottom:15px;"><strong>Advertencia Técnica:</strong> Para errores involuntarios en la coordinación de citas.</li>
+          <li style="margin-bottom:15px;"><strong>Suspensión Profesional:</strong> Por conductas que comprometan la confianza de la comunidad o desintermediación de pagos.</li>
+          <li style="margin-bottom:15px;"><strong>Baja Definitiva:</strong> Tolerancia cero ante acoso, discriminación o mala praxis clínica.</li>
+        </ul>
+
+        <a href="ayuda.html" class="btn-action-primary" style="width:100%; margin-top:40px; text-align:center;">Contactar a Soporte Clínico</a>
+      </div>
+    </main>
+
+    <footer class="footer-app">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:30px;">
+        <a href="#" style="color:white; text-decoration:none; font-weight:600;">Privacidad</a>
+        <a href="#" style="color:white; text-decoration:none; font-weight:600;">Términos</a>
+      </div>
+      <div class="social-row">
+        <a href="#" class="social-link"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" class="social-link"><i class="fa-brands fa-linkedin-in"></i></a>
+      </div>
+      <p class="copyright"><i class="fa-solid fa-hand-holding-medical"></i> © 2026 TO connect Chile</p>
+    </footer>
+
+    <nav class="bottom-nav">
+      <a href="inicio.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Inicio</span></a>
+      <a href="buscar.html" class="nav-item"><i class="fa-solid fa-magnifying-glass"></i><span>Buscar</span></a>
+      <a href="mensajes.html" class="nav-item"><i class="fa-solid fa-comment-dots"></i><span>Mensajes</span></a>
+      <a href="cuenta.html" class="nav-item active"><i class="fa-solid fa-user-shield"></i><span>Seguridad</span></a>
+    </nav>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>TO connect - Suscripción Plus</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --bg-app: #2c363b;
+      --bg-card: #3a464c;
+      --bg-input: #445158;
+      --text-primary: #ffffff;
+      --text-secondary: #aab8c0;
+      --accent-cyan: #5fa5a1;
+      --accent-pink: #df7b90;
+      --font-main: 'Nunito', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-main); }
+    body { background-color: #121212; display: flex; justify-content: center; min-height: 100vh; }
+
+    .mobile-app-container {
+      width: 100%; max-width: 480px; 
+      background-color: var(--bg-app); 
+      position: relative; overflow-x: hidden; min-height: 100vh;
+      display: flex; flex-direction: column;
+    }
+
+    /* LÓGICA DE NAVEGACIÓN ENTRE VISTAS */
+    input[name="flow-nav"] { display: none; }
+    
+    .view-plan, .view-checkout {
+      display: none; flex-direction: column; flex: 1; 
+      animation: slideIn 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+    }
+
+    #step-plan:checked ~ .view-plan { display: flex; }
+    #step-checkout:checked ~ .view-checkout { display: flex; }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    /* =======================================
+       VISTA 1: BENEFICIOS PLUS (DARK)
+       ======================================= */
+    .plan-header { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .plan-logo { font-size: 1.2rem; font-weight: 800; color: var(--accent-cyan); display: flex; align-items: center; gap: 8px; }
+    .plan-logo span { color: var(--text-secondary); font-weight: 600; font-size: 0.9rem; }
+    .btn-close { color: var(--text-secondary); font-size: 1.5rem; cursor: pointer; transition: 0.3s; }
+
+    .plan-body { padding: 30px 24px; color: var(--text-primary); }
+    .plan-tag { color: var(--accent-pink); font-size: 0.85rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; display: block; text-align: center;}
+    .plan-title { font-size: 2rem; font-weight: 800; text-align: center; margin-bottom: 15px; line-height: 1.1; }
+    
+    .mascot-box { font-size: 5rem; text-align: center; color: var(--accent-pink); margin: 30px 0; position: relative; }
+    .mascot-box i.deco-star { position: absolute; font-size: 1.5rem; color: var(--accent-cyan); opacity: 0.6; }
+    .star-l { top: -10px; left: 30%; transform: rotate(-15deg); }
+    .star-r { bottom: 10px; right: 30%; transform: rotate(20deg); }
+
+    .benefits-grid { list-style: none; margin-bottom: 35px; }
+    .benefits-grid li { display: flex; gap: 15px; margin-bottom: 20px; align-items: flex-start; font-size: 1rem; line-height: 1.4; font-weight: 600; color: var(--text-primary); }
+    .benefits-grid i { color: var(--accent-cyan); font-size: 1.2rem; margin-top: 3px; }
+
+    .pricing-summary { text-align: center; margin-bottom: 30px; }
+    .pricing-summary h2 { font-size: 1.5rem; font-weight: 800; margin-bottom: 5px; }
+    .pricing-summary p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    .btn-action-plus { background-color: var(--accent-cyan); color: var(--bg-app); border: none; padding: 18px; width: 100%; border-radius: 35px; font-weight: 800; font-size: 1.1rem; cursor: pointer; text-align: center; display: block; text-decoration: none; transition: 0.3s; }
+    .btn-action-plus:active { transform: scale(0.96); }
+
+    .trust-badge { display: flex; gap: 15px; background: rgba(255,255,255,0.03); padding: 18px; border-radius: 16px; margin-bottom: 12px; align-items: center; border: 1px solid rgba(255,255,255,0.05); }
+    .trust-badge i { font-size: 1.6rem; }
+
+    /* =======================================
+       VISTA 2: CHECKOUT (STRIPE LIGHT)
+       ======================================= */
+    .view-checkout { background-color: #ffffff; color: #1a1f36; }
+    .checkout-header { padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f0f0f0; }
+    .back-arrow { font-size: 1.3rem; color: #1a1f36; cursor: pointer; }
+    .checkout-title { font-weight: 800; font-size: 1.1rem; color: var(--bg-app); }
+
+    .checkout-body { padding: 35px 24px; }
+    .product-label { font-size: 0.95rem; color: #697386; margin-bottom: 8px; font-weight: 600; }
+    .total-price { font-size: 2.6rem; font-weight: 800; margin-bottom: 5px; color: #1a1f36; }
+    .billing-period { color: #697386; font-size: 1.1rem; margin-bottom: 30px; }
+
+    .stripe-input-group { margin-bottom: 22px; }
+    .stripe-label { display: block; font-size: 0.85rem; color: #4f5b76; font-weight: 700; margin-bottom: 8px; }
+    .stripe-input { width: 100%; padding: 14px; border: 1px solid #e3e8ee; border-radius: 8px; font-size: 1.05rem; transition: 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .stripe-input:focus { border-color: var(--accent-cyan); box-shadow: 0 0 0 3px rgba(95, 165, 161, 0.1); outline: none; }
+
+    .card-container { border: 1px solid #e3e8ee; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .card-field { padding: 14px; border-bottom: 1px solid #e3e8ee; display: flex; align-items: center; }
+    .card-field:last-child { border-bottom: none; }
+    .card-field input { border: none; font-size: 1.05rem; width: 100%; outline: none; }
+    .card-logos { display: flex; gap: 8px; font-size: 1.5rem; color: #697386; }
+
+    .btn-pay { background-color: var(--bg-app); color: white; border: none; padding: 18px; width: 100%; border-radius: 8px; font-weight: 700; font-size: 1.1rem; margin-top: 30px; cursor: pointer; transition: 0.2s; }
+    .btn-pay:hover { background-color: #000; }
+
+    .secure-footer { text-align: center; margin-top: 30px; font-size: 0.85rem; color: #697386; line-height: 1.5; }
+  </style>
+</head>
+<body>
+
+  <div class="mobile-app-container">
+    
+    <input type="radio" name="flow-nav" id="step-plan" checked>
+    <input type="radio" name="flow-nav" id="step-checkout">
+
+    <div class="view-plan">
+      <header class="plan-header">
+        <div class="plan-logo"><i class="fa-solid fa-hand-holding-medical"></i> TO connect <span>/ Plus</span></div>
+        <label for="step-plan" class="btn-close"><i class="fa-solid fa-xmark"></i></label>
+      </header>
+
+      <main class="plan-body">
+        <span class="plan-tag">Subir de nivel clínica</span>
+        <h1 class="plan-title">Suscripción<br>Paciente Plus</h1>
+        
+        <div class="mascot-box">
+          <i class="fa-solid fa-star deco-star star-l"></i>
+          <i class="fa-solid fa-ghost"></i>
+          <i class="fa-solid fa-star deco-star star-r"></i>
+        </div>
+
+        <ul class="benefits-grid">
+          <li><i class="fa-solid fa-comments"></i> Mensajería ilimitada con todos los especialistas</li>
+          <li><i class="fa-solid fa-crown"></i> Acceso al Ranking de Excelencia de terapeutas</li>
+          <li><i class="fa-solid fa-file-pdf"></i> Guías de ejercicios exclusivas para tu caso</li>
+          <li><i class="fa-solid fa-store"></i> Publica hasta 15 artículos en el Marketplace</li>
+          <li><i class="fa-solid fa-bolt"></i> Prioridad en la confirmación de sesiones</li>
+          <li><i class="fa-solid fa-shield-heart"></i> Soporte clínico prioritario 24/7</li>
+        </ul>
+
+        <div class="pricing-summary">
+          <h2>$9.200 / mes</h2>
+          <p>Cancela en cualquier momento sin compromisos</p>
+        </div>
+
+        <label for="step-checkout" class="btn-action-plus">Obtener Plus Ahora</label>
+
+        <div class="trust-badge">
+          <i class="fa-solid fa-leaf" style="color: #4caf50;"></i>
+          <div style="font-size: 0.85rem;"><strong>TO connect Sustentable:</strong> Compensamos la huella de CO₂ de tus traslados clínicos.</div>
+        </div>
+        <div class="trust-badge">
+          <i class="fa-solid fa-ribbon" style="color: var(--accent-pink);"></i>
+          <div style="font-size: 0.85rem;">Patrocinamos fundaciones de rehabilitación infantil. <a href="#" style="color:white; text-decoration:underline;">Saber más</a></div>
+        </div>
+      </main>
+    </div>
+
+    <div class="view-checkout">
+      <header class="checkout-header">
+        <label for="step-plan" class="back-arrow"><i class="fa-solid fa-arrow-left"></i></label>
+        <div class="checkout-title">Pago Seguro</div>
+        <div style="width:24px"></div> </header>
+
+      <main class="checkout-body">
+        <div class="product-label">Suscripción TO connect Plus</div>
+        <div class="total-price">$9.200 CLP</div>
+        <div class="billing-period">Facturación mensual</div>
+        
+        <div style="color: var(--accent-cyan); font-weight: 700; margin-bottom: 30px; cursor: pointer; display: flex; justify-content: space-between; border-bottom: 1px solid #f0f0f0; padding-bottom: 15px;">
+          <span>¿Tienes un código de descuento?</span>
+          <i class="fa-solid fa-chevron-right" style="font-size: 0.8rem; margin-top: 4px;"></i>
+        </div>
+
+        <div class="stripe-input-group">
+          <label class="stripe-label">Correo electrónico</label>
+          <input type="email" class="stripe-input" value="camila.ivg8@gmail.com">
+        </div>
+
+        <div class="stripe-input-group">
+          <label class="stripe-label">Información de la tarjeta</label>
+          <div class="card-container">
+            <div class="card-field">
+              <input type="text" placeholder="1234 5678 1234 5678">
+              <div class="card-logos">
+                <i class="fa-brands fa-cc-visa"></i>
+                <i class="fa-brands fa-cc-mastercard"></i>
+              </div>
+            </div>
+            <div style="display: flex;">
+              <div class="card-field" style="flex:1; border-right: 1px solid #e3e8ee;">
+                <input type="text" placeholder="MM / AA">
+              </div>
+              <div class="card-field" style="flex:1;">
+                <input type="text" placeholder="CVC">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stripe-input-group">
+          <label class="stripe-label">Nombre en la tarjeta</label>
+          <input type="text" class="stripe-input" placeholder="Nombre completo">
+        </div>
+
+        <button class="btn-pay">Suscribirse</button>
+        
+        <div class="secure-footer">
+          <i class="fa-solid fa-lock"></i> Pagos encriptados de extremo a extremo.<br>
+          Al suscribirte, aceptas los <strong>Términos de Servicio</strong> de TO connect.
+        </div>
+      </main>
+    </div>
+
+  </div> 
+
+</body>
+</html>

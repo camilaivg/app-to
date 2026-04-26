@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>TO connect - Perfil Clínico</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --bg-app: #2c363b;
+      --bg-card: #3a464c;
+      --bg-input: #445158;
+      --text-primary: #ffffff;
+      --text-secondary: #aab8c0;
+      --accent-cyan: #5fa5a1;
+      --accent-pink: #df7b90;
+      --font-main: 'Nunito', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-main); }
+    body { background-color: #121212; display: flex; justify-content: center; min-height: 100vh; }
+
+    .mobile-app-container {
+      width: 100%; max-width: 480px; background-color: var(--bg-app); color: var(--text-primary);
+      position: relative; overflow-x: hidden; display: flex; flex-direction: column;
+      padding-bottom: 100px;
+    }
+
+    /* HEADER */
+    .profile-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; background-color: var(--bg-app); position: sticky; top: 0; z-index: 50; border-bottom: 1px solid var(--bg-input); }
+    .btn-back, .btn-share { color: var(--text-primary); text-decoration: none; font-size: 1rem; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+
+    /* PROFILE HERO (Referencia 65908.mp4) */
+    .profile-hero { display: flex; flex-direction: column; align-items: center; padding: 25px 20px; text-align: center; }
+    .avatar-wrap { position: relative; width: 140px; height: 140px; margin-bottom: 15px; }
+    .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent-cyan); }
+    .video-play-badge { position: absolute; bottom: 0; right: 5px; width: 40px; height: 40px; background-color: white; color: var(--accent-cyan); border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); font-size: 1.1rem; padding-left: 3px; }
+    
+    .profile-name { font-size: 1.8rem; font-weight: 800; display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+    .verified-check { color: var(--accent-pink); font-size: 1.2rem; }
+    .profile-tagline { color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 25px; font-weight: 600; }
+
+    .stats-row { display: grid; grid-template-columns: 1fr 1fr; width: 100%; gap: 10px; margin-bottom: 25px; }
+    .stat-box { display: flex; flex-direction: column; }
+    .stat-label { color: var(--text-secondary); font-size: 0.95rem; font-weight: 600;}
+    .stat-value { color: white; font-size: 1.1rem; font-weight: 800; }
+
+    .trust-bar { display: flex; align-items: center; gap: 15px; width: 100%; font-size: 0.95rem; font-weight: 700; margin-bottom: 15px; }
+    .stars-cyan { color: var(--accent-cyan); }
+    .live-status { display: flex; align-items: center; gap: 8px; color: var(--text-primary); font-size: 0.9rem; width: 100%; font-weight: 700; margin-bottom: 20px;}
+
+    /* BADGE DESTACADO */
+    .highlight-card { background-color: var(--bg-card); border-radius: 16px; padding: 20px; margin: 0 20px 20px 20px; display: flex; gap: 15px; align-items: flex-start; }
+    .highlight-icon { font-size: 1.8rem; color: var(--accent-cyan); margin-top: 5px; }
+
+    /* TEXTO EXPANDIBLE */
+    #about-toggle { display: none; }
+    .about-content { padding: 0 20px 25px 20px; font-size: 1.05rem; line-height: 1.5; font-weight: 600; }
+    .text-more { display: none; }
+    #about-toggle:checked ~ .about-content .text-more { display: inline; }
+    #about-toggle:checked ~ .about-content .label-more { display: none; }
+    .toggle-label { color: var(--accent-cyan); text-decoration: underline; cursor: pointer; }
+
+    /* VIDEO PREVIEW */
+    .video-box { width: calc(100% - 40px); margin: 0 20px 30px 20px; height: 200px; border-radius: 15px; background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=600') center/cover; display: flex; justify-content: center; align-items: center; position: relative; }
+    .play-btn-main { width: 60px; height: 60px; background: white; border-radius: 50%; color: var(--bg-app); display: flex; justify-content: center; align-items: center; font-size: 1.5rem; padding-left: 5px; }
+
+    /* LISTAS CLÍNICAS */
+    .section-headline { font-size: 1.3rem; font-weight: 800; padding: 20px; border-top: 1px solid var(--bg-input); }
+    .clinical-item { display: flex; gap: 15px; padding: 0 20px 20px 20px; }
+    .clinical-icon { color: var(--accent-cyan); font-size: 1.3rem; width: 24px; text-align: center; margin-top: 2px;}
+    .clinical-title { font-weight: 800; font-size: 1rem; margin-bottom: 4px; }
+    .clinical-desc { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.4; }
+
+    /* MATRIZ DE DISPONIBILIDAD */
+    .matrix { display: grid; grid-template-columns: 80px repeat(7, 1fr); gap: 8px; padding: 0 20px 30px 20px; text-align: center; }
+    .matrix-day { font-size: 0.85rem; font-weight: 800; color: var(--text-secondary); margin-bottom: 10px; }
+    .matrix-slot { font-size: 0.9rem; text-align: left; font-weight: 700; }
+    .dot { width: 22px; height: 22px; border-radius: 50%; background: var(--bg-input); margin: auto; }
+    .dot.active { background: var(--accent-cyan); display: flex; justify-content: center; align-items: center; }
+    .dot.active::after { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; font-size: 10px; color: var(--bg-app); }
+
+    /* GRID SOBRE MÍ */
+    .me-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 0 20px 30px 20px; }
+    .me-item { display: flex; gap: 12px; }
+    .me-label { font-size: 0.85rem; color: var(--text-secondary); }
+    .me-val { font-weight: 800; font-size: 0.95rem; display: block; }
+
+    /* SLIDER RESEÑAS (Referencia video) */
+    .h-slider { display: flex; overflow-x: auto; gap: 15px; padding: 0 20px 30px 20px; scroll-snap-type: x mandatory; scrollbar-width: none; }
+    .h-slider::-webkit-scrollbar { display: none; }
+    .card-review { min-width: 280px; background: var(--bg-card); border-radius: 16px; padding: 20px; scroll-snap-align: center; }
+    
+    /* =========================================
+       ARQUITECTURA DE MAPA SENIOR AGREGADA
+       ========================================= */
+    .map-frame { 
+      width: calc(100% - 40px); 
+      margin: 0 20px 30px 20px; 
+      height: 200px; 
+      border-radius: 15px; 
+      /* Fondo de mapa estilizado */
+      background: #242a2e url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/SantiagodeChile_mapa.png/640px-SantiagodeChile_mapa.png') center/cover; 
+      position: relative; 
+      filter: grayscale(0.5) brightness(0.7); 
+      border: 1px solid var(--bg-input);
+      overflow: hidden;
+    }
+
+    /* Capa de profundidad/tinte clínico */
+    .map-frame::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 50%, rgba(95, 165, 161, 0.15) 0%, transparent 80%);
+      z-index: 1;
+    }
+
+    /* Pin de ubicación animado (Arquitectura Magister) */
+    .map-frame::after {
+      content: "\f3c5"; /* Icono Location Dot */
+      font-family: "Font Awesome 6 Free";
+      font-weight: 900;
+      position: absolute;
+      top: 45%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: var(--accent-pink);
+      font-size: 2.2rem;
+      z-index: 2;
+      text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+      animation: mapBounce 2s infinite ease-in-out;
+    }
+
+    @keyframes mapBounce {
+      0%, 100% { transform: translate(-50%, -50%); }
+      50% { transform: translate(-50%, -65%); }
+    }
+
+    /* Etiqueta de ubicación flotante */
+    .map-frame-label {
+      position: absolute;
+      bottom: 15px;
+      left: 15px;
+      background: rgba(0,0,0,0.7);
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: white;
+      z-index: 3;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    /* STICKY BOTTOM BAR */
+    .contact-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background: var(--bg-card); padding: 15px 20px; display: flex; gap: 15px; border-top: 1px solid var(--bg-input); z-index: 1000; }
+    .btn-contact-now { flex: 1; background: var(--accent-cyan); color: var(--bg-app); border-radius: 30px; font-weight: 800; border: none; padding: 14px; font-size: 1rem; cursor: pointer; text-align: center; }
+    .btn-fav-circle { width: 50px; height: 50px; background: var(--bg-input); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.3rem; border: none; color: white; }
+
+    /* MODAL BOTTOM SHEET */
+    #modal-toggle { display: none; }
+    .modal-overlay { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; height: 100vh; background: rgba(0,0,0,0.7); z-index: 2000; display: none; align-items: flex-end; }
+    #modal-toggle:checked ~ .modal-overlay { display: flex; }
+    .modal-sheet { background: var(--bg-app); width: 100%; border-radius: 25px 25px 0 0; padding: 30px 20px 50px 20px; animation: slideUp 0.3s ease-out; }
+    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+  </style>
+</head>
+<body>
+
+  <div class="mobile-app-container">
+    
+    <header class="profile-header">
+      <a href="#" class="btn-back"><i class="fa-solid fa-chevron-left"></i> TO Santiago de Chile</a>
+      <a href="#" class="btn-share"><i class="fa-solid fa-arrow-up-from-bracket"></i> Compartir</a>
+    </header>
+
+    <section class="profile-hero">
+      <div class="avatar-wrap">
+        <img src="https://images.unsplash.com/photo-1573497620053-ea5300f94f21?q=80&w=200" alt="Terapeuta" class="avatar-img">
+        <div class="video-play-badge"><i class="fa-solid fa-play"></i></div>
+      </div>
+      <h1 class="profile-name">Monserrat <i class="fa-solid fa-circle-check verified-check"></i></h1>
+      <p class="profile-tagline">Terapeuta Ocupacional en Santiago</p>
+      
+      <div class="stats-row">
+        <div class="stat-box"><span class="stat-label">Experiencia</span><span class="stat-value">5 años</span></div>
+        <div class="stat-box"><span class="stat-label">Tarifa sesión</span><span class="stat-value">$35.000</span></div>
+      </div>
+
+      <div class="trust-bar">
+        <span class="stars-cyan"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></span>
+        <span>48 Reseñas</span>
+        <span style="color:var(--text-secondary)">|</span>
+        <span><i class="fa-regular fa-comment"></i> Registro SIS</span>
+      </div>
+      <div class="live-status"><i class="fa-solid fa-bolt" style="color:var(--accent-cyan)"></i> Activa ahora mismo</div>
+    </section>
+
+    <div class="highlight-card">
+      <i class="fa-solid fa-award highlight-icon"></i>
+      <div>
+        <div style="font-weight: 800; font-size: 1.1rem;">Especialista Destacada</div>
+        <div class="clinical-desc">Top 5% en rehabilitación de extremidad superior este mes.</div>
+      </div>
+    </div>
+
+    <input type="checkbox" id="about-toggle">
+    <div class="about-content">
+      Soy Terapeuta Ocupacional egresada de la Universidad de Chile, especializada en Neurorehabilitación y Terapia de Mano. Mi enfoque clínico busca la máxima autonomía funcional... <span class="text-more">mediante el uso de órtesis personalizadas, entrenamiento en actividades de la vida diaria y adaptaciones del entorno. He trabajado en centros de alta complejidad y rehabilitación domiciliaria.</span>
+      <label for="about-toggle" class="toggle-label label-more">Ver más</label>
+    </div>
+
+    <div class="video-box">
+      <button class="play-btn-main"><i class="fa-solid fa-play"></i></button>
+      <div style="position:absolute; bottom:15px; left:15px; font-size:0.8rem; font-weight:800;">0:00 / 0:45</div>
+    </div>
+
+    <h2 class="section-headline">Atención Especializada</h2>
+    <div class="clinical-item">
+      <i class="fa-solid fa-brain clinical-icon"></i>
+      <div class="clinical-content">
+        <div class="clinical-title">Neurorehabilitación</div>
+        <div class="clinical-desc">ACV, Parkinson, Esclerosis Múltiple y Lesión Medular.</div>
+      </div>
+    </div>
+    <div class="clinical-item">
+      <i class="fa-solid fa-hand-dots clinical-icon"></i>
+      <div class="clinical-content">
+        <div class="clinical-title">Terapia de Mano</div>
+        <div class="clinical-desc">Rehabilitación post-quirúrgica, túnel carpiano y tendinitis.</div>
+      </div>
+    </div>
+
+    <h2 class="section-headline">Disponibilidad</h2>
+    <div class="matrix">
+      <div></div><div class="matrix-day">Lu</div><div class="matrix-day">Ma</div><div class="matrix-day">Mi</div><div class="matrix-day">Ju</div><div class="matrix-day">Vi</div><div class="matrix-day">Sá</div><div class="matrix-day">Do</div>
+      <div class="matrix-slot">Mañana</div><div class="dot active"></div><div class="dot"></div><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div>
+      <div class="matrix-slot">Tarde</div><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+
+    <h2 class="section-headline">Información Profesional</h2>
+    <div class="me-grid">
+      <div class="me-item"><i class="fa-solid fa-id-card clinical-icon" style="color:var(--text-secondary)"></i><div><span class="me-label">Registro SIS</span><span class="me-val">Verificado</span></div></div>
+      <div class="me-item"><i class="fa-solid fa-car clinical-icon" style="color:var(--text-secondary)"></i><div><span class="me-label">Movilidad</span><span class="me-val">Propia</span></div></div>
+      <div class="me-item"><i class="fa-solid fa-house-medical clinical-icon" style="color:var(--text-secondary)"></i><div><span class="me-label">Atención</span><span class="me-val">Domicilio / Box</span></div></div>
+      <div class="me-item"><i class="fa-solid fa-language clinical-icon" style="color:var(--text-secondary)"></i><div><span class="me-label">Idiomas</span><span class="me-val">Español, Inglés</span></div></div>
+    </div>
+
+    <h2 class="section-headline">Reseñas de Pacientes</h2>
+    <div class="h-slider">
+      <div class="card-review">
+        <div style="display:flex; gap:10px; align-items:center; margin-bottom:10px;">
+          <img src="https://picsum.photos/40/40?random=10" style="border-radius:50%">
+          <div><span style="font-weight:800;">Juan Pérez</span><div class="stars-cyan" style="font-size:0.8rem;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div>
+        </div>
+        <p class="clinical-desc">"Excelente profesional, muy puntual y dedicada en la rehabilitación de mi mano post fractura."</p>
+      </div>
+      <div class="card-review">
+        <div style="display:flex; gap:10px; align-items:center; margin-bottom:10px;">
+          <img src="https://picsum.photos/40/40?random=11" style="border-radius:50%">
+          <div><span style="font-weight:800;">Ana María</span><div class="stars-cyan" style="font-size:0.8rem;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div>
+        </div>
+        <p class="clinical-desc">"Su enfoque en neuro es increíble. Hemos visto avances reales en solo 4 sesiones."</p>
+      </div>
+    </div>
+
+    <h2 class="section-headline">Zona de Cobertura</h2>
+    <div class="map-frame">
+      <div class="map-frame-label">Santiago Centro y alrededores</div>
+    </div>
+
+    <div style="padding: 20px; display: flex; flex-direction: column; gap: 10px;">
+      <a href="#" style="color:white; text-decoration:none; font-weight:700; border-bottom:1px solid var(--bg-input); padding: 15px 0;">Reportar perfil clínico</a>
+      <a href="#" style="color:var(--text-secondary); text-decoration:none; font-size:0.9rem; padding: 10px 0;">© 2026 TO connect Chile</a>
+    </div>
+
+    <div class="contact-bar">
+      <label for="modal-toggle" class="btn-contact-now">Agendar Evaluación</label>
+      <button class="btn-fav-circle"><i class="fa-regular fa-heart"></i></button>
+    </div>
+
+    <input type="checkbox" id="modal-toggle">
+    <div class="modal-overlay">
+      <div class="modal-sheet">
+        <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
+          <h2 style="font-size:1.3rem; font-weight:800; padding-right:20px;">¿Deseas iniciar un proceso terapéutico?</h2>
+          <label for="modal-toggle" style="font-size:1.5rem;"><i class="fa-solid fa-xmark"></i></label>
+        </div>
+        <div style="display:flex; gap:15px; align-items:center;">
+          <i class="fa-solid fa-circle-exclamation" style="color:#ffb400; font-size:1.5rem;"></i>
+          <p style="font-weight:700;">Completa tu Ficha Maestra para que el profesional pueda evaluar tu caso antes de la primera sesión.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

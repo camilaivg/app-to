@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>TO connect - Soporte e IA</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --bg-app: #2c363b;
+      --bg-card: #3a464c;
+      --bg-input: #445158;
+      --text-primary: #ffffff;
+      --text-secondary: #aab8c0;
+      --accent-cyan: #5fa5a1;
+      --accent-pink: #df7b90;
+      --font-main: 'Nunito', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-main); }
+    body { background-color: #121212; display: flex; justify-content: center; min-height: 100vh; }
+
+    .mobile-app-container {
+      width: 100%; max-width: 480px; background-color: var(--bg-app); color: var(--text-primary);
+      position: relative; overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh;
+      padding-bottom: 90px;
+    }
+
+    /* =========================================
+       HEADER CORREGIDO (ICONOS 65877.jpg)
+       ========================================= */
+    .app-header { background-color: var(--bg-app); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--bg-card); }
+    .header-top { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; }
+    .brand-logo { font-size: 1.4rem; font-weight: 800; color: var(--accent-cyan); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+    
+    .header-actions { display: flex; align-items: center; gap: 12px; }
+    
+    /* Botón Menú (Círculo con borde) */
+    .btn-menu-circle { 
+      width: 38px; height: 38px; 
+      border-radius: 50%; 
+      border: 1px solid var(--text-secondary); 
+      display: flex; justify-content: center; align-items: center; 
+      color: white; font-size: 1.1rem; cursor: pointer;
+    }
+    
+    /* Botón Perfil (Círculo sólido) */
+    .btn-profile-solid { 
+      width: 38px; height: 38px; 
+      border-radius: 50%; 
+      background-color: var(--text-secondary); 
+      color: var(--bg-app); 
+      display: flex; justify-content: center; align-items: center; 
+      font-size: 1.2rem; cursor: pointer;
+    }
+
+    .tabs-nav { display: flex; padding: 0 20px; }
+    .tab-item { flex: 1; text-align: center; padding: 12px 0; color: var(--text-secondary); font-weight: 700; cursor: pointer; border-bottom: 3px solid transparent; }
+    .tab-item.active { color: var(--accent-cyan); border-bottom-color: var(--accent-cyan); }
+
+    /* HERO */
+    .hero-help { text-align: center; padding: 30px 20px 10px 20px; }
+    .hero-title { font-size: 1.6rem; font-weight: 800; margin-bottom: 15px; }
+    .hero-image { 
+      width: 100%; height: 160px; 
+      background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=600');
+      background-size: cover; background-position: center; border-radius: 20px;
+    }
+
+    .support-info { padding: 20px; color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5; text-align: center; }
+
+    /* ALERT NOTE */
+    .alert-note { 
+      margin: 10px 20px; padding: 16px; background-color: rgba(95, 165, 161, 0.1); 
+      border-radius: 15px; border-left: 4px solid var(--accent-cyan); display: flex; gap: 12px;
+    }
+    .alert-note p { font-size: 0.85rem; line-height: 1.4; }
+
+    /* BOTONES FAQ */
+    .faq-btns { padding: 10px 20px; display: flex; flex-direction: column; gap: 10px; }
+    .btn-faq { background: var(--bg-card); padding: 15px; border-radius: 30px; font-weight: 700; border: 1px solid var(--bg-input); text-align: left; color: white; text-decoration: none; display: block; }
+
+    /* FORMULARIO */
+    .contact-form { padding: 20px; background-color: var(--bg-card); margin-top: 20px; border-radius: 30px 30px 0 0; }
+    .form-title { font-size: 1.3rem; font-weight: 800; margin-bottom: 20px; }
+    .input-group { margin-bottom: 15px; }
+    .input-label { display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 6px; color: var(--text-secondary); }
+    .form-input { width: 100%; padding: 12px 15px; background-color: var(--bg-input); border: 1px solid transparent; border-radius: 10px; color: white; outline: none; }
+    .btn-send { width: 100%; padding: 16px; background-color: var(--accent-cyan); color: var(--bg-app); border: none; border-radius: 30px; font-weight: 800; margin-top: 10px; cursor: pointer; }
+
+    /* --- MODAL IA --- */
+    #ai-toggle { display: none; }
+    .ai-assistant-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85); z-index: 2000;
+      display: none; justify-content: center; align-items: center; padding: 20px;
+      backdrop-filter: blur(5px);
+    }
+    #ai-toggle:checked ~ .ai-assistant-overlay { display: flex; }
+    
+    .ai-card {
+      width: 100%; max-width: 400px; background: var(--bg-app); border-radius: 25px; padding: 30px;
+      text-align: center; position: relative;
+    }
+    .ai-close { position: absolute; top: 20px; right: 20px; color: var(--text-secondary); font-weight: 800; cursor: pointer; font-size: 1.2rem; }
+    .ai-avatar { 
+      width: 80px; height: 80px; background: white; border-radius: 50%; 
+      margin: 0 auto 20px; display: flex; justify-content: center; align-items: center;
+      font-size: 2.5rem; color: var(--accent-cyan); border: 4px solid var(--accent-cyan);
+    }
+    .ai-bubble { background: var(--bg-card); padding: 15px; border-radius: 15px; font-size: 0.95rem; color: var(--text-primary); text-align: left; }
+    .ai-input-box { margin-top: 20px; background: var(--bg-input); border-radius: 20px; padding: 12px 15px; display: flex; align-items: center; gap: 10px; }
+    
+    .ai-fab {
+      position: fixed; bottom: 100px; right: 20px; width: 60px; height: 60px;
+      background: var(--accent-cyan); border-radius: 50%; display: flex;
+      justify-content: center; align-items: center; color: var(--bg-app);
+      font-size: 1.6rem; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.4); z-index: 900;
+    }
+
+    /* NAV INFERIOR (NUNITO 700) */
+    .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background-color: var(--bg-app); display: flex; justify-content: space-around; align-items: center; padding: 12px 0 16px 0; border-top: 1px solid var(--bg-card); z-index: 500; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 6px; text-decoration: none; color: var(--text-secondary); font-family: var(--font-main) !important; font-weight: 700; font-size: 0.85rem; }
+    .nav-item.active { color: var(--accent-cyan); }
+    .nav-item i { font-size: 1.4rem; }
+  </style>
+</head>
+<body>
+
+  <input type="checkbox" id="ai-toggle">
+
+  <div class="mobile-app-container">
+    
+    <header class="app-header">
+      <div class="header-top">
+        <a href="#" class="brand-logo"><i class="fa-solid fa-hand-holding-medical"></i> TO connect</a>
+        <div class="header-actions">
+          <div class="btn-menu-circle">
+            <i class="fa-solid fa-bars"></i>
+          </div>
+          <div class="btn-profile-solid">
+            <i class="fa-solid fa-user"></i>
+          </div>
+        </div>
+      </div>
+      <nav class="tabs-nav">
+        <div class="tab-item active">Ayuda</div>
+        <div class="tab-item">Atención al cliente</div>
+      </nav>
+    </header>
+
+    <section class="hero-help">
+      <h1 class="hero-title">Estamos aquí para ayudarte</h1>
+      <div class="hero-image"></div>
+    </section>
+
+    <div class="support-info">
+      Nuestro equipo clínico te apoya por correo electrónico y generalmente responde dentro de **3 a 5 días hábiles**. No ofrecemos soporte telefónico.
+    </div>
+
+    <div class="alert-note">
+      <i class="fa-solid fa-circle-info" style="color: var(--accent-cyan);"></i>
+      <p><b>Nota:</b> Si tienes una pregunta para un terapeuta ocupacional o un paciente, comunícate directamente a través de su perfil.</p>
+    </div>
+
+    <div class="faq-btns">
+      <a href="#" class="btn-faq">Preguntas Frecuentes</a>
+      <a href="#" class="btn-faq">¿Cancelar suscripción premium?</a>
+    </div>
+
+    <section class="contact-form">
+      <h2 class="form-title">¿Todavía necesitas ayuda?</h2>
+      <div class="input-group">
+        <label class="input-label">Tu nombre</label>
+        <input type="text" class="form-input" placeholder="Camila Oyarzún">
+      </div>
+      <div class="input-group">
+        <label class="input-label">Correo electrónico</label>
+        <input type="email" class="form-input" value="camila.ivg8@gmail.com">
+      </div>
+      <div class="input-group">
+        <label class="input-label">Tu pregunta</label>
+        <textarea class="form-input" style="height: 100px; resize: none;" placeholder="¿En qué podemos ayudarte?"></textarea>
+      </div>
+      <button class="btn-send">Enviar</button>
+      <p style="text-align: center; color: var(--text-secondary); font-size: 0.8rem; margin-top: 15px;">Respuesta en 3 a 5 días hábiles.</p>
+    </section>
+
+    <label for="ai-toggle" class="ai-fab">
+      <i class="fa-solid fa-robot"></i>
+    </label>
+
+    <div class="ai-assistant-overlay">
+      <div class="ai-card">
+        <label for="ai-toggle" class="ai-close">✕</label>
+        <div class="ai-avatar">
+          <i class="fa-solid fa-robot"></i>
+        </div>
+        <h3 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 10px;">AI Answers</h3>
+        <div class="ai-bubble">
+          Hola, puedo encontrar respuestas del centro de ayuda de TO connect. ¿En qué puedo ayudarte hoy?
+        </div>
+        <div class="ai-input-box">
+          <input type="text" placeholder="Escribe tu duda clínica..." style="background:transparent; border:none; color:white; flex:1; outline:none; font-size: 0.9rem;">
+          <i class="fa-solid fa-paper-plane" style="color:var(--accent-cyan); cursor: pointer;"></i>
+        </div>
+      </div>
+    </div>
+
+    <nav class="bottom-nav">
+      <a href="inicio.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Inicio</span></a>
+      <a href="index.html" class="nav-item"><i class="fa-solid fa-magnifying-glass"></i><span>Buscar</span></a>
+      <a href="mensajes.html" class="nav-item"><i class="fa-solid fa-comment-dots"></i><span>Mensajes</span></a>
+      <a href="ayuda.html" class="nav-item active"><i class="fa-solid fa-circle-question"></i><span>Ayuda</span></a>
+    </nav>
+
+  </div>
+</body>
+</html>

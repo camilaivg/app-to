@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>TO connect - Inicio</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --bg-app: #2c363b;
+      --bg-card: #3a464c;
+      --bg-input: #445158;
+      --text-primary: #ffffff;
+      --text-secondary: #aab8c0;
+      --accent-cyan: #5fa5a1;
+      --accent-pink: #df7b90;
+      --bg-pink-soft: rgba(223, 123, 144, 0.15);
+      --font-main: 'Nunito', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-main); }
+    body { background-color: #121212; display: flex; justify-content: center; min-height: 100vh; }
+
+    .mobile-app-container {
+      width: 100%; max-width: 480px; background-color: var(--bg-app); color: var(--text-primary);
+      position: relative; overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh;
+      padding-bottom: 80px;
+    }
+
+    /* HEADER */
+    .app-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; background-color: var(--bg-app); position: sticky; top: 0; z-index: 50; }
+    .brand-logo { font-size: 1.5rem; font-weight: 800; color: var(--accent-cyan); display: flex; align-items: center; gap: 8px; text-decoration: none;}
+    .header-actions { display: flex; gap: 12px; align-items: center; }
+    .btn-icon { background-color: transparent; border: 1px solid var(--text-secondary); border-radius: 50%; width: 36px; height: 36px; color: var(--text-primary); display: flex; align-items: center; justify-content: center; cursor: pointer; text-decoration: none;}
+
+    /* BIENVENIDA Y BÚSQUEDA */
+    .welcome-title { font-size: 1.6rem; font-weight: 800; color: var(--text-primary); padding: 10px 20px 5px 20px; line-height: 1.3; }
+    .search-wrapper { padding: 10px 20px 5px 20px; }
+    .search-box { display: flex; align-items: center; background-color: var(--bg-input); border-radius: 30px; padding: 5px 5px 5px 20px; }
+    .search-text { flex: 1; display: flex; flex-direction: column; }
+    .search-text span:first-child { font-size: 0.85rem; color: var(--text-primary); font-weight: 700; }
+    .search-text span:last-child { font-size: 0.8rem; color: var(--text-secondary); }
+    .btn-search-icon { background-color: var(--accent-cyan); border: none; color: white; width: 44px; height: 44px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; cursor: pointer; }
+
+    /* PILLS CATEGORÍAS */
+    .categories-slider { display: flex; overflow-x: auto; gap: 10px; padding: 10px 20px 25px 20px; scrollbar-width: none; }
+    .categories-slider::-webkit-scrollbar { display: none; }
+    .pill { background-color: var(--bg-input); color: var(--text-primary); padding: 10px 22px; border-radius: 25px; font-size: 0.9rem; font-weight: 700; white-space: nowrap; border: 1px solid transparent; cursor: pointer; }
+    .pill.active { border-color: var(--accent-pink); background-color: var(--bg-pink-soft); color: var(--accent-pink); }
+
+    /* RUTA DE ATENCIÓN */
+    .section-heading { font-size: 1.4rem; font-weight: 800; color: var(--text-primary); padding: 20px 20px 10px 20px; }
+    .next-steps-card { background-color: var(--bg-card); border-radius: 16px; margin: 0 20px 20px 20px; padding: 20px; display: flex; flex-direction: column; gap: 20px; }
+    .step-item { display: flex; align-items: center; gap: 15px; cursor: pointer; text-decoration: none; color: inherit; }
+    .step-icon { width: 50px; height: 50px; background-color: var(--bg-app); border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; color: var(--accent-cyan); flex-shrink: 0; }
+    .step-text { flex: 1; }
+    .step-title { font-weight: 800; font-size: 1.1rem; color: var(--text-primary); margin-bottom: 3px; }
+    .step-desc { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.3; }
+    .btn-see-all { color: var(--text-primary); text-decoration: underline; font-weight: 700; text-align: center; display: block; margin-top: 5px; cursor: pointer; }
+
+    /* SLIDERS */
+    .horizontal-scroll { display: flex; overflow-x: auto; gap: 15px; padding: 0 20px 20px 20px; scroll-snap-type: x mandatory; scrollbar-width: none; }
+    .horizontal-scroll::-webkit-scrollbar { display: none; }
+    .card-item { min-width: 155px; background-color: var(--bg-card); border-radius: 12px; overflow: hidden; scroll-snap-align: start; position: relative; }
+    .card-img { width: 100%; height: 140px; object-fit: cover; }
+    .card-info { padding: 12px; text-align: center; }
+    .card-name { font-weight: 800; font-size: 1rem; }
+    .card-sub { font-size: 0.75rem; color: var(--accent-cyan); font-weight: 700; }
+
+    /* ESTADÍSTICAS */
+    .stats-container { text-align: center; padding: 40px 20px; border-top: 1px solid var(--bg-input); }
+    .stars-row { color: #f2c94c; font-size: 1.4rem; margin-bottom: 10px; display: flex; justify-content: center; align-items: center; gap: 5px; }
+    .stars-row span { color: white; font-weight: 800; margin-left: 10px; font-size: 1.2rem; }
+
+    /* DESCARGAR APP */
+    .app-buttons-row { display: flex; justify-content: center; gap: 12px; margin: 25px 0; }
+    .btn-store-premium { background: #000; color: #fff; padding: 10px 20px; border-radius: 10px; display: flex; align-items: center; gap: 10px; text-decoration: none; border: 1px solid #333; }
+    .store-text { text-align: left; }
+    .store-text span:first-child { font-size: 0.6rem; display: block; text-transform: uppercase; }
+    .store-text span:last-child { font-size: 0.9rem; font-weight: 800; }
+
+    /* TIENDA / MARKETPLACE */
+    .product-card { min-width: 145px; background-color: var(--bg-card); border-radius: 12px; padding: 15px; text-align: center; scroll-snap-align: start; }
+    .product-price { font-weight: 800; color: var(--accent-pink); font-size: 1rem; margin-top: 5px; }
+
+    /* BUSINESS B2B */
+    .business-banner { background-color: var(--bg-card); margin: 20px; padding: 30px 20px; border-radius: 20px; text-align: center; border: 1px solid var(--accent-cyan); }
+    .btn-business { display: block; background: var(--accent-cyan); color: var(--bg-app); padding: 15px; border-radius: 30px; font-weight: 800; text-decoration: none; margin-top: 20px; }
+
+    /* IMPACTO SOCIAL */
+    .social-impact-box { text-align: center; padding: 40px 20px; background-color: var(--bg-card); margin: 20px; border-radius: 20px; }
+    .wish-mascot { font-size: 5rem; color: var(--accent-pink); margin-bottom: 15px; }
+
+    /* FOOTER */
+    .footer-final-section { display: flex; flex-direction: column; align-items: center; padding: 30px 20px 100px 20px; background-color: var(--bg-card); border-top: 1px solid var(--bg-input); }
+    .footer-links-center { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 15px; margin-bottom: 30px; }
+    .footer-link-row { display: flex; gap: 15px; justify-content: center; width: 100%; flex-wrap: wrap; }
+    .footer-link-row a { color: var(--text-primary); text-decoration: none; font-size: 0.95rem; font-weight: 600; }
+    .social-icons-row { display: flex; gap: 12px; margin-bottom: 40px; justify-content: center; }
+    .social-icons-row a { width: 36px; height: 36px; background-color: var(--bg-input); color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; text-decoration: none; }
+
+    /* BOTTOM NAV */
+    .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background-color: var(--bg-app); display: flex; justify-content: space-around; align-items: center; padding: 12px 0 16px 0; border-top: 1px solid var(--bg-card); z-index: 500; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 6px; text-decoration: none; color: var(--text-secondary); font-size: 0.75rem; font-weight: 600; }
+    .nav-item.active { color: var(--accent-cyan); }
+    .nav-item i { font-size: 1.3rem; }
+  </style>
+</head>
+<body>
+
+  <div class="mobile-app-container">
+    
+    <header class="app-header">
+      <a href="#" class="brand-logo"><i class="fa-solid fa-hand-holding-medical"></i> TO connect</a>
+      <div class="header-actions">
+        <a href="#" class="btn-icon"><i class="fa-solid fa-bars"></i></a>
+        <a href="yo.html" class="btn-icon" style="background-color: #aab8c0; border: none; color: var(--bg-app);"><i class="fa-solid fa-user"></i></a>
+      </div>
+    </header>
+
+    <h1 class="welcome-title">Bienvenida de nuevo,<br>Camila</h1>
+    
+    <div class="search-wrapper">
+      <div class="search-box">
+        <div class="search-text">
+          <span>Encuentra un especialista rápidamente</span>
+          <span>Ciudad o diagnóstico</span>
+        </div>
+        <div class="btn-search-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+      </div>
+    </div>
+
+    <div class="categories-slider">
+      <div class="pill active">Rehab. Mano</div>
+      <div class="pill">Neurología</div>
+      <div class="pill">Pediatría</div>
+      <div class="pill">Geriatría</div>
+      <div class="pill">Salud Mental</div>
+      <div class="pill">Inclusión</div>
+    </div>
+
+    <h2 class="section-heading">Tu Ruta de Atención</h2>
+    <div class="next-steps-card">
+      <a href="yo.html" class="step-item">
+        <div class="step-icon"><i class="fa-solid fa-clipboard-user"></i></div>
+        <div class="step-text">
+          <p class="step-title">¿Para quién es la terapia?</p>
+          <p class="step-desc">Define si la atención es para ti, un hijo o un familiar.</p>
+        </div>
+        <i class="fa-solid fa-chevron-right step-arrow"></i>
+      </a>
+      <div class="step-item">
+        <div class="step-icon"><i class="fa-solid fa-file-medical-alt"></i></div>
+        <div class="step-text">
+          <p class="step-title">Motivo de consulta</p>
+          <p class="step-desc">Describe brevemente el diagnóstico.</p>
+        </div>
+        <i class="fa-solid fa-chevron-right step-arrow"></i>
+      </div>
+      <a class="btn-see-all">Ver todos los pasos de registro</a>
+    </div>
+
+    <h2 class="section-heading">Especialistas cerca de ti</h2>
+    <div class="horizontal-scroll">
+      <div class="card-item"><img src="https://picsum.photos/200/200?random=1" class="card-img"><div class="card-info"><p style="font-weight:800;">Carolina V.</p><p class="card-tag">Rehab. Mano</p></div></div>
+      <div class="card-item"><img src="https://picsum.photos/200/200?random=2" class="card-img"><div class="card-info"><p style="font-weight:800;">Ricardo J.</p><p class="card-tag">Neuro Adulto</p></div></div>
+      <div class="card-item"><img src="https://picsum.photos/200/200?random=3" class="card-img"><div class="card-info"><p style="font-weight:800;">Paola M.</p><p class="card-tag">Pediatría I.S.</p></div></div>
+      <div class="card-item"><img src="https://picsum.photos/200/200?random=4" class="card-img"><div class="card-info"><p style="font-weight:800;">Andrés L.</p><p class="card-tag">Geriatría</p></div></div>
+    </div>
+
+    <a href="#" style="display:block; background:transparent; border:1px solid var(--accent-cyan); color:var(--accent-cyan); padding:12px; border-radius:25px; text-align:center; margin:0 20px 30px 20px; text-decoration:none; font-weight:800;">Ver todos los especialistas activos</a>
+
+    <section class="stats-container">
+      <h2 style="font-size: 1.4rem; font-weight: 800; line-height: 1.3; margin-bottom: 20px;">TO connect es la plataforma que los pacientes más aman.</h2>
+      <div class="stars-row">
+        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+        <span>4,7 / 5</span>
+      </div>
+      <p style="color: var(--text-secondary);">3.300+ reseñas</p>
+    </section>
+
+    <section style="text-align: center; padding: 20px;">
+      <h2 style="font-size:1.5rem; font-weight:800; line-height:1.2;">Lleva tu rehabilitación siempre al alcance</h2>
+      <p style="color:var(--text-secondary); font-size:0.9rem; margin-top:10px; padding:0 20px;">¡Encuentre rápidamente especialistas y recursos terapéuticos disponibles en su área!</p>
+      <div class="app-buttons-row">
+        <a href="#" class="btn-store-premium"><i class="fa-brands fa-apple"></i><div class="store-text"><span>Consíguelo en</span><span>App Store</span></div></a>
+        <a href="#" class="btn-store-premium"><i class="fa-brands fa-google-play"></i><div class="store-text"><span>Disponible en</span><span>Google Play</span></div></a>
+      </div>
+      <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=400" style="width:100%; border-radius: 20px; margin-top:20px;">
+    </section>
+
+    <h2 class="section-heading">Tienda TO: Insumos</h2>
+    <div class="horizontal-scroll">
+      <div class="product-card"><i class="fa-solid fa-hand-dots" style="font-size:2rem; color:var(--accent-pink); margin-bottom:10px; display:block;"></i><div class="card-name">Masilla Rehab</div><div class="product-price">$12.990</div></div>
+      <div class="product-card"><i class="fa-solid fa-utensils" style="font-size:2rem; color:var(--accent-pink); margin-bottom:10px; display:block;"></i><div class="card-name">Cubierto Adapt</div><div class="product-price">$8.500</div></div>
+      <div class="product-card"><i class="fa-solid fa-puzzle-piece" style="font-size:2rem; color:var(--accent-pink); margin-bottom:10px; display:block;"></i><div class="card-name">Tablero AVD</div><div class="product-price">$24.990</div></div>
+      <div class="product-card"><i class="fa-solid fa-bandage" style="font-size:2rem; color:var(--accent-pink); margin-bottom:10px; display:block;"></i><div class="card-name">Strap Órtesis</div><div class="product-price">$5.200</div></div>
+    </div>
+
+    <section class="social-impact-box">
+      <i class="fa-solid fa-ghost wish-mascot"></i>
+      <h2 style="font-size:1.3rem; font-weight:800; margin-bottom:10px;">TO connect apoya a Make-A-Wish® International</h2>
+      <p style="font-size:0.95rem; color:var(--text-secondary); line-height:1.5; margin-bottom:15px;">Tu uso de la plataforma ayuda a financiar terapias y cumplir deseos para niños con diagnósticos complejos. Juntos generamos impacto real.</p>
+      <a href="#" style="color: var(--accent-cyan); font-weight:800; text-decoration:underline;">Conoce nuestro impacto social</a>
+    </section>
+
+    <h2 class="section-heading">Descubre y Aprende</h2>
+    <div class="horizontal-scroll">
+      <div class="card-item" style="min-width: 200px;"><img src="https://picsum.photos/400/200?random=10" class="card-img" style="height:100px;"><div class="card-info"><div class="card-name">Ayudas Técnicas</div></div></div>
+      <div class="card-item" style="min-width: 200px;"><img src="https://picsum.photos/400/200?random=11" class="card-img" style="height:100px;"><div class="card-info"><div class="card-name">Terapia en el hogar</div></div></div>
+      <div class="card-item" style="min-width: 200px;"><img src="https://picsum.photos/400/200?random=12" class="card-img" style="height:100px;"><div class="card-info"><div class="card-name">Beneficios de la TO</div></div></div>
+      <div class="card-item" style="min-width: 200px;"><img src="https://picsum.photos/400/200?random=13" class="card-img" style="height:100px;"><div class="card-info"><div class="card-name">Autonomía y AVD</div></div></div>
+    </div>
+
+    <section class="business-banner">
+      <h2 style="font-size:1.4rem; font-weight:800; line-height:1.3;">¿Tu empresa necesita servicios de Terapia Ocupacional?</h2>
+      <p style="color:var(--text-secondary); font-size:0.9rem; margin-top:10px;">Programas de ergonomía, inclusión laboral y bienestar para colaboradores.</p>
+      <a href="#" class="btn-business"><i class="fa-solid fa-briefcase"></i> TO connect para Empresas</a>
+    </section>
+
+    <footer class="footer-final-section">
+      <div class="footer-links-center">
+        <div class="footer-link-row"><a href="#">Cómo funciona</a><a href="#">Ayuda</a><a href="#">Precios</a></div>
+        <div class="footer-link-row"><a href="#">Términos y Privacidad</a><a href="#">Normas de la comunidad</a></div>
+        <div class="footer-link-row"><a href="#">Datos de la empresa</a></div>
+        <div class="footer-link-row" style="color:var(--text-secondary); font-weight:800;">TO connect para Empresas</div>
+      </div>
+      <div class="social-icons-row">
+        <a href="#"><i class="fa-brands fa-facebook-f"></i></a><a href="#"><i class="fa-brands fa-instagram"></i></a><a href="#"><i class="fa-brands fa-tiktok"></i></a><a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+      </div>
+      <div class="footer-copyright">© 2026 TO connect Chile</div>
+    </footer>
+
+    <nav class="bottom-nav">
+      <a href="inicio.html" class="nav-item active"><i class="fa-solid fa-house"></i><span>Inicio</span></a>
+      <a href="index.html" class="nav-item"><i class="fa-solid fa-magnifying-glass"></i><span>Buscar</span></a>
+      <a href="mensajes.html" class="nav-item"><i class="fa-regular fa-comment"></i><span>Mensajes</span></a>
+      <a href="marketplace.html" class="nav-item"><i class="fa-solid fa-cart-shopping"></i><span>Tienda</span></a>
+    </nav>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>TO connect - Portal Profesional</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --bg-app: #2c363b;
+      --bg-card: #3a464c;
+      --bg-input: #445158;
+      --text-primary: #ffffff;
+      --text-secondary: #aab8c0;
+      --accent-cyan: #5fa5a1;
+      --accent-pink: #df7b90;
+      --font-main: 'Nunito', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-main); -webkit-tap-highlight-color: transparent; }
+    body { background-color: #121212; display: flex; justify-content: center; min-height: 100vh; overflow: hidden; }
+
+    .mobile-app-container {
+      width: 100%; max-width: 480px; background-color: var(--bg-app); color: var(--text-primary);
+      position: relative; height: 100vh; display: flex; flex-direction: column;
+    }
+
+    /* LOGICA DE VISTAS (SPA) */
+    #view-toggle { display: none; }
+
+    /* HEADER (Tal cual video 66038.mp4) */
+    .app-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; background-color: var(--bg-app); z-index: 1000; }
+    .brand-logo { font-size: 1.4rem; font-weight: 800; color: var(--accent-cyan); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+    .header-actions { display: flex; gap: 12px; }
+    .btn-circle-hollow { width: 40px; height: 40px; border-radius: 50%; border: 1.5px solid var(--text-secondary); display: flex; justify-content: center; align-items: center; color: white; cursor: pointer; }
+    .btn-circle-solid { width: 40px; height: 40px; border-radius: 50%; background-color: var(--text-secondary); color: var(--bg-app); display: flex; justify-content: center; align-items: center; font-size: 1.2rem; }
+
+    /* CONTENEDOR DE VISTAS */
+    .views-wrapper { flex: 1; position: relative; overflow-y: auto; scrollbar-width: none; }
+    .views-wrapper::-webkit-scrollbar { display: none; }
+
+    /* VISTA LISTA (Video 66038.mp4) */
+    .list-view { padding: 0 20px 100px; transition: 0.4s; }
+    
+    .search-box { position: relative; margin: 10px 0 25px; }
+    .search-input { width: 100%; background: var(--bg-input); border: 1px solid var(--bg-card); border-radius: 25px; padding: 12px 50px 12px 20px; color: white; outline: none; }
+    .search-box .btn-filter { position: absolute; right: 5px; top: 50%; transform: translateY(-50%); width: 34px; height: 34px; background: var(--bg-card); border-radius: 50%; display: flex; justify-content: center; align-items: center; border: none; color: white; }
+
+    .hero-title { font-size: 1.6rem; font-weight: 800; margin-bottom: 10px; }
+    .p-count { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 20px; }
+    
+    .filter-pills { display: flex; gap: 10px; margin-bottom: 25px; }
+    .pill { padding: 10px 18px; border-radius: 12px; font-weight: 700; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.1); }
+    .pill.cyan { background: rgba(95, 165, 161, 0.1); color: var(--accent-cyan); }
+    .pill.pink { background: rgba(223, 123, 144, 0.1); color: var(--accent-pink); }
+
+    /* ALERT SIS (Video 66038.mp4) */
+    .alert-sis { background: var(--bg-card); padding: 18px; border-radius: 18px; display: flex; gap: 15px; align-items: center; margin-bottom: 25px; border: 1px solid rgba(255, 255, 255, 0.05); }
+    .alert-sis i { color: var(--accent-pink); font-size: 1.2rem; }
+    .alert-sis p { font-size: 0.85rem; line-height: 1.4; }
+
+    /* TARJETAS (Video 66038.mp4) */
+    .case-card { background: var(--bg-card); border-radius: 24px; padding: 20px; margin-bottom: 20px; display: flex; flex-direction: column; }
+    .card-upper { display: flex; gap: 15px; margin-bottom: 15px; }
+    .patient-img { width: 80px; height: 80px; border-radius: 20px; object-fit: cover; }
+    .card-info { flex: 1; }
+    .card-header-flex { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+    .name-text { font-size: 1.2rem; font-weight: 800; }
+    .diag-tag { background: var(--accent-pink); color: white; font-size: 0.6rem; font-weight: 800; padding: 4px 8px; border-radius: 8px; }
+
+    .detail-list { list-style: none; display: flex; flex-direction: column; gap: 6px; margin-bottom: 15px; }
+    .detail-list li { font-size: 0.85rem; color: var(--text-secondary); display: flex; align-items: center; gap: 8px; }
+    .detail-list i { color: var(--accent-cyan); width: 14px; text-align: center; }
+
+    /* BOTONES CARD */
+    .card-actions { display: flex; gap: 10px; }
+    .btn-map-trigger { flex: 1.2; background: var(--accent-cyan); color: var(--bg-app); border-radius: 12px; padding: 10px; font-weight: 800; display: flex; justify-content: center; align-items: center; gap: 8px; border: none; cursor: pointer; font-size: 0.9rem; }
+    .btn-ficha { flex: 0.8; background: var(--bg-input); color: white; border-radius: 12px; padding: 10px; font-weight: 700; border: none; font-size: 0.85rem; }
+
+    /* VISTA MAPA (FUNCIONAL) */
+    .map-view { 
+      position: absolute; inset: 0; background-color: #1e2528; z-index: 100;
+      background-image: linear-gradient(#252e32 1px, transparent 1px), linear-gradient(90deg, #252e32 1px, transparent 1px);
+      background-size: 40px 40px; display: none; opacity: 0; transform: scale(1.05); transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+    
+    #view-toggle:checked ~ .views-wrapper .map-view { display: block; opacity: 1; transform: scale(1); }
+    #view-toggle:checked ~ .views-wrapper .list-view { opacity: 0.3; filter: blur(5px); pointer-events: none; }
+
+    /* FAB DINÁMICO */
+    .fab-toggle { 
+      position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); 
+      background: var(--accent-cyan); color: white; padding: 14px 28px; border-radius: 30px; 
+      font-weight: 800; display: flex; align-items: center; gap: 10px; 
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4); z-index: 2000; cursor: pointer;
+    }
+    .show-list, .show-map { display: none; }
+    #view-toggle:checked ~ .fab-toggle .show-list { display: flex; align-items: center; gap: 8px; }
+    #view-toggle:not(:checked) ~ .fab-toggle .show-map { display: flex; align-items: center; gap: 8px; }
+
+    /* BOTTOM NAV */
+    .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background-color: var(--bg-app); display: flex; justify-content: space-around; padding: 12px 0 25px; border-top: 1px solid var(--bg-card); z-index: 1000; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 5px; text-decoration: none; color: var(--text-secondary); font-weight: 700; font-size: 0.8rem; }
+    .nav-item.active { color: var(--accent-cyan); }
+    .nav-item i { font-size: 1.4rem; }
+
+    /* PINS MAPA */
+    .pin { position: absolute; width: 40px; height: 40px; background: var(--accent-pink); border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 2px solid white; display: flex; justify-content: center; align-items: center; animation: bounce 2s infinite; }
+    .pin i { transform: rotate(45deg); color: white; font-size: 14px; }
+    @keyframes bounce { 0%, 100% { transform: translateY(0) rotate(-45deg); } 50% { transform: translateY(-10px) rotate(-45deg); } }
+  </style>
+</head>
+<body>
+
+  <div class="mobile-app-container">
+    
+    <input type="checkbox" id="view-toggle">
+
+    <header class="app-header">
+      <div class="brand-logo"><i class="fa-solid fa-hand-holding-medical"></i> TO connect</div>
+      <div class="header-actions">
+        <div class="btn-circle-hollow"><i class="fa-solid fa-bars"></i></div>
+        <div class="btn-circle-solid"><i class="fa-solid fa-user"></i></div>
+      </div>
+    </header>
+
+    <label for="view-toggle" class="fab-toggle">
+      <span class="show-map"><i class="fa-solid fa-map-location-dot"></i> Ver en Mapa</span>
+      <span class="show-list"><i class="fa-solid fa-list-ul"></i> Ver Lista</span>
+    </label>
+
+    <div class="views-wrapper">
+      
+      <section class="list-view">
+        <div class="search-box">
+          <input type="text" class="search-input" placeholder="Diagnóstico, zona o edad...">
+          <button class="btn-filter"><i class="fa-solid fa-sliders"></i></button>
+        </div>
+
+        <h1 class="hero-title">Oportunidades de Atención</h1>
+        <p class="p-count">Hay 142 pacientes buscando un Terapeuta Ocupacional en tu zona hoy.</p>
+
+        <div class="filter-pills">
+          <div class="pill cyan">12 Nuevos Casos</div>
+          <div class="pill pink">3 Urgentes</div>
+        </div>
+
+        <div class="alert-sis">
+          <i class="fa-solid fa-circle-exclamation"></i>
+          <p>Sube tu <b>Registro SIS</b> para poder postular a estos casos.</p>
+        </div>
+
+        <article class="case-card">
+          <div class="card-upper">
+            <img src="https://picsum.photos/100/100?random=1" class="patient-img">
+            <div class="card-info">
+              <div class="card-header-flex">
+                <span class="name-text">Familia González</span>
+                <span class="diag-tag">TEA / INTEGRACIÓN</span>
+              </div>
+              <ul class="detail-list">
+                <li><i class="fa-solid fa-child"></i> Niño, 7 años</li>
+                <li><i class="fa-solid fa-location-dot"></i> Providencia (Diferencia ~1.2km)</li>
+                <li><i class="fa-solid fa-calendar-day"></i> Frecuencia: 2 veces/semana</li>
+                <li><i class="fa-solid fa-house-chimney"></i> Terapia Domiciliaria</li>
+              </ul>
+            </div>
+          </div>
+          <div style="text-align: center; margin-bottom: 15px; font-weight: 800;">$25.000 / sesión</div>
+          <div class="card-actions">
+            <label for="view-toggle" class="btn-map-trigger"><i class="fa-solid fa-map-location-dot"></i> Ver en Mapa</label>
+            <button class="btn-ficha">Ver Ficha</button>
+          </div>
+        </article>
+
+        <article class="case-card">
+          <div class="card-upper">
+            <img src="https://picsum.photos/100/100?random=2" class="patient-img">
+            <div class="card-info">
+              <div class="card-header-flex">
+                <span class="name-text">Paola R.</span>
+                <span class="diag-tag" style="background:var(--accent-cyan)">ACV / MOTORA</span>
+              </div>
+              <ul class="detail-list">
+                <li><i class="fa-solid fa-person-walking-with-cane"></i> Adulto Mayor, 68 años</li>
+                <li><i class="fa-solid fa-location-dot"></i> Ñuñoa (Diferencia ~3.5km)</li>
+                <li><i class="fa-solid fa-clock"></i> Horario: Mañanas</li>
+              </ul>
+            </div>
+          </div>
+          <div style="text-align: center; margin-bottom: 15px; font-weight: 800;">$30.000 / sesión</div>
+          <div class="card-actions">
+            <label for="view-toggle" class="btn-map-trigger"><i class="fa-solid fa-map-location-dot"></i> Ver en Mapa</label>
+            <button class="btn-ficha">Ver Ficha</button>
+          </div>
+        </article>
+      </section>
+
+      <section class="map-view">
+        <div class="pin" style="top: 30%; left: 40%;"><i class="fa-solid fa-child"></i></div>
+        <div class="pin" style="top: 50%; left: 60%; background:var(--accent-cyan);"><i class="fa-solid fa-person"></i></div>
+        
+        <div style="position:absolute; top:20px; right:20px; display:flex; flex-direction:column; gap:10px;">
+          <div class="btn-circle-hollow" style="background:white; color:#333;"><i class="fa-solid fa-plus"></i></div>
+          <div class="btn-circle-hollow" style="background:white; color:#333;"><i class="fa-solid fa-minus"></i></div>
+        </div>
+      </section>
+
+    </div>
+
+    <nav class="bottom-nav">
+      <a href="#" class="nav-item active"><i class="fa-solid fa-briefcase"></i><span>Oportunidades</span></a>
+      <a href="#" class="nav-item"><i class="fa-regular fa-calendar-check"></i><span>Agenda</span></a>
+      <a href="#" class="nav-item"><i class="fa-solid fa-comment-dots"></i><span>Mensajes</span></a>
+      <a href="#" class="nav-item"><i class="fa-solid fa-circle-user"></i><span>Mi Perfil</span></a>
+    </nav>
+
+  </div>
+
+</body>
+</html>

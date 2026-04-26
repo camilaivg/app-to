@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>TO connect - Agenda Profesional</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --bg-app: #2c363b;
+      --bg-card: #3a464c;
+      --bg-input: #445158;
+      --text-primary: #ffffff;
+      --text-secondary: #aab8c0;
+      --accent-cyan: #5fa5a1;
+      --accent-pink: #df7b90;
+      --font-main: 'Nunito', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-main); -webkit-tap-highlight-color: transparent; }
+    body { background-color: #121212; display: flex; justify-content: center; min-height: 100vh; overflow-x: hidden; }
+
+    .mobile-app-container {
+      width: 100%; max-width: 480px; background-color: var(--bg-app); color: var(--text-primary);
+      position: relative; height: 100vh; display: flex; flex-direction: column;
+    }
+
+    /* HEADER MASTER (Referencia 65877.jpg) */
+    .app-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; background-color: var(--bg-app); border-bottom: 1px solid var(--bg-input); z-index: 100; }
+    .brand-logo { font-size: 1.4rem; font-weight: 800; color: var(--accent-cyan); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+    .header-actions { display: flex; gap: 12px; }
+    .btn-hollow { width: 38px; height: 38px; border-radius: 50%; border: 1.5px solid var(--text-secondary); display: flex; justify-content: center; align-items: center; color: white; }
+
+    /* CALENDARIO HORIZONTAL */
+    .calendar-strip { padding: 15px 0; background: var(--bg-app); border-bottom: 1px solid var(--bg-input); }
+    .scroll-dates { display: flex; overflow-x: auto; gap: 15px; padding: 0 20px; scrollbar-width: none; }
+    .scroll-dates::-webkit-scrollbar { display: none; }
+    
+    .date-card { min-width: 60px; height: 85px; background: var(--bg-card); border-radius: 18px; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.3s; cursor: pointer; border: 1px solid rgba(255,255,255,0.05); }
+    .date-card.active { background: var(--accent-cyan); color: var(--bg-app); transform: scale(1.05); box-shadow: 0 5px 15px rgba(95, 165, 161, 0.3); }
+    .date-card .day-name { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; opacity: 0.8; }
+    .date-card .day-num { font-size: 1.4rem; font-weight: 800; }
+    .date-card.active .day-name { opacity: 1; }
+
+    /* RESUMEN DEL DÍA */
+    .day-summary { padding: 20px; display: flex; justify-content: space-between; align-items: center; }
+    .day-summary h2 { font-size: 1.2rem; font-weight: 800; }
+    .session-count { background: rgba(223, 123, 144, 0.1); color: var(--accent-pink); padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 800; }
+
+    /* LISTA DE SESIONES */
+    .agenda-content { flex: 1; overflow-y: auto; padding: 0 20px 100px; scrollbar-width: none; }
+    .agenda-content::-webkit-scrollbar { display: none; }
+
+    .session-card { background: var(--bg-card); border-radius: 24px; padding: 18px; margin-bottom: 15px; display: flex; gap: 15px; border-left: 5px solid transparent; transition: 0.3s; }
+    .session-card.confirmed { border-left-color: var(--accent-cyan); }
+    .session-card.pending { border-left-color: #ffb400; }
+    .session-card.evaluation { border-left-color: var(--accent-pink); }
+
+    .time-col { width: 60px; text-align: center; }
+    .start-time { font-size: 1rem; font-weight: 800; display: block; }
+    .end-time { font-size: 0.8rem; color: var(--text-secondary); font-weight: 600; }
+
+    .session-info { flex: 1; }
+    .patient-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 5px; }
+    .patient-name { font-size: 1.1rem; font-weight: 800; }
+    .status-pill { font-size: 0.65rem; font-weight: 800; text-transform: uppercase; padding: 3px 8px; border-radius: 8px; background: rgba(255,255,255,0.05); }
+
+    .session-detail { font-size: 0.85rem; color: var(--text-secondary); font-weight: 600; display: flex; align-items: center; gap: 6px; margin-top: 4px; }
+    .session-detail i { color: var(--accent-cyan); font-size: 0.9rem; }
+
+    .action-row { display: flex; gap: 10px; margin-top: 15px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.05); }
+    .btn-action-small { flex: 1; padding: 8px; border-radius: 12px; border: none; font-size: 0.8rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .btn-chat { background: var(--bg-input); color: white; }
+    .btn-map { background: var(--accent-cyan); color: var(--bg-app); }
+
+    /* FAB (Botón Añadir Cita) */
+    .fab-add { position: fixed; bottom: 100px; right: 20px; width: 60px; height: 60px; background: var(--accent-pink); color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; box-shadow: 0 8px 25px rgba(223, 123, 144, 0.4); z-index: 500; }
+
+    /* BOTTOM NAV */
+    .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background-color: var(--bg-app); display: flex; justify-content: space-around; padding: 12px 0 25px; border-top: 1px solid var(--bg-card); z-index: 1000; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 5px; text-decoration: none; color: var(--text-secondary); font-weight: 700; font-size: 0.8rem; }
+    .nav-item.active { color: var(--accent-cyan); }
+    .nav-item i { font-size: 1.4rem; }
+  </style>
+</head>
+<body>
+
+  <div class="mobile-app-container">
+    
+    <header class="app-header">
+      <div class="brand-logo"><i class="fa-solid fa-hand-holding-medical"></i> TO connect</div>
+      <div class="header-actions">
+        <div class="btn-hollow"><i class="fa-solid fa-bell"></i></div>
+        <div class="btn-hollow" style="background:var(--text-secondary); color:var(--bg-app); border:none;"><i class="fa-solid fa-user"></i></div>
+      </div>
+    </header>
+
+    <div class="calendar-strip">
+      <div class="scroll-dates">
+        <div class="date-card">
+          <span class="day-name">Lun</span>
+          <span class="day-num">20</span>
+        </div>
+        <div class="date-card">
+          <span class="day-name">Mar</span>
+          <span class="day-num">21</span>
+        </div>
+        <div class="date-card active">
+          <span class="day-name">Mié</span>
+          <span class="day-num">22</span>
+        </div>
+        <div class="date-card">
+          <span class="day-name">Jue</span>
+          <span class="day-num">23</span>
+        </div>
+        <div class="date-card">
+          <span class="day-name">Vie</span>
+          <span class="day-num">24</span>
+        </div>
+        <div class="date-card">
+          <span class="day-name">Sáb</span>
+          <span class="day-num">25</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="day-summary">
+      <h2>Miércoles, 22 de Abril</h2>
+      <span class="session-count">3 Sesiones</span>
+    </div>
+
+    <main class="agenda-content">
+      
+      <article class="session-card evaluation">
+        <div class="time-col">
+          <span class="start-time">09:00</span>
+          <span class="end-time">10:00</span>
+        </div>
+        <div class="session-info">
+          <div class="patient-header">
+            <span class="patient-name">Benjamín S.</span>
+            <span class="status-pill" style="color:var(--accent-pink)">Evaluación</span>
+          </div>
+          <p class="session-detail"><i class="fa-solid fa-brain"></i> Diagnóstico: TEA (Primer contacto)</p>
+          <p class="session-detail"><i class="fa-solid fa-house-chimney"></i> Domicilio: Providencia</p>
+          <div class="action-row">
+            <button class="btn-action-small btn-chat"><i class="fa-solid fa-comment-dots"></i> Chat</button>
+            <button class="btn-action-small btn-map"><i class="fa-solid fa-location-arrow"></i> Mapa</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="session-card confirmed">
+        <div class="time-col">
+          <span class="start-time">11:30</span>
+          <span class="end-time">12:30</span>
+        </div>
+        <div class="session-info">
+          <div class="patient-header">
+            <span class="patient-name">Paola Rojas</span>
+            <span class="status-pill" style="color:var(--accent-cyan)">Confirmada</span>
+          </div>
+          <p class="session-detail"><i class="fa-solid fa-hand-dots"></i> Terapia de Mano (Post-Op)</p>
+          <p class="session-detail"><i class="fa-solid fa-hospital-user"></i> Atención en Box</p>
+          <div class="action-row">
+            <button class="btn-action-small btn-chat"><i class="fa-solid fa-comment-dots"></i> Chat</button>
+            <button class="btn-action-small btn-map" style="background:var(--bg-input); color:white;"><i class="fa-solid fa-file-medical"></i> Ficha</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="session-card pending">
+        <div class="time-col">
+          <span class="start-time">16:00</span>
+          <span class="end-time">17:00</span>
+        </div>
+        <div class="session-info">
+          <div class="patient-header">
+            <span class="patient-name">Familia González</span>
+            <span class="status-pill" style="color:#ffb400">Por confirmar</span>
+          </div>
+          <p class="session-detail"><i class="fa-solid fa-child"></i> Integración Sensorial</p>
+          <p class="session-detail"><i class="fa-solid fa-house-chimney"></i> Domicilio: Ñuñoa</p>
+          <div class="action-row">
+            <button class="btn-action-small btn-chat" style="background:var(--accent-pink); color:white;">Aceptar Cita</button>
+          </div>
+        </div>
+      </article>
+
+    </main>
+
+    <div class="fab-add">
+      <i class="fa-solid fa-calendar-plus"></i>
+    </div>
+
+    <nav class="bottom-nav">
+      <a href="pro-home.html" class="nav-item"><i class="fa-solid fa-briefcase"></i><span>Oportunidades</span></a>
+      <a href="agenda.html" class="nav-item active"><i class="fa-solid fa-calendar-check"></i><span>Agenda</span></a>
+      <a href="mensajes.html" class="nav-item"><i class="fa-solid fa-comment-dots"></i><span>Mensajes</span></a>
+      <a href="cuenta-pro.html" class="nav-item"><i class="fa-solid fa-circle-user"></i><span>Mi Perfil</span></a>
+    </nav>
+
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>TO connect - Red de Terapia Ocupacional</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    /* =========================================
+       VARIABLES GLOBALES (Mantenidas)
+       ========================================= */
+    :root {
+      --bg-app: #2c363b;
+      --bg-card: #3a464c;
+      --bg-input: #445158;
+      
+      --text-primary: #ffffff;
+      --text-secondary: #aab8c0;
+      
+      --accent-cyan: #5fa5a1;
+      --accent-pink: #df7b90;
+      --bg-pink-soft: rgba(223, 123, 144, 0.15);
+      
+      --font-main: 'Nunito', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: var(--font-main);
+      background-color: #121212;
+      display: flex; justify-content: center;
+      min-height: 100vh;
+    }
+
+    .mobile-app-container {
+      width: 100%; max-width: 480px;
+      background-color: var(--bg-app);
+      color: var(--text-primary);
+      position: relative; overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    .app-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; background-color: var(--bg-app); position: relative; z-index: 30; }
+    .brand-logo { font-size: 1.5rem; font-weight: 800; color: var(--accent-cyan); display: flex; align-items: center; gap: 8px; }
+    .header-actions { display: flex; gap: 12px; }
+    .btn-icon { background-color: transparent; border: 1px solid var(--text-secondary); border-radius: 50%; width: 36px; height: 36px; color: var(--text-primary); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    .btn-avatar-icon { background-color: #aab8c0; border: none; color: var(--bg-app); }
+
+    /* CONTENIDO PRINCIPAL */
+    .app-content { padding: 0 20px 150px 20px; position: relative; z-index: 20; }
+
+    /* BÚSQUEDA */
+    .search-container { display: flex; gap: 10px; margin-top: 5px; margin-bottom: 25px; }
+    .search-input-wrapper { flex: 1; position: relative; display: flex; align-items: center; }
+    .search-input { width: 100%; background-color: var(--bg-input); border: 1px solid var(--bg-card); border-radius: 25px; padding: 12px 45px 12px 20px; color: var(--text-primary); font-family: inherit; font-size: 0.95rem; }
+    .search-input::placeholder { color: var(--text-secondary); }
+    .btn-search-icon { position: absolute; right: 4px; background-color: var(--accent-cyan); border: none; color: white; width: 34px; height: 34px; border-radius: 50%; display: flex; justify-content: center; align-items: center; }
+    .btn-filter { background-color: var(--bg-input); border: none; color: var(--text-secondary); width: 44px; height: 44px; border-radius: 50%; display: flex; justify-content: center; align-items: center; position: relative; cursor: pointer; }
+    .notification-dot { position: absolute; top: 8px; right: 10px; width: 8px; height: 8px; background-color: var(--accent-pink); border-radius: 50%; }
+
+    /* TEXTOS HERO */
+    .hero-title { font-size: 1.6rem; font-weight: 800; margin-bottom: 12px; }
+    .hero-text { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.5; margin-bottom: 15px; }
+    .btn-primary { background-color: var(--accent-cyan); color: var(--bg-app); border: none; padding: 10px 20px; border-radius: 25px; font-weight: 800; font-size: 0.95rem; margin-bottom: 25px; }
+    .divider { border: none; border-top: 1px solid var(--bg-input); margin-bottom: 20px; }
+
+    /* TARJETAS DE PERFIL */
+    .feed-section { display: flex; flex-direction: column; gap: 12px; }
+    .profile-card { background-color: var(--bg-card); border-radius: 12px; padding: 16px; display: flex; flex-direction: row; gap: 16px; }
+    .card-left { width: 85px; display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+    .avatar-container { position: relative; width: 75px; height: 75px; margin-bottom: 10px; }
+    .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent-cyan); }
+    .play-icon { position: absolute; bottom: 0; right: -4px; background-color: white; color: var(--accent-cyan); width: 26px; height: 26px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 10px; padding-left: 2px; }
+    .badge-family { border: 1px solid var(--text-secondary); color: var(--text-primary); font-size: 0.6rem; font-weight: 700; padding: 4px; border-radius: 8px; text-align: center; margin-bottom: 4px; line-height: 1.1; }
+    .rating-stars { color: var(--accent-cyan); font-size: 0.6rem; margin-bottom: 6px; }
+    .rating-stars span { color: var(--text-secondary); }
+    .distance-tag { background-color: var(--bg-app); font-size: 0.7rem; padding: 2px 8px; border-radius: 10px; }
+    
+    .card-right { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+    .card-header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+    .profile-name { font-size: 1.3rem; font-weight: 800; display: flex; align-items: center; gap: 6px; }
+    .icon-verified { color: var(--accent-pink); font-size: 1rem; }
+    .likes-badge { background-color: var(--bg-pink-soft); color: var(--text-primary); padding: 4px 10px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+    .likes-badge i { color: var(--accent-pink); }
+    .profile-bio { color: var(--text-primary); font-size: 0.95rem; margin-bottom: 12px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .profile-list { list-style: none; font-size: 0.85rem; color: var(--text-primary); display: flex; flex-direction: column; gap: 6px; }
+    .profile-list li { display: flex; align-items: center; gap: 8px; }
+    .profile-list i { color: var(--text-secondary); width: 14px; text-align: center; }
+    .price-tag { align-self: flex-end; font-weight: 800; font-size: 1rem; margin-top: 10px; color: var(--text-primary); }
+
+    /* BOTTOM NAVIGATION */
+    .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background-color: var(--bg-app); display: flex; justify-content: space-around; align-items: center; padding: 12px 0 16px 0; border-top: 1px solid var(--bg-card); z-index: 200; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 6px; text-decoration: none; color: var(--text-secondary); font-size: 0.75rem; font-weight: 600; }
+    .nav-item i { font-size: 1.3rem; }
+    .nav-item.active { color: var(--accent-cyan); }
+
+    /* LÓGICA DE VISTAS (Mantenida) */
+    #view-toggle { display: none; }
+    #view-toggle:checked ~ .app-content .list-view-content { display: none; }
+    #view-toggle:checked ~ .map-view-container { display: block; }
+    #view-toggle:checked ~ .fab-btn-mapa { display: none; }
+    #view-toggle:checked ~ .fab-btn-lista { display: flex; }
+
+    /* MAPA CONTENEDOR (Mantenido) */
+    .map-view-container { display: none; position: absolute; top: 145px; bottom: 72px; left: 0; right: 0; background-color: #1e2528; background-image: linear-gradient(#252e32 1px, transparent 1px), linear-gradient(90deg, #252e32 1px, transparent 1px); background-size: 40px 40px; z-index: 10; overflow: hidden; }
+    .map-controls { position: absolute; top: 20px; right: 15px; display: flex; flex-direction: column; gap: 15px; z-index: 30; }
+    .control-group { background-color: white; border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; }
+    .map-btn { width: 44px; height: 44px; background: white; border: none; color: #333; font-size: 1.3rem; cursor: pointer; display: flex; justify-content: center; align-items: center; }
+    .map-btn:first-child { border-bottom: 1px solid #e0e0e0; }
+    .control-circle { background-color: white; width: 44px; height: 44px; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: #333; font-size: 1.2rem; cursor: pointer; }
+    .pin-container { position: absolute; width: 32px; height: 32px; z-index: 20; }
+    .pin-shape { width: 100%; height: 100%; background-color: var(--accent-cyan); border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 2px solid white; position: absolute; top: 0; left: 0; }
+    .pin-icon { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; color: white; font-size: 14px; z-index: 2; }
+    .pin-badge { position: absolute; top: -6px; right: -6px; background-color: var(--accent-pink); color: white; font-size: 0.65rem; font-weight: 800; padding: 2px 5px; border-radius: 10px; border: 2px solid white; z-index: 3; }
+    .pin-container.home { width: 36px; height: 36px; z-index: 25; }
+    .pin-container.home .pin-shape { background-color: var(--accent-pink); }
+    .pin-container.home .pin-icon { font-size: 16px; }
+
+    /* BOTONES FLOTANTES */
+    .fab-action { position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%); background-color: var(--accent-cyan); color: white; border: none; padding: 12px 28px; border-radius: 30px; font-size: 1.05rem; font-weight: 800; cursor: pointer; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 100; }
+
+    /* SCROLL FINAL Y FOOTER */
+    .pagination { display: flex; gap: 15px; align-items: center; justify-content: flex-start; margin: 30px 0; border-bottom: 1px solid var(--bg-input); padding-bottom: 25px; }
+    .page-item { color: var(--text-primary); font-size: 1.1rem; font-weight: 700; cursor: pointer; }
+    .page-item.active { background-color: var(--bg-input); width: 36px; height: 36px; display: flex; justify-content: center; align-items: center; border-radius: 50%; }
+    .page-item.next { background-color: var(--bg-input); width: 44px; height: 44px; display: flex; justify-content: center; align-items: center; border-radius: 50%; }
+    .breadcrumbs { font-size: 1rem; margin-bottom: 40px; border-bottom: 1px solid var(--bg-input); padding-bottom: 30px; }
+    .breadcrumbs a { color: var(--text-secondary); text-decoration: none; font-weight: 600; }
+    .breadcrumbs a.active { color: var(--text-primary); }
+    .breadcrumbs span { color: var(--text-secondary); margin: 0 5px; }
+    .info-section h2 { font-size: 1.5rem; font-weight: 800; margin-bottom: 15px; }
+    .info-section p { color: var(--text-secondary); line-height: 1.5; font-size: 0.95rem; margin-bottom: 30px; }
+    .steps-graphic { background-color: var(--bg-card); border-radius: 50%; width: 160px; height: 160px; margin: 0 auto 50px auto; position: relative; display: flex; justify-content: center; align-items: center; font-size: 4rem; color: var(--accent-cyan); }
+    .step-circle { position: absolute; width: 32px; height: 32px; background-color: var(--accent-cyan); color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: 800; font-size: 0.9rem; }
+    .step-circle.c1 { top: 20px; left: -10px; }
+    .step-circle.c2 { bottom: -10px; left: 50%; transform: translateX(-50%); }
+    .step-circle.c3 { top: 20px; right: -10px; }
+    .steps-text { text-align: center; margin-bottom: 40px; }
+    .steps-text h3 { font-size: 1.2rem; margin-bottom: 10px; }
+    .steps-text p { font-size: 0.9rem; color: var(--text-secondary); }
+    .faq-section { background-color: var(--bg-card); margin: 0 -20px; padding: 30px 20px; }
+    .faq-section h2 { font-size: 1.4rem; font-weight: 800; margin-bottom: 20px; }
+    .faq-item { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; border-bottom: 1px solid var(--bg-input); cursor: pointer; }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-item span { font-size: 0.95rem; font-weight: 600; color: var(--text-primary); padding-right: 20px; }
+    .faq-item i { color: var(--text-secondary); }
+    .discover-section { margin-top: 40px; margin-bottom: 40px; }
+    .discover-section h2 { font-size: 1.4rem; font-weight: 800; margin-bottom: 20px; }
+    .horizontal-scroll { display: flex; overflow-x: auto; gap: 15px; scroll-snap-type: x mandatory; margin: 0 -20px; padding: 0 20px; }
+    .horizontal-scroll::-webkit-scrollbar { display: none; }
+    .discover-card { min-width: 180px; background-color: var(--bg-card); border-radius: 12px; overflow: hidden; scroll-snap-align: start; }
+    .discover-card img { width: 100%; height: 120px; object-fit: cover; }
+    .discover-card-text { padding: 15px; font-weight: 700; font-size: 0.95rem; color: var(--text-primary); }
+    .btn-circle-nav { position: absolute; right: 20px; margin-top: -30px; width: 36px; height: 36px; background-color: var(--accent-cyan); color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; border: none; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+    .footer-seo-links { margin-bottom: 40px; }
+    .footer-seo-links p { color: var(--text-secondary); line-height: 1.8; font-size: 0.9rem; margin-bottom: 20px; }
+    .footer-seo-links h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 10px; margin-top: 20px;}
+    .footer-final-section { display: flex; flex-direction: column; align-items: center; padding-top: 30px; border-top: 1px solid var(--bg-input); margin-bottom: 60px; }
+    .lang-selector-pill { display: flex; width: 100%; background-color: var(--bg-input); border-radius: 25px; margin-bottom: 30px; overflow: hidden; }
+    .lang-flag { padding: 12px 20px; background-color: var(--bg-card); display: flex; align-items: center; gap: 8px; border-right: 1px solid var(--bg-app); cursor: pointer; }
+    .lang-text { flex: 1; padding: 12px; background-color: var(--bg-card); display: flex; justify-content: center; align-items: center; gap: 8px; cursor: pointer; color: var(--text-primary); font-weight: 600; font-size: 1rem; }
+    .footer-links-center { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 20px; margin-bottom: 30px; }
+    .footer-link-row { display: flex; gap: 15px; justify-content: center; width: 100%; }
+    .footer-link-row a { color: var(--text-primary); text-decoration: none; font-size: 0.95rem; }
+    .social-icons-row { display: flex; gap: 12px; margin-bottom: 40px; justify-content: center; }
+    .social-icons-row a { width: 36px; height: 36px; background-color: white; color: var(--bg-app); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.1rem; text-decoration: none; transition: transform 0.2s; }
+    .footer-copyright { color: var(--text-primary); display: flex; align-items: center; gap: 8px; font-size: 0.95rem; font-weight: 600; margin-bottom: 20px; }
+
+    /* MODALES Y HACLS DE CONTROL (Mantenidos) */
+    #filter-toggle-hack, #menu-toggle-hack, #steps-toggle-hack, #create-profile-toggle-hack, #verify-id-toggle, #premium-toggle-hack, #visibility-toggle-hack { display: none; }
+    
+    .filter-modal-container, .menu-modal-container, .create-profile-modal-container, .verify-id-modal-container, .premium-modal-container { 
+        position: fixed; top: 0; left: 50%; height: 100vh; width: 100%; max-width: 480px; background-color: var(--bg-app); z-index: 999; transform: translate(-50%, 100%); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column; 
+    }
+    #filter-toggle-hack:checked ~ .filter-modal-container { transform: translate(-50%, 0); }
+    #menu-toggle-hack:checked ~ .menu-modal-container { transform: translate(-50%, 0); }
+    #create-profile-toggle-hack:checked ~ .create-profile-modal-container { transform: translate(-50%, 0); }
+    #verify-id-toggle:checked ~ .verify-id-modal-container { transform: translate(-50%, 0); }
+    #premium-toggle-hack:checked ~ .premium-modal-container { transform: translate(-50%, 0); }
+
+    .filter-header { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid var(--bg-input); }
+    .filter-scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
+    .range-slider { width: 100%; -webkit-appearance: none; background: transparent; margin: 15px 0 25px 0; }
+    .range-slider::-webkit-slider-runnable-track { width: 100%; height: 6px; background: var(--bg-card); border-radius: 3px; }
+    .range-slider::-webkit-slider-thumb { -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%; background: var(--accent-cyan); margin-top: -9px; cursor: pointer; }
+    
+    /* WIZARD LOGIC (Mantenido) */
+    .cp-progress-bg { width: 100%; height: 4px; background-color: var(--bg-card); }
+    .cp-progress-fill { height: 100%; background-color: var(--accent-pink); transition: width 0.3s ease; }
+    .wizard-step-content { display: none; flex-direction: column; flex: 1; }
+    #wizard-step-1:checked ~ .wizard-step-1-content { display: flex; }
+    #wizard-step-1:checked ~ .cp-progress-bg .cp-progress-fill { width: 12.5%; }
+
+  </style>
+</head>
+<body>
+
+    <div class="mobile-app-container">
+    <input type="checkbox" id="premium-toggle-hack">
+    <input type="checkbox" id="visibility-toggle-hack">
+    <input type="checkbox" id="view-toggle"> 
+    <input type="checkbox" id="filter-toggle-hack"> 
+    <input type="checkbox" id="menu-toggle-hack"> 
+    <input type="checkbox" id="steps-toggle-hack"> 
+    <input type="checkbox" id="create-profile-toggle-hack"> 
+    <input type="checkbox" id="verify-id-toggle"> 
+
+    <header class="app-header">
+      <div class="brand-logo"><i class="fa-solid fa-hand-holding-medical"></i> TO connect</div>
+      <div class="header-actions">
+        <label for="menu-toggle-hack" class="btn-icon"><i class="fa-solid fa-bars"></i></label>
+        <div class="btn-icon btn-avatar-icon"><i class="fa-solid fa-user"></i></div>
+      </div>
+    </header>
+
+    <main class="app-content">
+      <div class="search-container">
+        <div class="search-input-wrapper"><input type="text" placeholder="Ciudad, especialidad o diagnóstico" class="search-input"><button class="btn-search-icon"><i class="fa-solid fa-magnifying-glass"></i></button></div>
+        <label for="filter-toggle-hack" class="btn-filter"><i class="fa-solid fa-filter"></i><span class="notification-dot"></span></label>
+      </div>
+
+      <div class="list-view-content">
+        <h1 class="hero-title">Encuentra un(a) terapeuta</h1>
+        <p class="hero-text">¿Buscas atención profesional y certificada? Contamos con 2.332 perfiles de Terapeutas Ocupacionales activos.</p>
+        <p class="hero-text">Rehabilitación física, pediatría o salud mental: encuentra al especialista ideal en menos tiempo del que esperabas.</p>
+        <label for="premium-toggle-hack" class="btn-primary"  style="display: inline-block; text-align: center; cursor: pointer;"><a href="./Premium_usuario.html">Obtén Plan Premium</a></label>
+
+        <hr class="divider">
+
+        <section class="feed-section">
+          <article class="profile-card">
+            <div class="card-left">
+                <div class="avatar-container"><img src="https://picsum.photos/100/100?random=1" alt="Avatar" class="avatar-img"><div class="play-icon"><i class="fa-solid fa-play"></i></div></div>
+                <div class="badge-family">Recomendado</div>
+                <div class="rating-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i><span>(19)</span></div>
+                <div class="distance-tag">~ 1,0 km</div>
+            </div>
+            <div class="card-right">
+                <div class="card-header-top"><h2 class="profile-name">Camila V. <i class="fa-solid fa-circle-check icon-verified"></i></h2><div class="likes-badge"><i class="fa-solid fa-heart"></i> 380</div></div>
+                <p class="profile-bio">Especialista en Rehabilitación Física y Mano. Manejo de cicatrices, neurodinámica y órtesis...</p>
+                <ul class="profile-list">
+                    <li><i class="fa-solid fa-briefcase"></i> Experiencia: > 4 años <i class="fa-solid fa-chevron-right" style="margin-left: auto;"></i></li>
+                    <li><i class="fa-regular fa-file-lines"></i> Registro SIS Verificado</li>
+                    <li><i class="fa-regular fa-comment"></i> Referencias: 12</li>
+                    <li><i class="fa-regular fa-clock"></i> Tiempo de respuesta: 1 hora</li>
+                </ul>
+                <div class="price-tag">$25.000/hora</div>
+            </div>
+          </article>
+
+          <article class="profile-card">
+            <div class="card-left">
+                <div class="avatar-container"><img src="https://picsum.photos/100/100?random=2" alt="Avatar" class="avatar-img" style="border-color: transparent;"></div>
+                <div class="badge-family" style="border-color: #8c73c4; color: #a496c9;">Superperfil</div>
+                <div class="rating-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><span>(5)</span></div>
+                <div class="distance-tag">~ 5,0 km</div>
+            </div>
+            <div class="card-right">
+                <div class="card-header-top"><h2 class="profile-name">Ricardo J. <i class="fa-solid fa-circle-check icon-verified"></i></h2><div class="likes-badge"><i class="fa-solid fa-heart"></i> 14</div></div>
+                <p class="profile-bio">Terapeuta Ocupacional Senior especializado en Neurorehabilitación post-ACV y AVD...</p>
+                <ul class="profile-list">
+                    <li><i class="fa-solid fa-briefcase"></i> Experiencia: > 10 años <i class="fa-solid fa-chevron-right" style="margin-left: auto;"></i></li>
+                    <li><i class="fa-regular fa-file-lines"></i> Registro SIS Verificado</li>
+                    <li><i class="fa-regular fa-clock"></i> Respuesta inmediata</li>
+                </ul>
+                <div class="price-tag">$30.000/hora</div>
+            </div>
+          </article>
+        </section>
+
+        <div class="pagination"><span class="page-item active">1</span><span class="page-item">2</span><span class="page-item next"><i class="fa-solid fa-chevron-right"></i></span></div>
+        <div class="breadcrumbs"><a href="#">TO connect</a> <span>/</span> <a href="#" class="active">Especialistas</a></div>
+        
+        <section class="info-section">
+            <h2>Encuentra un especialista de confianza</h2>
+            <p>Encuentra al profesional perfecto de forma rápida y sencilla a través de TO connect.</p>
+            <div class="steps-graphic"><i class="fa-solid fa-hand-holding-heart"></i><div class="step-circle c1">1</div><div class="step-circle c2">2</div><div class="step-circle c3">3</div></div>
+            <div class="steps-text"><h3>Buscar</h3><p>Filtra según el diagnóstico y revisa perfiles validados.</p></div>
+        </section>
+
+        <section class="faq-section">
+            <h2>Preguntas Frecuentes</h2>
+            <div class="faq-item"><span>¿Los terapeutas están inscritos en la Superintendencia de Salud?</span><i class="fa-solid fa-chevron-down"></i></div>
+            <div class="faq-item"><span>¿Cuál es el valor medio por sesión?</span><i class="fa-solid fa-chevron-down"></i></div>
+        </section>
+
+        <div class="footer-final-section">
+            <div class="social-icons-row"><a href="#"><i class="fa-brands fa-facebook-f"></i></a><a href="#"><i class="fa-brands fa-instagram"></i></a><a href="#"><i class="fa-brands fa-tiktok"></i></a><a href="#"><i class="fa-brands fa-linkedin-in"></i></a></div>
+            <div class="footer-copyright"><i class="fa-solid fa-hand-holding-medical" style="font-size: 1.2rem; margin-right: 5px;"></i>© TO connect Chile</div>
+        </div>
+      </div>
+    </main>
+
+    <div class="map-view-container">
+        <div class="map-controls"><div class="control-group"><button class="map-btn"><i class="fa-solid fa-plus"></i></button><button class="map-btn"><i class="fa-solid fa-minus"></i></button></div><div class="control-circle"><i class="fa-solid fa-crosshairs"></i></div></div>
+        <div class="pin-container home" style="top: 55%; left: 45%;"><div class="pin-shape"></div><div class="pin-icon"><i class="fa-solid fa-house"></i></div></div>
+        <div class="pin-container" style="top: 25%; left: 65%;"><div class="pin-shape"></div><div class="pin-icon"><i class="fa-solid fa-user-doctor"></i></div><div class="pin-badge">2</div></div>
+    </div>
+
+    <label for="view-toggle" class="fab-action fab-btn-mapa"><i class="fa-solid fa-map"></i> Mapa</label>
+    <label for="view-toggle" class="fab-action fab-btn-lista"><i class="fa-solid fa-list-ul"></i> Lista</label>
+
+    <nav class="bottom-nav">
+        <a href="#" class="nav-item"><i class="fa-solid fa-house"></i><span>Inicio</span></a>
+        <a href="#" class="nav-item active"><i class="fa-solid fa-magnifying-glass"></i><span>Buscar</span></a>
+        <a href="#" class="nav-item"><i class="fa-regular fa-comment"></i><span>Mensajes</span></a>
+        <a href="#" class="nav-item"><i class="fa-solid fa-cart-shopping"></i><span>Marketplace</span></a>
+    </nav>
+
+    <div class="filter-modal-container">
+      <div class="filter-header"><h2>Filtrar Terapeutas</h2><label for="filter-toggle-hack" class="btn-close-modal"><i class="fa-solid fa-xmark"></i></label></div>
+      <div class="filter-scroll-area">
+        <div class="filter-group"><h3>Ordenar</h3><select class="custom-select" style="width:100%; background:var(--bg-card); color:white; padding:12px; border-radius:8px; border:none;"><option>Importancia</option><option>Precio promedio</option></select></div>
+        <div class="filter-group" style="margin-top:20px;"><h3>Años de experiencia</h3><span class="slider-text">0 a 11+ años</span><input type="range" class="range-slider" min="0" max="11" value="3"></div>
+        <div class="filter-group"><h3>Tarifa máxima por sesión</h3><div style="position:relative; margin-bottom:5px;"><i style="position:absolute; left:15px; top:12px;">$</i><input type="text" style="width:100%; background:transparent; border-bottom:1px solid white; color:white; padding:10px 30px;" placeholder="35000"></div></div>
+        <button class="btn-primary" style="width:100%; margin-top:30px; cursor:pointer;">Aplicar Filtros</button>
+      </div>
+    </div>
+
+    <div class="menu-modal-container">
+      <div class="menu-header-box"><label for="menu-toggle-hack" class="btn-close-main-menu"><i class="fa-solid fa-xmark"></i></label><div class="menu-user-avatar"><i class="fa-solid fa-user"></i></div><h2 class="menu-username">Camila Vidal</h2></div>
+      <div class="menu-scroll-area">
+        <div class="menu-card">
+          <label for="steps-toggle-hack" class="menu-item" style="cursor: pointer;">
+            <div class="menu-item-icon-custom" style="width:35px; text-align:center; font-size:1.5rem; margin-right:12px;"><i class="fa-solid fa-address-card" style="color: #6fb5b0;"></i></div><div class="menu-item-content"><div class="menu-item-title">Completa tu perfil</div><div class="menu-item-subtitle">Verifica tus datos profesionales.</div></div><i class="fa-solid fa-chevron-right"></i>
+          </label>
+        </div>
+        <div class="menu-card">
+            <a href="./yo_usuario.html" class="menu-item"><div class="menu-item-icon" style="width:30px; text-align:center; color: var(--accent-pink); margin-right:12px;"><i class="fa-solid fa-cart-shopping"></i></div><div class="menu-item-content"><div class="menu-item-title">Marketplace</div><div class="menu-item-subtitle">Ayudas técnicas y recursos terapéuticos.</div></div><i class="fa-solid fa-chevron-right"></i></a>
+        </div>
+        <a href="#" class="menu-logout-btn" style="padding:20px; display:block; color:var(--text-secondary); text-decoration:none;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Cerrar sesión</a>
+      </div>
+    </div>
+
+    <div class="create-profile-modal-container">
+      <input type="radio" name="wizard-nav" id="wizard-step-1" checked>
+      <div class="cp-header"><h2>Crea Tu Perfil Profesional</h2><label for="create-profile-toggle-hack" class="btn-close-cp"><i class="fa-solid fa-xmark"></i></label></div>
+      <div class="cp-progress-bg"><div class="cp-progress-fill"></div></div>
+      <div class="wizard-step-content wizard-step-1-content">
+        <div class="cp-body">
+          <div class="mascot-section"><div class="speech-bubble">¿Cuál es tu nombre profesional?</div><div class="mascot-avatar"><i class="fa-solid fa-stethoscope"></i></div></div>
+          <div class="cp-form-group"><label class="cp-label">Nombre completo</label><input type="text" class="cp-input" value="Camila Vidal" style="width:100%; background:transparent; border:1px solid var(--text-secondary); padding:15px; border-radius:12px; color:white;"></div>
+        </div>
+        <div class="cp-footer"><label for="create-profile-toggle-hack" class="btn-cp-siguiente">Guardar y continuar</label></div>
+      </div>
+    </div>
+
+  </div> 
+
+</body>
+</html>

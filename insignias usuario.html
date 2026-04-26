@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>TO connect - Mi Nivel de Confianza</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --bg-app: #2c363b;
+      --bg-card: #3a464c;
+      --bg-input: #445158;
+      --text-primary: #ffffff;
+      --text-secondary: #aab8c0;
+      --accent-cyan: #5fa5a1;
+      --accent-pink: #df7b90;
+      --font-main: 'Nunito', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-main); }
+    body { background-color: #121212; display: flex; justify-content: center; min-height: 100vh; }
+
+    .mobile-app-container {
+      width: 100%; max-width: 480px; background-color: var(--bg-app); color: var(--text-primary);
+      position: relative; overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh;
+      padding-bottom: 100px;
+    }
+
+    /* HEADER (ICONOS 65877.jpg) */
+    .app-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; }
+    .brand-logo { font-size: 1.4rem; font-weight: 800; color: var(--accent-cyan); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+    .header-actions { display: flex; align-items: center; gap: 12px; }
+    .btn-menu-circle { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--text-secondary); display: flex; justify-content: center; align-items: center; color: white; }
+    .btn-profile-solid { width: 38px; height: 38px; border-radius: 50%; background-color: var(--text-secondary); color: var(--bg-app); display: flex; justify-content: center; align-items: center; font-size: 1.2rem; }
+
+    /* SECCIÓN PROGRESO DE CONFIANZA */
+    .trust-section { padding: 20px; }
+    .trust-title { font-size: 1.5rem; font-weight: 800; line-height: 1.2; margin-bottom: 10px; }
+    .trust-desc { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 20px; }
+    
+    .progress-bar-bg { width: 100%; height: 12px; background: var(--bg-input); border-radius: 10px; overflow: hidden; margin-bottom: 10px; }
+    .progress-bar-fill { width: 17%; height: 100%; background: var(--accent-cyan); border-radius: 10px; }
+    .progress-text { font-size: 0.85rem; font-weight: 800; color: var(--accent-cyan); }
+
+    /* GRID DE VERIFICACIONES (ADAPTADO DEL VIDEO) */
+    .grid-label { font-size: 1.1rem; font-weight: 800; padding: 25px 20px 15px 20px; }
+    .verifications-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 0 20px 30px 20px; }
+    
+    .card-verification { background: var(--bg-card); border-radius: 20px; padding: 20px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 12px; position: relative; border: 1px solid transparent; }
+    .card-verification.active { border-color: var(--accent-cyan); }
+    .card-verification i { font-size: 2.2rem; color: var(--text-secondary); opacity: 0.5; }
+    .card-verification.active i { color: var(--accent-cyan); opacity: 1; }
+    
+    .verification-name { font-size: 0.85rem; font-weight: 700; color: var(--text-secondary); }
+    .dot-status { position: absolute; top: 12px; right: 12px; width: 12px; height: 12px; background: var(--bg-input); border-radius: 50%; }
+    .card-verification.active .dot-status { background: var(--accent-cyan); border: 2px solid var(--bg-app); }
+
+    /* FOOTER (ESTILO 65826.jpg) */
+    .footer-content { background: var(--bg-card); padding: 40px 20px; text-align: center; border-top: 1px solid var(--bg-input); }
+    .lang-pill { background: var(--bg-input); padding: 12px 20px; border-radius: 25px; display: inline-flex; align-items: center; gap: 10px; margin-bottom: 30px; font-weight: 700; }
+    
+    .footer-nav-links { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
+    .footer-nav-links a { color: var(--text-primary); text-decoration: none; font-size: 0.95rem; font-weight: 600; }
+
+    .social-links { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; }
+    .social-btn { width: 40px; height: 40px; background: var(--bg-input); border-radius: 50%; display: flex; justify-content: center; align-items: center; color: white; font-size: 1.1rem; text-decoration: none; }
+
+    /* BOTTOM NAV (NUNITO 700) */
+    .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background-color: var(--bg-app); display: flex; justify-content: space-around; align-items: center; padding: 12px 0 16px 0; border-top: 1px solid var(--bg-card); z-index: 500; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 6px; text-decoration: none; color: var(--text-secondary); font-family: var(--font-main) !important; font-weight: 700; font-size: 0.85rem; }
+    .nav-item.active { color: var(--accent-cyan); }
+    .nav-item i { font-size: 1.4rem; }
+  </style>
+</head>
+<body>
+
+  <div class="mobile-app-container">
+    
+    <header class="app-header">
+      <a href="#" class="brand-logo"><i class="fa-solid fa-hand-holding-medical"></i> TO connect</a>
+      <div class="header-actions">
+        <div class="btn-menu-circle"><i class="fa-solid fa-bars"></i></div>
+        <div class="btn-profile-solid"><i class="fa-solid fa-user"></i></div>
+      </div>
+    </header>
+
+    <section class="trust-section">
+      <h1 class="trust-title">Mejora tu Nivel de Confianza</h1>
+      <p class="trust-desc">Un perfil completo y verificado ayuda a que los mejores especialistas acepten tu solicitud de atención más rápido.</p>
+      
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill"></div>
+      </div>
+      <span class="progress-text">17% completado</span>
+
+      <div style="display: flex; gap: 15px; margin-top: 25px;">
+        <div style="flex: 1; background: var(--bg-card); padding: 15px; border-radius: 16px; text-align: center; border-bottom: 3px solid var(--accent-cyan);">
+          <p style="font-size: 1.3rem; font-weight: 800; color: white;">12</p>
+          <p style="font-size: 0.65rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">Sesiones Concretadas</p>
+        </div>
+        <div style="flex: 1; background: var(--bg-card); padding: 15px; border-radius: 16px; text-align: center; border-bottom: 3px solid var(--accent-pink);">
+          <p style="font-size: 1.3rem; font-weight: 800; color: white;">1</p>
+          <p style="font-size: 0.65rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">Sesiones Canceladas</p>
+        </div>
+      </div>
+
+      <div style="background: rgba(0,0,0,0.15); padding: 20px; border-radius: 20px; margin-top: 20px; text-align: center;">
+        <p style="font-size: 0.9rem; margin-bottom: 15px;">Aumenta tu seguridad y la de tu familia verificando tus datos.</p>
+        <a href="#" style="display: block; background: var(--accent-cyan); color: var(--bg-app); padding: 16px; border-radius: 30px; font-weight: 800; text-decoration: none;">Completar Verificaciones</a>
+      </div>
+    </section>
+
+    <h2 class="grid-label">Tus Verificaciones</h2>
+    <div class="verifications-grid">
+      <div class="card-verification active">
+        <i class="fa-solid fa-id-card"></i>
+        <p class="verification-name" style="color:white">Identidad (RUT)</p>
+        <div class="dot-status"></div>
+      </div>
+      <div class="card-verification">
+        <i class="fa-solid fa-mobile-retro"></i>
+        <p class="verification-name">Teléfono validado</p>
+        <div class="dot-status"></div>
+      </div>
+      <div class="card-verification">
+        <i class="fa-solid fa-notes-medical"></i>
+        <p class="verification-name">Ficha Maestra</p>
+        <div class="dot-status"></div>
+      </div>
+      <div class="card-verification">
+        <i class="fa-brands fa-google"></i>
+        <p class="verification-name">Cuenta vinculada</p>
+        <div class="dot-status"></div>
+      </div>
+    </div>
+
+    <h2 class="grid-label">Actividad y Seguridad</h2>
+    <div class="verifications-grid">
+      <div class="card-verification">
+        <i class="fa-solid fa-shield-halved"></i>
+        <p class="verification-name">Normas aceptadas</p>
+        <div class="dot-status"></div>
+      </div>
+      <div class="card-verification">
+        <i class="fa-solid fa-user-check"></i>
+        <p class="verification-name">Ubicación confirmada</p>
+        <div class="dot-status"></div>
+      </div>
+    </div>
+
+    <h2 class="grid-label">Insignias Sociales</h2>
+    <div class="verifications-grid">
+      <div class="card-verification active">
+        <i class="fa-brands fa-instagram"></i>
+        <p class="verification-name" style="color:white">Fans en Instagram</p>
+        <div class="dot-status"></div>
+      </div>
+      <div class="card-verification">
+        <i class="fa-brands fa-facebook-f"></i>
+        <p class="verification-name">Embajador Facebook</p>
+        <div class="dot-status"></div>
+      </div>
+      <div class="card-verification active">
+        <i class="fa-brands fa-linkedin-in"></i>
+        <p class="verification-name" style="color:white">Red LinkedIn</p>
+        <div class="dot-status"></div>
+      </div>
+      <div class="card-verification">
+        <i class="fa-brands fa-tiktok"></i>
+        <p class="verification-name">Creador TikTok</p>
+        <div class="dot-status"></div>
+      </div>
+    </div>
+
+    <footer class="footer-content">
+      <div class="lang-pill">
+        <span>🇨🇱</span> Español <i class="fa-solid fa-caret-down"></i>
+      </div>
+      
+      <div class="footer-nav-links">
+        <a href="#">Cómo funciona</a>
+        <a href="#">Ayuda</a>
+        <a href="#">Términos y Privacidad</a>
+        <a href="#">Precios</a>
+        <a href="#">Datos de la empresa</a>
+        <a href="#">Normas comunidad</a>
+      </div>
+
+      <div class="social-links">
+        <a href="#" class="social-btn"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="#" class="social-btn"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" class="social-btn"><i class="fa-brands fa-tiktok"></i></a>
+        <a href="#" class="social-btn"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="#" class="social-btn"><i class="fa-brands fa-pinterest-p"></i></a>
+        <a href="#" class="social-btn"><i class="fa-brands fa-youtube"></i></a>
+      </div>
+
+      <p style="font-weight: 700; font-size: 0.9rem; color: var(--accent-cyan); opacity: 0.9;">© 2026 TO connect Chile</p>
+    </footer>
+
+    <nav class="bottom-nav">
+      <a href="inicio.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Inicio</span></a>
+      <a href="buscar.html" class="nav-item"><i class="fa-solid fa-magnifying-glass"></i><span>Buscar</span></a>
+      <a href="mensajes.html" class="nav-item"><i class="fa-solid fa-comment-dots"></i><span>Mensajes</span></a>
+      <a href="perfil.html" class="nav-item active"><i class="fa-solid fa-user-shield"></i><span>Seguridad</span></a>
+    </nav>
+
+  </div>
+</body>
+</html>

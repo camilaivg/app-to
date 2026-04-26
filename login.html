@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>TO connect - Bienvenido</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --bg-app: #2c363b;
+      --bg-card: rgba(58, 70, 76, 0.7);
+      --bg-input: rgba(255, 255, 255, 0.07);
+      --text-primary: #ffffff;
+      --text-secondary: #aab8c0;
+      --accent-cyan: #5fa5a1;
+      --accent-pink: #df7b90;
+      --font-main: 'Nunito', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-main); -webkit-tap-highlight-color: transparent; }
+    body { background-color: #121212; display: flex; justify-content: center; min-height: 100vh; overflow: hidden; }
+
+    .mobile-app-container {
+      width: 100%; max-width: 480px; 
+      background: linear-gradient(180deg, #2c363b 0%, #1a4240 100%); 
+      position: relative; overflow-x: hidden; min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 40px 25px; /* Reduje el padding superior */
+    }
+
+    /* HEADER */
+    .brand-area { text-align: center; margin-bottom: 20px; }
+    .main-logo { font-size: 1.8rem; font-weight: 800; color: white; letter-spacing: -0.5px; }
+    .main-logo span { color: var(--accent-cyan); }
+    .slogan { color: var(--text-secondary); font-weight: 600; font-size: 0.9rem; margin-top: 2px; }
+
+    /* ILUSTRACIÓN TO MÁS PEQUEÑA */
+    .hero-drawing {
+      position: relative;
+      width: 120px; height: 110px; /* Reducido de 180x160 */
+      margin-bottom: 15px;
+      display: flex; justify-content: center; align-items: center;
+    }
+    .ot-icon-main {
+      font-size: 3.8rem; /* Reducido de 5.5rem */
+      color: white; opacity: 0.9;
+      filter: drop-shadow(0 0 15px rgba(95, 165, 161, 0.4));
+      animation: float 4s infinite ease-in-out;
+    }
+    .ot-sparkle {
+      position: absolute; top: 10px; right: 15px;
+      color: var(--accent-pink); font-size: 1.2rem; /* Reducido */
+      animation: pulse-pink 2s infinite;
+    }
+    .ot-brain {
+      position: absolute; bottom: 15px; left: 10px;
+      color: var(--accent-cyan); font-size: 1.5rem; /* Reducido */
+      opacity: 0.6; transform: rotate(-15deg);
+    }
+
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    @keyframes pulse-pink { 0% { transform: scale(1); opacity: 0.7; } 50% { transform: scale(1.2); opacity: 1; } 100% { transform: scale(1); opacity: 0.7; } }
+
+    /* CONTENEDOR LOGIN (GLASSMORPHISM) */
+    .glass-card {
+      width: 100%;
+      background: var(--bg-card);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 30px;
+      padding: 25px 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    /* SELECTOR DE ROL */
+    .role-selection { 
+      width: 100%; display: flex; background: rgba(0,0,0,0.2); 
+      padding: 4px; border-radius: 15px; margin-bottom: 20px; 
+      border: 1px solid rgba(255,255,255,0.05); 
+    }
+    .role-selection input { display: none; }
+    .role-label { 
+      flex: 1; padding: 10px; text-align: center; color: var(--text-secondary); 
+      font-weight: 800; font-size: 0.8rem; cursor: pointer; border-radius: 12px; transition: 0.3s; 
+    }
+    
+    #role-user:checked ~ .label-user { background: var(--accent-cyan); color: var(--bg-app); }
+    #role-pro:checked ~ .label-pro { background: var(--accent-pink); color: white; }
+
+    /* FORMULARIO */
+    .login-form { display: flex; flex-direction: column; gap: 12px; }
+    .input-group { position: relative; }
+    .input-group i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); opacity: 0.6; }
+    .login-input { 
+      width: 100%; background: var(--bg-input); border: 1px solid rgba(255,255,255,0.1); 
+      border-radius: 14px; padding: 16px 16px 16px 45px; color: white; font-size: 0.95rem; 
+      outline: none; transition: 0.3s; 
+    }
+    .login-input:focus { border-color: var(--accent-cyan); background: rgba(255,255,255,0.12); }
+
+    .forgot-pass { text-align: right; color: var(--text-secondary); font-size: 0.8rem; font-weight: 700; text-decoration: none; display: block; margin-top: -5px; }
+
+    .btn-login { 
+      width: 100%; background: var(--accent-cyan); color: var(--bg-app); border: none; 
+      padding: 16px; border-radius: 35px; font-weight: 800; font-size: 1rem; 
+      cursor: pointer; margin-top: 10px; transition: 0.3s; 
+      box-shadow: 0 8px 20px rgba(95, 165, 161, 0.3);
+    }
+    .btn-login:active { transform: scale(0.97); }
+
+    /* SOCIALS */
+    .social-login-text { margin: 20px 0 12px; color: var(--text-secondary); font-size: 0.75rem; font-weight: 800; text-align: center; text-transform: uppercase; letter-spacing: 1px; }
+    .social-btns { display: flex; justify-content: center; gap: 12px; }
+    .social-circle { 
+      width: 45px; height: 45px; background: rgba(255,255,255,0.05); 
+      border-radius: 50%; display: flex; justify-content: center; align-items: center; 
+      color: white; font-size: 1.2rem; text-decoration: none; border: 1px solid rgba(255,255,255,0.1); 
+    }
+
+    .register-link { margin-top: 25px; text-align: center; color: white; font-size: 0.9rem; font-weight: 600; }
+    .register-link a { color: var(--accent-cyan); font-weight: 800; text-decoration: none; }
+
+  </style>
+</head>
+<body>
+
+  <div class="mobile-app-container">
+    
+    <div class="brand-area">
+      <h1 class="main-logo">TO <span>connect</span></h1>
+      <p class="slogan">Rehabilitando con amor y ciencia.</p>
+    </div>
+
+    <div class="hero-drawing">
+      <i class="fa-solid fa-hand-holding-medical ot-icon-main"></i>
+      <i class="fa-solid fa-wand-magic-sparkles ot-sparkle"></i>
+      <i class="fa-solid fa-brain-circuit ot-brain"></i>
+    </div>
+
+    <div class="glass-card">
+      
+      <div class="role-selection">
+        <input type="radio" name="user-role" id="role-user" checked>
+        <label for="role-user" class="role-label label-user">PACIENTE</label>
+        
+        <input type="radio" name="user-role" id="role-pro">
+        <label for="role-pro" class="role-label label-pro">TERAPEUTA</label>
+      </div>
+
+      <form class="login-form" action="./usuario.html" method="POST">
+        <div class="input-group">
+          <i class="fa-solid fa-envelope"></i>
+          <input type="email" class="login-input" placeholder="Correo electrónico" required>
+        </div>
+
+        <div class="input-group">
+          <i class="fa-solid fa-lock"></i>
+          <input type="password" class="login-input" placeholder="Contraseña" required>
+        </div>
+
+        <a href="#" class="forgot-pass">¿Olvidaste el acceso?</a>
+
+        <button type="submit" class="btn-login">Entrar al Sistema</button>
+      </form>
+
+      <div class="social-login-text">O accede con</div>
+      
+      <div class="social-btns">
+        <a href="#" class="social-circle"><i class="fa-brands fa-google"></i></a>
+        <a href="#" class="social-circle"><i class="fa-brands fa-apple"></i></a>
+        <a href="#" class="social-circle"><i class="fa-brands fa-facebook-f"></i></a>
+      </div>
+    </div>
+
+    <p class="register-link">¿No tienes cuenta? <a href="#">Regístrate aquí</a></p>
+
+  </div>
+
+</body>
+</html>

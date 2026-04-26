@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>TO connect - Protocolo SOS</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --bg-app: #2c363b;
+      --bg-card: #3a464c;
+      --bg-input: #445158;
+      --text-primary: #ffffff;
+      --text-secondary: #aab8c0;
+      --accent-cyan: #5fa5a1;
+      --accent-pink: #df7b90;
+      --font-main: 'Nunito', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-main); }
+    body { background-color: #121212; display: flex; justify-content: center; min-height: 100vh; }
+
+    .mobile-app-container {
+      width: 100%; max-width: 480px; background-color: var(--bg-app); color: var(--text-primary);
+      position: relative; overflow-x: hidden; display: flex; flex-direction: column;
+      padding-bottom: 40px;
+    }
+
+    /* HEADER */
+    .app-header { display: flex; align-items: center; padding: 20px; background-color: var(--bg-app); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--bg-input); }
+    .btn-back { color: var(--accent-pink); text-decoration: none; font-size: 1.2rem; margin-right: 15px; }
+    .header-title { font-size: 1.3rem; font-weight: 800; }
+
+    /* HERO SOS */
+    .sos-hero { padding: 40px 20px; text-align: center; background: linear-gradient(to bottom, var(--bg-app), var(--bg-card)); }
+    .sos-icon-pulse { 
+      font-size: 5rem; color: var(--accent-pink); margin-bottom: 20px; 
+      filter: drop-shadow(0 0 15px rgba(223, 123, 144, 0.5));
+      animation: pulse-red 2s infinite;
+    }
+    
+    @keyframes pulse-red {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.05); opacity: 0.8; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .sos-main-title { font-size: 2.2rem; font-weight: 800; margin-bottom: 10px; color: white; }
+    .sos-subtitle { font-size: 1.1rem; color: var(--text-secondary); font-weight: 700; max-width: 80%; margin: 0 auto; }
+
+    /* PASOS DEL PROTOCOLO */
+    .protocol-content { padding: 30px 20px; }
+    .protocol-step { 
+      display: flex; gap: 20px; margin-bottom: 35px; align-items: flex-start;
+      padding: 20px; background: var(--bg-card); border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    .step-icon-box { 
+      width: 50px; height: 50px; background: var(--bg-input); border-radius: 15px;
+      display: flex; justify-content: center; align-items: center; 
+      font-size: 1.5rem; color: var(--accent-cyan); flex-shrink: 0;
+    }
+    .step-info h3 { font-size: 1.2rem; font-weight: 800; margin-bottom: 8px; color: white; }
+    .step-info p { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5; font-weight: 600; }
+
+    /* BANNER DE ACCIÓN */
+    .emergency-banner { 
+      margin: 20px; padding: 25px; border-radius: 24px; 
+      background: rgba(223, 123, 144, 0.1); border: 2px dashed var(--accent-pink);
+      text-align: center;
+    }
+    .emergency-banner p { font-weight: 800; font-size: 1rem; color: var(--accent-pink); margin-bottom: 15px; }
+    .btn-test { 
+      display: inline-block; padding: 12px 25px; background: var(--accent-pink); 
+      color: white; border-radius: 30px; text-decoration: none; font-weight: 800;
+    }
+
+    /* FOOTER */
+    .sos-footer { padding: 40px 20px; text-align: center; color: var(--text-secondary); font-size: 0.9rem; }
+    .sos-footer strong { color: var(--accent-cyan); }
+  </style>
+</head>
+<body>
+
+  <div class="mobile-app-container">
+    
+    <header class="app-header">
+      <a href="javascript:history.back()" class="btn-back"><i class="fa-solid fa-chevron-left"></i></a>
+      <h1 class="header-title">Seguridad TO connect</h1>
+    </header>
+
+    <section class="sos-hero">
+      <div class="sos-icon-pulse"><i class="fa-solid fa-shield-heart"></i></div>
+      <h1 class="sos-main-title">Protocolo SOS</h1>
+      <p class="sos-subtitle">Protección activa para pacientes y terapeutas en domicilio.</p>
+    </section>
+
+    <main class="protocol-content">
+      
+      <div class="protocol-step">
+        <div class="step-icon-box"><i class="fa-solid fa-location-crosshairs"></i></div>
+        <div class="step-info">
+          <h3>Geolocalización Viva</h3>
+          <p>Al iniciar una sesión confirmada, tu ubicación se comparte de forma privada con nuestro Centro de Seguridad para monitoreo preventivo.</p>
+        </div>
+      </div>
+
+      <div class="protocol-step">
+        <div class="step-icon-box" style="color: var(--accent-pink);"><i class="fa-solid fa-tower-broadcast"></i></div>
+        <div class="step-info">
+          <h3>Botón de Pánico</h3>
+          <p>Ubicado siempre visible en el chat de la sesión. Un toque activa alertas automáticas a tus contactos de emergencia y a las autoridades locales.</p>
+        </div>
+      </div>
+
+      <div class="protocol-step">
+        <div class="step-icon-box"><i class="fa-solid fa-file-waveform"></i></div>
+        <div class="step-info">
+          <h3>Registro de Evidencia</h3>
+          <p>En caso de incidente, la app habilita una grabación de audio encriptada que sirve como respaldo técnico ante cualquier eventualidad profesional.</p>
+        </div>
+      </div>
+
+      <div class="protocol-step">
+        <div class="step-icon-box"><i class="fa-solid fa-headset"></i></div>
+        <div class="step-info">
+          <h3>Soporte TO Prioritario</h3>
+          <p>Atención inmediata por parte de nuestro equipo de gestión de crisis disponible las 24 horas del día.</p>
+        </div>
+      </div>
+
+      <div class="emergency-banner">
+        <p>¿Quieres configurar tus contactos de emergencia ahora?</p>
+        <a href="#" class="btn-test">Configurar Contactos</a>
+      </div>
+
+    </main>
+
+    <footer class="sos-footer">
+      <p>Este protocolo es parte del compromiso de <strong>TO connect</strong> por dignificar la terapia ocupacional domiciliaria.</p>
+      <p style="margin-top: 20px; font-weight: 800; color: var(--accent-cyan);">© 2026 Seguridad Clínica Chile</p>
+    </footer>
+
+  </div>
+
+</body>
+</html>

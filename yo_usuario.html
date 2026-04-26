@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>TO connect - Mi Ficha Maestra</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --bg-app: #1e2528;
+      --bg-card: #2c363b;
+      --bg-input: #3a464c;
+      --text-primary: #ffffff;
+      --text-secondary: #aab8c0;
+      --accent-cyan: #5fa5a1;
+      --accent-pink: #df7b90;
+      --accent-red: #e27d8f;
+      --font-main: 'Nunito', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-main); }
+    body { background-color: #121212; display: flex; justify-content: center; min-height: 100vh; }
+
+    .mobile-app-container {
+      width: 100%; max-width: 480px; background-color: var(--bg-app); color: var(--text-primary);
+      position: relative; overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh;
+      padding-bottom: 100px;
+    }
+
+    /* HEADER PERFIL USUARIO */
+    .profile-header {
+      padding: 40px 20px 20px 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .avatar-box {
+      width: 100px; height: 100px;
+      background-color: var(--bg-card);
+      border-radius: 30px;
+      display: flex; justify-content: center; align-items: center;
+      border: 2px solid var(--accent-cyan);
+      margin-bottom: 15px;
+      position: relative;
+    }
+    .avatar-box i { font-size: 3rem; color: var(--accent-cyan); }
+    .badge-protected {
+      position: absolute; top: -5px; right: -5px;
+      background: var(--accent-cyan); color: var(--bg-app);
+      width: 28px; height: 28px; border-radius: 50%;
+      display: flex; justify-content: center; align-items: center; font-size: 0.8rem;
+      border: 3px solid var(--bg-app);
+    }
+
+    .user-name { font-size: 1.6rem; font-weight: 800; margin-bottom: 4px; }
+    .user-meta { font-size: 0.85rem; color: var(--text-secondary); font-weight: 600; }
+
+    /* CONTENIDO FICHA CLÍNICA */
+    .ficha-scroll { padding: 0 20px; display: flex; flex-direction: column; gap: 25px; }
+    .section-label { font-size: 1.1rem; font-weight: 800; margin-bottom: 12px; color: var(--text-primary); }
+    
+    .clinical-card {
+      background-color: var(--bg-card);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .row-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    
+    .input-wrap { display: flex; flex-direction: column; gap: 6px; margin-bottom: 15px; }
+    .input-wrap:last-child { margin-bottom: 0; }
+    .label-tag { font-size: 0.75rem; font-weight: 800; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
+    
+    .field-styled {
+      background-color: var(--bg-input);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 12px;
+      padding: 12px 15px;
+      color: white;
+      font-size: 0.95rem;
+      font-weight: 600;
+      width: 100%;
+      outline: none;
+    }
+    .field-styled:focus { border-color: var(--accent-cyan); }
+    
+    textarea.field-styled { min-height: 80px; resize: none; line-height: 1.4; }
+
+    /* BOTÓN GUARDAR */
+    .btn-save-master {
+      background-color: var(--accent-cyan);
+      color: var(--bg-app);
+      border: none;
+      padding: 18px;
+      border-radius: 20px;
+      font-weight: 800;
+      font-size: 1rem;
+      margin: 30px 20px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: transform 0.2s;
+    }
+
+    /* BOTTOM NAV (UNIFICADO NUNITO 700) */
+    .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background-color: var(--bg-app); display: flex; justify-content: space-around; align-items: center; padding: 12px 0 16px 0; border-top: 1px solid var(--bg-card); z-index: 500; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 6px; text-decoration: none; color: var(--text-secondary); font-family: var(--font-main) !important; font-weight: 700; font-size: 0.85rem; }
+    .nav-item.active { color: var(--accent-cyan); }
+    .nav-item i { font-size: 1.4rem; }
+
+  </style>
+</head>
+<body>
+
+  <div class="mobile-app-container">
+    
+    <header class="profile-header">
+      <div class="avatar-box">
+        <i class="fa-solid fa-user-injured"></i>
+        <div class="badge-protected"><i class="fa-solid fa-shield-halved"></i></div>
+      </div>
+      <h1 class="user-name">Camila Oyarzún</h1>
+      <p class="user-meta">ID: 19.882.XXX-K · Ñuñoa</p>
+    </header>
+
+    <div class="ficha-scroll">
+
+      <section>
+        <h2 class="section-label">Información SOS</h2>
+        <div class="clinical-card" style="border-left: 5px solid var(--accent-red);">
+          <div class="row-fields">
+            <div class="input-wrap">
+              <label class="label-tag">Grupo Sangre</label>
+              <select class="field-styled">
+                <option>O Rh+</option>
+                <option>A Rh+</option>
+                <option>B Rh+</option>
+              </select>
+            </div>
+            <div class="input-wrap">
+              <label class="label-tag">Edad</label>
+              <input type="number" class="field-styled" value="27">
+            </div>
+          </div>
+          <div class="input-wrap">
+            <label class="label-tag">Alergias Críticas</label>
+            <input type="text" class="field-styled" value="Penicilina, Látex" style="color: var(--accent-red);">
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-label">Antecedentes Médicos</h2>
+        <div class="clinical-card">
+          <div class="input-wrap">
+            <label class="label-tag">Diagnóstico Actual</label>
+            <input type="text" class="field-styled" value="ACV Isquémico / Hemiparesia">
+          </div>
+          <div class="input-wrap">
+            <label class="label-tag">Historial Relevante</label>
+            <textarea class="field-styled">Hipertensión arterial controlada. Cirugía de cadera (2024). Seguimiento en Hospital Buin.</textarea>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-label">Situación Actual (T.O.)</h2>
+        <div class="clinical-card" style="border-left: 5px solid var(--accent-cyan);">
+          <div class="input-wrap">
+            <label class="label-tag">¿Qué busco trabajar?</label>
+            <textarea class="field-styled">Recuperar motricidad fina para volver a realizar macramé y mejorar independencia en alimentación.</textarea>
+          </div>
+          <div class="row-fields">
+            <div class="input-wrap">
+              <label class="label-tag">Nivel de Apoyo</label>
+              <select class="field-styled">
+                <option>Moderado</option>
+                <option>Mínimo</option>
+                <option>Total</option>
+              </select>
+            </div>
+            <div class="input-wrap">
+              <label class="label-tag">Foco Principal</label>
+              <input type="text" class="field-styled" value="Actividades Vida Diaria">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-label">Red de Cuidado</h2>
+        <div class="clinical-card">
+          <div class="input-wrap">
+            <label class="label-tag">Cuidador / Familiar a cargo</label>
+            <input type="text" class="field-styled" value="Ricardo (Pareja)">
+          </div>
+          <div class="input-wrap">
+            <label class="label-tag">Centro de Salud de referencia</label>
+            <input type="text" class="field-styled" value="Hospital San Luis de Buin">
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <button class="btn-save-master">Actualizar mi Ficha Maestra</button>
+
+    <nav class="bottom-nav">
+      <a href="inicio.html" class="nav-item">
+        <i class="fa-solid fa-house"></i>
+        <span>Inicio</span>
+      </a>
+      <a href="index.html" class="nav-item">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <span>Buscar</span>
+      </a>
+      <a href="mensajes.html" class="nav-item">
+        <i class="fa-solid fa-comment-dots"></i>
+        <span>Mensajes</span>
+      </a>
+      <a href="marketplace.html" class="nav-item active">
+        <i class="fa-solid fa-user-pen"></i>
+        <span>Mi Ficha</span>
+      </a>
+    </nav>
+
+  </div>
+</body>
+</html>

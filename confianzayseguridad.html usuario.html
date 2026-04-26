@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>TO connect - Confianza Clínica</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --bg-app: #2c363b;
+      --bg-card: #3a464c;
+      --bg-input: #445158;
+      --text-primary: #ffffff;
+      --text-secondary: #aab8c0;
+      --accent-cyan: #5fa5a1;
+      --accent-pink: #df7b90;
+      --font-main: 'Nunito', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-main); }
+    body { background-color: #121212; display: flex; justify-content: center; min-height: 100vh; }
+
+    .mobile-app-container {
+      width: 100%; max-width: 480px; background-color: var(--bg-app); color: var(--text-primary);
+      position: relative; overflow-x: hidden; display: flex; flex-direction: column;
+    }
+
+    /* HEADER MASTER (Referencia 65877.jpg) */
+    .app-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; background-color: var(--bg-app); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--bg-input); }
+    .brand-logo { font-size: 1.4rem; font-weight: 800; color: var(--accent-cyan); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+    .header-actions { display: flex; align-items: center; gap: 12px; }
+    .btn-hollow { width: 38px; height: 38px; border-radius: 50%; border: 1.5px solid var(--text-secondary); display: flex; justify-content: center; align-items: center; color: white; cursor: pointer; }
+    .btn-solid-user { width: 38px; height: 38px; border-radius: 50%; background-color: var(--text-secondary); color: var(--bg-app); display: flex; justify-content: center; align-items: center; font-size: 1.2rem; cursor: pointer; }
+
+    /* SUB-NAV */
+    .sub-nav { display: flex; background-color: var(--bg-app); border-bottom: 1px solid var(--bg-input); }
+    .sub-nav-item { padding: 15px 0; color: var(--text-secondary); font-weight: 700; text-decoration: none; font-size: 1.05rem; flex: 1; text-align: center; }
+    .sub-nav-item.active { color: var(--text-primary); border-bottom: 3px solid var(--accent-cyan); }
+
+    /* HERO CLINICO */
+    .hero-title { font-size: 2rem; font-weight: 800; padding: 25px 20px 10px 20px; line-height: 1.2; text-align: center; }
+    .hero-image-wrapper { position: relative; width: 100%; height: 240px; background: url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=800') center/cover; }
+    .hero-wave { position: absolute; bottom: -1px; left: 0; width: 100%; height: 45px; }
+    .hero-wave path.accent { fill: var(--accent-pink); opacity: 0.8;}
+    .hero-wave path.bg { fill: var(--bg-app); }
+
+    .intro-text { font-size: 1.05rem; color: var(--text-primary); padding: 25px 20px; line-height: 1.6; text-align: center; font-weight: 600; }
+
+    /* SLIDERS HORIZONTALES */
+    .section-title { font-size: 1.5rem; font-weight: 800; padding: 20px; border-top: 1px solid var(--bg-input); }
+    .horizontal-scroll { display: flex; overflow-x: auto; gap: 15px; padding: 0 20px 30px; scroll-snap-type: x mandatory; scrollbar-width: none; }
+    .horizontal-scroll::-webkit-scrollbar { display: none; }
+    
+    .feature-card { min-width: 280px; background-color: var(--bg-card); border-radius: 20px; padding: 30px 20px; scroll-snap-align: center; display: flex; flex-direction: column; border: 1px solid rgba(255,255,255,0.05); }
+    .card-icon-box { font-size: 3.5rem; color: var(--accent-cyan); text-align: center; margin-bottom: 20px; position: relative; }
+    .badge-check { position: absolute; bottom: -5px; right: 35%; background: var(--accent-pink); color: white; border-radius: 50%; width: 26px; height: 26px; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; border: 3px solid var(--bg-card); }
+    
+    .card-title { font-size: 1.3rem; font-weight: 800; margin-bottom: 12px; }
+    .card-text { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 20px; flex: 1; }
+    .card-link { color: var(--accent-cyan); text-decoration: none; font-weight: 800; display: flex; align-items: center; gap: 5px; }
+
+    /* FAQ ACORDEÓN */
+    .faq-section { padding: 40px 20px; background: var(--bg-card); }
+    .faq-item { border-bottom: 1px solid var(--bg-input); }
+    .faq-input { display: none; }
+    .faq-label { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; font-weight: 700; cursor: pointer; color: var(--text-primary); }
+    .faq-label i { color: var(--accent-pink); transition: 0.3s; }
+    .faq-content { max-height: 0; overflow: hidden; transition: 0.4s ease-out; color: var(--text-secondary); font-size: 0.95rem; line-height: 1.5; }
+    
+    .faq-input:checked ~ .faq-content { max-height: 300px; padding-bottom: 20px; }
+    .faq-input:checked + .faq-label i { transform: rotate(180deg); color: var(--accent-cyan); }
+
+    /* REVIEWS CLINICAS */
+    .reviews-section { padding: 40px 0; }
+    .review-card { min-width: 270px; background-color: var(--bg-card); border-radius: 16px; padding: 25px; scroll-snap-align: center; }
+    .quote-mark { font-size: 2rem; color: var(--accent-pink); opacity: 0.5; margin-bottom: 10px; }
+
+    /* FOOTER */
+    .footer-final { display: flex; flex-direction: column; align-items: center; padding: 40px 20px 80px; background-color: var(--bg-card); text-align: center; }
+    .lang-pill { background: var(--bg-input); border-radius: 30px; display: flex; width: 100%; margin-bottom: 30px; overflow: hidden; }
+    .lang-btn { flex: 1; padding: 14px; font-weight: 800; color: white; display: flex; justify-content: center; align-items: center; gap: 8px; }
+
+    /* BOTTOM NAV (Coherencia Senior) */
+    .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background: var(--bg-app); display: flex; justify-content: space-around; padding: 12px 0 25px; border-top: 1px solid var(--bg-input); z-index: 500; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 5px; text-decoration: none; color: var(--text-secondary); font-weight: 700; font-size: 0.8rem; }
+    .nav-item.active { color: var(--accent-cyan); }
+    .nav-item i { font-size: 1.4rem; }
+  </style>
+</head>
+<body>
+
+  <div class="mobile-app-container">
+    
+    <header class="app-header">
+      <a href="inicio.html" class="brand-logo"><i class="fa-solid fa-hand-holding-medical"></i> TO connect</a>
+      <div class="header-actions">
+        <div class="btn-hollow"><i class="fa-solid fa-bars"></i></div>
+        <div class="btn-solid-user"><i class="fa-solid fa-user"></i></div>
+      </div>
+    </header>
+    
+    <nav class="sub-nav">
+      <a href="#" class="sub-nav-item active">Confianza y seguridad</a>
+      <a href="#" class="sub-nav-item">Protocolo SOS</a>
+    </nav>
+
+    <h1 class="hero-title">En salud clínica, la seguridad es lo primero</h1>
+    <div class="hero-image-wrapper">
+      <svg class="hero-wave" viewBox="0 0 1440 120" preserveAspectRatio="none">
+        <path class="accent" d="M0,60 C320,160 800,-40 1440,60 L1440,120 L0,120 Z" transform="translate(0, -5)"></path>
+        <path class="bg" d="M0,80 C400,140 800,20 1440,80 L1440,120 L0,120 Z"></path>
+      </svg>
+    </div>
+    
+    <p class="intro-text">Sabemos que abrir las puertas de tu hogar para una terapia domiciliaria requiere confianza absoluta. En TO connect, hemos diseñado un ecosistema de seguridad basado en la validación profesional y el respaldo clínico, para que tu única preocupación sea la autonomía funcional.</p>
+
+    <h2 class="section-title">Nuestras medidas de confianza</h2>
+    <div class="horizontal-scroll">
+      
+      <div class="feature-card">
+        <div class="card-icon-box">
+          <i class="fa-solid fa-id-card-clip"></i>
+          <div class="badge-check"><i class="fa-solid fa-check"></i></div>
+        </div>
+        <h3 class="card-title">Validación Registro SIS</h3>
+        <p class="card-text">Verificamos el número de registro de cada Terapeuta Ocupacional en la Superintendencia de Salud de Chile. Solo profesionales reales y habilitados pueden atenderte.</p>
+        <a href="#" class="card-link">Ver proceso SIS <i class="fa-solid fa-chevron-right"></i></a>
+      </div>
+
+      <div class="feature-card">
+        <div class="card-icon-box">
+          <i class="fa-solid fa-shield-heart"></i>
+          <div class="badge-check" style="background:var(--accent-cyan)"><i class="fa-solid fa-plus"></i></div>
+        </div>
+        <h3 class="card-title">Protocolo Hogar Seguro</h3>
+        <p class="card-text">Implementamos el Protocolo SOS para visitas domiciliarias. Tanto el paciente como el terapeuta cuentan con herramientas de geolocalización y alerta en tiempo real.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="card-icon-box"><i class="fa-solid fa-file-medical"></i></div>
+        <h3 class="card-title">Ficha Maestra Encriptada</h3>
+        <p class="card-text">Tus antecedentes clínicos están protegidos bajo estándares de privacidad médica. Tú decides qué terapeuta puede ver tu diagnóstico.</p>
+      </div>
+
+    </div>
+
+    <h2 class="section-title">Cómo tener una sesión segura</h2>
+    <div class="horizontal-scroll">
+      
+      <div class="feature-card">
+        <div class="card-icon-box"><i class="fa-solid fa-comments-dollar"></i></div>
+        <h3 class="card-title">Transacciones Internas</h3>
+        <p class="card-text">Realiza tus pagos y coordinaciones siempre por TO connect. Esto activa automáticamente nuestro seguro de sesión y el respaldo legal ante cualquier inconveniente.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="card-icon-box"><i class="fa-solid fa-user-doctor"></i></div>
+        <h3 class="card-title">Inspección de Perfil</h3>
+        <p class="card-text">Revisa las especialidades del TO (Mano, Neuro, Pediatría) y sus valoraciones previas de otros pacientes para asegurar el match perfecto.</p>
+      </div>
+
+    </div>
+
+    <section class="faq-section">
+      <h2 style="font-size:1.4rem; font-weight:800; margin-bottom:20px;">Dudas sobre seguridad</h2>
+      
+      <div class="faq-item">
+        <input type="checkbox" id="faq1" class="faq-input">
+        <label for="faq1" class="faq-label"><span>¿Cómo verifican a los especialistas?</span><i class="fa-solid fa-chevron-down"></i></label>
+        <div class="faq-content"><p>Cruzamos el RUT del profesional con la base de datos pública de la Superintendencia de Salud (SIS) para validar su título y especialidad antes de permitirles publicar servicios.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <input type="checkbox" id="faq2" class="faq-input">
+        <label for="faq2" class="faq-label"><span>¿Qué es el botón SOS domiciliario?</span><i class="fa-solid fa-chevron-down"></i></label>
+        <div class="faq-content"><p>Es una función exclusiva de nuestra App que permite enviar una alerta inmediata a contactos de emergencia si ocurre un incidente durante una sesión en casa.</p></div>
+      </div>
+
+    </section>
+
+    <section class="reviews-section">
+      <div style="text-align:center; padding:0 20px 25px;">
+        <h2 style="font-size:1.5rem; font-weight:800;">Confianza de la Comunidad</h2>
+        <div style="color:#ffb400; font-size:1.3rem; margin:10px 0;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i> <span style="color:white; font-weight:800;">4.9</span></div>
+      </div>
+
+      <div class="horizontal-scroll">
+        <div class="review-card">
+          <i class="fa-solid fa-quote-left quote-mark"></i>
+          <p>"La validación del SIS me dio la tranquilidad necesaria para contratar a una TO de mano para mi madre."</p>
+          <div style="font-weight:800; color:var(--accent-cyan);">Camila Oyarzún</div>
+        </div>
+        <div class="review-card">
+          <i class="fa-solid fa-quote-left quote-mark"></i>
+          <p>"Como profesional, me siento respaldado por los protocolos de seguridad de la plataforma."</p>
+          <div style="font-weight:800; color:var(--accent-cyan);">Ricardo Jiménez</div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer-final">
+      <div class="lang-pill">
+        <div class="lang-btn" style="border-right: 1px solid var(--bg-app);">🇨🇱</div>
+        <div class="lang-btn">Español <i class="fa-solid fa-chevron-down"></i></div>
+      </div>
+      
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:30px;">
+        <a href="#" style="color:white; text-decoration:none; font-weight:600;">Privacidad</a>
+        <a href="#" style="color:white; text-decoration:none; font-weight:600;">Ayuda</a>
+        <a href="#" style="color:white; text-decoration:none; font-weight:600;">Términos</a>
+        <a href="#" style="color:white; text-decoration:none; font-weight:600;">Precios</a>
+      </div>
+
+      <div style="display:flex; gap:15px; margin-bottom:30px;">
+        <a href="#" style="color:white; font-size:1.2rem;"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" style="color:white; font-size:1.2rem;"><i class="fa-brands fa-tiktok"></i></a>
+        <a href="#" style="color:white; font-size:1.2rem;"><i class="fa-brands fa-linkedin"></i></a>
+      </div>
+
+      <p style="font-weight:700; color:var(--accent-cyan); font-size:0.9rem;"><i class="fa-solid fa-hand-holding-medical"></i> © 2026 TO connect Chile</p>
+    </footer>
+
+    <nav class="bottom-nav">
+      <a href="inicio.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Inicio</span></a>
+      <a href="buscar.html" class="nav-item"><i class="fa-solid fa-magnifying-glass"></i><span>Buscar</span></a>
+      <a href="mensajes.html" class="nav-item"><i class="fa-solid fa-comment-dots"></i><span>Mensajes</span></a>
+      <a href="cuenta.html" class="nav-item active"><i class="fa-solid fa-user-shield"></i><span>Seguridad</span></a>
+    </nav>
+
+  </div>
+</body>
+</html>

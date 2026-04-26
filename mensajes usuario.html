@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>TO connect - Centro de Mensajería</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --bg-app: #2c363b;
+      --bg-card: #3a464c;
+      --bg-input: #445158;
+      --text-primary: #ffffff;
+      --text-secondary: #aab8c0;
+      --accent-cyan: #5fa5a1;
+      --accent-pink: #df7b90;
+      --accent-red: #e27d8f;
+      --font-main: 'Nunito', sans-serif;
+      --shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-main); }
+    body { background-color: #121212; display: flex; justify-content: center; min-height: 100vh; }
+
+    .mobile-app-container {
+      width: 100%; max-width: 480px; background-color: var(--bg-app); color: var(--text-primary);
+      position: relative; overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh;
+      padding-bottom: 90px;
+    }
+
+    /* HEADER PREMIUM */
+    .app-header { display: flex; justify-content: space-between; align-items: center; padding: 20px; background-color: var(--bg-app); }
+    .header-title { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.5px; }
+    
+    .btn-emergency { background-color: var(--accent-red); color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: 800; font-size: 0.8rem; display: flex; align-items: center; gap: 8px; box-shadow: 0 0 15px rgba(226, 125, 143, 0.4); }
+
+    /* PRÓXIMA CITA */
+    .next-session-card { background: linear-gradient(135deg, var(--accent-cyan), #4a8a86); margin: 0 20px 20px 20px; padding: 16px; border-radius: 16px; box-shadow: var(--shadow); position: relative; overflow: hidden; }
+    .next-session-card::after { content: '\f133'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; right: -10px; bottom: -10px; font-size: 5rem; opacity: 0.1; }
+
+    /* BANDEJA DE CHATS */
+    .inbox-container { flex: 1; background-color: var(--bg-app); border-radius: 30px 30px 0 0; padding-top: 10px; }
+    .tabs { display: flex; padding: 10px 20px; gap: 20px; }
+    .tab { font-weight: 800; font-size: 0.95rem; color: var(--text-secondary); cursor: pointer; padding-bottom: 5px; border-bottom: 3px solid transparent; }
+    .tab.active { color: white; border-bottom-color: var(--accent-pink); }
+
+    .chat-list { display: flex; flex-direction: column; }
+    .chat-item { display: flex; padding: 16px 20px; gap: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); text-decoration: none; color: inherit; }
+    .chat-item.unread { background-color: rgba(95, 165, 161, 0.05); }
+
+    .avatar-wrapper { position: relative; }
+    .avatar-img { width: 56px; height: 56px; border-radius: 18px; object-fit: cover; }
+    .specialty-icon { position: absolute; -right: 5px; -bottom: 5px; width: 22px; height: 22px; background: var(--bg-card); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 0.7rem; border: 2px solid var(--bg-app); color: var(--accent-cyan); }
+
+    .chat-info { flex: 1; min-width: 0; }
+    .chat-name-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+    .chat-name { font-weight: 800; font-size: 1rem; color: white; }
+    .chat-time { font-size: 0.7rem; color: var(--text-secondary); }
+    .chat-preview { font-size: 0.85rem; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    /* INDICADORES CLÍNICOS */
+    .clinical-tag { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 0.65rem; font-weight: 800; margin-top: 8px; text-transform: uppercase; }
+    .tag-scheduled { background-color: var(--bg-pink-soft); color: var(--accent-pink); }
+    .tag-waiting { background-color: rgba(255, 255, 255, 0.1); color: var(--text-secondary); }
+
+    /* FOOTER DE ESTADO DE BÚSQUEDA */
+    .search-status-card { background-color: var(--bg-card); margin: 20px; padding: 16px; border-radius: 16px; border-left: 4px solid var(--accent-cyan); }
+    .btn-cancel { background: transparent; border: 1px solid var(--accent-red); color: var(--accent-red); padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 800; cursor: pointer; margin-top: 10px; }
+
+    /* =========================================
+       BOTTOM NAV PULIDO (CORRECCIÓN DE TAMAÑO Y FUENTE)
+       ========================================= */
+    .bottom-nav { 
+      position: fixed; 
+      bottom: 0; 
+      left: 50%; 
+      transform: translateX(-50%); 
+      width: 100%; 
+      max-width: 480px; 
+      background-color: var(--bg-app); 
+      display: flex; 
+      justify-content: space-around; 
+      align-items: center; 
+      padding: 12px 0 16px 0; 
+      border-top: 1px solid var(--bg-card); 
+      z-index: 500; 
+    }
+    
+    .nav-item { 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      gap: 6px; 
+      text-decoration: none; 
+      color: var(--text-secondary); 
+      /* Ajuste de tamaño y fuente Nunito 700 */
+      font-family: var(--font-main) !important;
+      font-size: 0.85rem; 
+      font-weight: 700; 
+    }
+
+    .nav-item i { 
+      font-size: 1.4rem; /* Tamaño de icono Premium */
+    }
+
+    .nav-item.active { 
+      color: var(--accent-cyan); 
+    }
+  </style>
+</head>
+<body>
+
+  <div class="mobile-app-container">
+    
+    <header class="app-header">
+      <div class="header-title">Mensajes</div>
+      <button class="btn-emergency">
+        <i class="fa-solid fa-circle-exclamation"></i> SOS
+      </button>
+    </header>
+
+    <div class="next-session-card">
+      <p style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; opacity: 0.9;">Próxima Sesión</p>
+      <h3 style="font-size: 1.2rem; font-weight: 800; margin: 4px 0;">Martes, 28 de Abril</h3>
+      <p style="font-size: 0.85rem;">Con <b>Carolina Vidal</b> • 16:00 hrs</p>
+      <div style="margin-top: 12px; display: flex; gap: 10px;">
+        <span style="background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700;">Ver pauta de ingreso</span>
+      </div>
+    </div>
+
+    <div class="inbox-container">
+      <div class="tabs">
+        <span class="tab active">Conversaciones</span>
+        <span class="tab">Archivados</span>
+      </div>
+
+      <div class="chat-list">
+        <a href="#" class="chat-item unread">
+          <div class="avatar-wrapper">
+            <img src="https://picsum.photos/100/100?random=11" class="avatar-img">
+            <div class="specialty-icon"><i class="fa-solid fa-hand-fist"></i></div>
+          </div>
+          <div class="chat-info">
+            <div class="chat-name-row">
+              <span class="chat-name">Carolina Vidal</span>
+              <span class="chat-time">10:45 AM</span>
+            </div>
+            <p class="chat-preview">Confirmado. Recuerda tener los materiales de termoplástico listos...</p>
+            <span class="clinical-tag tag-scheduled">Cita Confirmada</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <section class="search-status-card">
+      <p style="font-size: 0.85rem; font-weight: 800; color: var(--accent-cyan); text-transform: uppercase;">Estado de Búsqueda</p>
+      <p style="font-size: 0.9rem; margin-top: 4px;">Actualmente buscando <b>Especialista en Mano</b> en Ñuñoa.</p>
+      <button class="btn-cancel">Cancelar solicitud de servicio</button>
+    </section>
+
+    <nav class="bottom-nav">
+      <a href="inicio.html" class="nav-item">
+        <i class="fa-solid fa-house"></i>
+        <span>Inicio</span>
+      </a>
+      <a href="index.html" class="nav-item">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <span>Buscar</span>
+      </a>
+      <a href="mensajes.html" class="nav-item active">
+        <i class="fa-solid fa-comment-dots"></i>
+        <span>Mensajes</span>
+      </a>
+      <a href="marketplace.html" class="nav-item">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span>Tienda</span>
+      </a>
+    </nav>
+
+  </div>
+</body>
+</html>

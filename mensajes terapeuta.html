@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>TO connect - Mensajería Clínica</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --bg-app: #2c363b;
+      --bg-card: #3a464c;
+      --bg-input: #445158;
+      --text-primary: #ffffff;
+      --text-secondary: #aab8c0;
+      --accent-cyan: #5fa5a1;
+      --accent-pink: #df7b90;
+      --font-main: 'Nunito', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-main); -webkit-tap-highlight-color: transparent; }
+    body { background-color: #121212; display: flex; justify-content: center; min-height: 100vh; overflow-x: hidden; }
+
+    .mobile-app-container {
+      width: 100%; max-width: 480px; background-color: var(--bg-app); color: var(--text-primary);
+      position: relative; height: 100vh; display: flex; flex-direction: column;
+    }
+
+    /* HEADER MASTER (Referencia 65877.jpg) */
+    .app-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; background-color: var(--bg-app); border-bottom: 1px solid var(--bg-input); z-index: 100; }
+    .brand-logo { font-size: 1.4rem; font-weight: 800; color: var(--accent-cyan); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+    .header-actions { display: flex; gap: 12px; }
+    .btn-hollow { width: 38px; height: 38px; border-radius: 50%; border: 1.5px solid var(--text-secondary); display: flex; justify-content: center; align-items: center; color: white; }
+
+    /* FILTROS DE BANDEJA */
+    .chat-filters { padding: 15px 20px; display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; }
+    .chat-filters::-webkit-scrollbar { display: none; }
+    .filter-tab { padding: 8px 18px; border-radius: 20px; background: var(--bg-card); font-size: 0.85rem; font-weight: 700; color: var(--text-secondary); white-space: nowrap; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; }
+    .filter-tab.active { background: var(--accent-cyan); color: var(--bg-app); }
+
+    /* BARRA DE BÚSQUEDA */
+    .search-box { padding: 0 20px 15px; }
+    .search-inner { position: relative; width: 100%; }
+    .search-inner i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); font-size: 0.9rem; }
+    .search-input { width: 100%; background: var(--bg-input); border: none; padding: 12px 15px 12px 40px; border-radius: 15px; color: white; font-size: 0.95rem; outline: none; }
+
+    /* LISTA DE CHATS */
+    .chats-container { flex: 1; overflow-y: auto; padding-bottom: 100px; scrollbar-width: none; }
+    .chats-container::-webkit-scrollbar { display: none; }
+
+    .chat-item { display: flex; gap: 15px; padding: 18px 20px; border-bottom: 1px solid rgba(255,255,255,0.03); transition: 0.3s; cursor: pointer; text-decoration: none; color: inherit; }
+    .chat-item:active { background: rgba(255,255,255,0.03); }
+
+    .avatar-box { position: relative; width: 55px; height: 55px; flex-shrink: 0; }
+    .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+    .online-indicator { position: absolute; bottom: 2px; right: 2px; width: 12px; height: 12px; background: #4caf50; border: 2px solid var(--bg-app); border-radius: 50%; }
+
+    .chat-info { flex: 1; min-width: 0; }
+    .chat-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px; }
+    .chat-name { font-size: 1.05rem; font-weight: 800; }
+    .chat-time { font-size: 0.75rem; color: var(--text-secondary); font-weight: 600; }
+
+    .chat-msg-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+    .last-msg { font-size: 0.9rem; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .unread-badge { background: var(--accent-pink); color: white; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 10px; font-size: 0.7rem; font-weight: 800; display: flex; justify-content: center; align-items: center; }
+
+    .clinical-tag { display: inline-flex; align-items: center; gap: 4px; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; margin-top: 6px; color: var(--accent-cyan); background: rgba(95, 165, 161, 0.1); padding: 2px 8px; border-radius: 6px; }
+
+    /* AVISO SEGURIDAD */
+    .security-toast { margin: 10px 20px; padding: 12px; background: rgba(0,0,0,0.2); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 10px; }
+    .security-toast i { color: #ffb400; font-size: 0.8rem; }
+    .security-toast p { font-size: 0.75rem; color: var(--text-secondary); font-weight: 600; line-height: 1.3; }
+
+    /* BOTTOM NAV */
+    .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background-color: var(--bg-app); display: flex; justify-content: space-around; padding: 12px 0 25px; border-top: 1px solid var(--bg-card); z-index: 500; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 5px; text-decoration: none; color: var(--text-secondary); font-weight: 700; font-size: 0.8rem; }
+    .nav-item.active { color: var(--accent-cyan); }
+    .nav-item i { font-size: 1.4rem; }
+  </style>
+</head>
+<body>
+
+  <div class="mobile-app-container">
+    
+    <header class="app-header">
+      <div class="brand-logo"><i class="fa-solid fa-hand-holding-medical"></i> TO connect</div>
+      <div class="header-actions">
+        <div class="btn-hollow"><i class="fa-solid fa-magnifying-glass"></i></div>
+        <div class="btn-hollow" style="background:var(--text-secondary); color:var(--bg-app); border:none;"><i class="fa-solid fa-user"></i></div>
+      </div>
+    </header>
+
+    <div class="chat-filters">
+      <div class="filter-tab active">Todos</div>
+      <div class="filter-tab">Pacientes</div>
+      <div class="filter-tab">Evaluaciones</div>
+      <div class="filter-tab">Marketplace</div>
+    </div>
+
+    <div class="search-box">
+      <div class="search-inner">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" class="search-input" placeholder="Buscar paciente o mensaje...">
+      </div>
+    </div>
+
+    <div class="security-toast">
+      <i class="fa-solid fa-lock"></i>
+      <p>Tus mensajes y pautas clínicas están cifrados. Solo tú y el profesional pueden acceder a la información de salud compartida.</p>
+    </div>
+
+    <main class="chats-container">
+      
+      <a href="chat-view.html" class="chat-item">
+        <div class="avatar-box">
+          <img src="https://picsum.photos/100/100?random=10" class="avatar-img">
+          <div class="online-indicator"></div>
+        </div>
+        <div class="chat-info">
+          <div class="chat-header">
+            <span class="chat-name">Familia González</span>
+            <span class="chat-time">14:25</span>
+          </div>
+          <div class="chat-msg-row">
+            <p class="last-msg">Hola, ¿podemos adelantar la sesión?</p>
+            <div class="unread-badge">2</div>
+          </div>
+          <span class="clinical-tag"><i class="fa-solid fa-file-medical"></i> Ficha Maestra Compartida</span>
+        </div>
+      </a>
+
+      <a href="#" class="chat-item">
+        <div class="avatar-box">
+          <img src="https://picsum.photos/100/100?random=11" class="avatar-img">
+        </div>
+        <div class="chat-info">
+          <div class="chat-header">
+            <span class="chat-name">Benjamín S.</span>
+            <span class="chat-time">Ayer</span>
+          </div>
+          <div class="chat-msg-row">
+            <p class="last-msg">Acabo de subir el informe de la neuróloga.</p>
+          </div>
+          <span class="clinical-tag" style="color:var(--accent-pink); background:rgba(223,123,144,0.1)"><i class="fa-solid fa-calendar-check"></i> Sesión Pendiente</span>
+        </div>
+      </a>
+
+      <a href="#" class="chat-item">
+        <div class="avatar-box">
+          <img src="https://picsum.photos/100/100?random=12" class="avatar-img">
+        </div>
+        <div class="chat-info">
+          <div class="chat-header">
+            <span class="chat-name">Ricardo Jiménez (TO)</span>
+            <span class="chat-time">Lunes</span>
+          </div>
+          <div class="chat-msg-row">
+            <p class="last-msg">Confirmado el cambio de órtesis para el miércoles.</p>
+          </div>
+          <span class="clinical-tag" style="color:white; background:var(--bg-input)"><i class="fa-solid fa-check-double"></i> Leído</span>
+        </div>
+      </a>
+
+      <a href="#" class="chat-item">
+        <div class="avatar-box">
+          <div class="avatar-img" style="background:var(--bg-input); display:flex; justify-content:center; align-items:center; font-size:1.5rem; color:var(--text-secondary)">
+            <i class="fa-solid fa-wheelchair"></i>
+          </div>
+        </div>
+        <div class="chat-info">
+          <div class="chat-header">
+            <span class="chat-name">Venta Silla de Ruedas</span>
+            <span class="chat-time">12 Abr</span>
+          </div>
+          <div class="chat-msg-row">
+            <p class="last-msg">¿Sigue disponible para entrega en Providencia?</p>
+          </div>
+          <span class="clinical-tag" style="color:#ffb400; background:rgba(255,180,0,0.1)"><i class="fa-solid fa-cart-shopping"></i> Marketplace</span>
+        </div>
+      </a>
+
+    </main>
+
+    <nav class="bottom-nav">
+      <a href="inicio.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Inicio</span></a>
+      <a href="buscar.html" class="nav-item"><i class="fa-solid fa-magnifying-glass"></i><span>Buscar</span></a>
+      <a href="mensajes.html" class="nav-item active"><i class="fa-solid fa-comment-dots"></i><span>Mensajes</span></a>
+      <a href="cuenta.html" class="nav-item"><i class="fa-solid fa-circle-user"></i><span>Mi Cuenta</span></a>
+    </nav>
+
+  </div>
+
+</body>
+</html>

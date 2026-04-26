@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>TO connect - Mi Cuenta</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --bg-app: #2c363b;
+      --bg-card: #3a464c;
+      --bg-input: #445158;
+      --text-primary: #ffffff;
+      --text-secondary: #aab8c0;
+      --accent-cyan: #5fa5a1;
+      --accent-pink: #df7b90;
+      --font-main: 'Nunito', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-main); }
+    html, body { width: 100%; height: 100%; background-color: var(--bg-app); overflow-x: hidden; }
+    body { display: flex; justify-content: center; }
+
+    .mobile-app-container {
+      width: 100%; max-width: 480px; min-height: 100vh;
+      background-color: var(--bg-app); color: var(--text-primary);
+      position: relative; overflow-x: hidden; display: flex; flex-direction: column; position: relative;
+      padding-bottom: 110px;
+    }
+
+    /* HEADER (Coherencia con imagen 65877.jpg) */
+    .app-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; background-color: var(--bg-app); position: sticky; top: 0; z-index: 30; border-bottom: 1px solid var(--bg-input);}
+    .brand-logo { font-size: 1.4rem; font-weight: 800; color: var(--accent-cyan); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+    .header-actions { display: flex; gap: 12px; }
+    .btn-circle-outline { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--text-secondary); display: flex; justify-content: center; align-items: center; color: white; }
+    .btn-circle-solid { width: 38px; height: 38px; border-radius: 50%; background-color: var(--text-secondary); color: var(--bg-app); display: flex; justify-content: center; align-items: center; font-size: 1.2rem; }
+
+    /* CONTENIDO */
+    .app-content { padding: 30px 20px; flex: 1; }
+    
+    /* CABECERA PERFIL */
+    .profile-summary { display: flex; align-items: flex-start; gap: 15px; margin-bottom: 15px; }
+    .profile-avatar-box { width: 60px; height: 60px; border-radius: 20px; border: 2px solid var(--accent-cyan); display: flex; justify-content: center; align-items: center; color: var(--accent-cyan); font-size: 1.8rem; background: var(--bg-card); }
+    
+    .greeting-text { font-size: 2rem; font-weight: 800; color: var(--text-primary); margin-bottom: 10px; }
+    .btn-action-small { background: transparent; border: 1px solid var(--accent-cyan); color: var(--accent-cyan); padding: 8px 16px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+    .profile-moto { font-size: 0.95rem; color: #e5a472; font-style: italic; line-height: 1.4; margin: 20px 0 30px 0; } 
+
+    /* GRID DE OPCIONES */
+    .account-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
+    .menu-card { background-color: var(--bg-card); border-radius: 20px; padding: 20px; text-decoration: none; color: var(--text-primary); display: flex; flex-direction: column; position: relative; min-height: 120px; transition: 0.3s; }
+    .menu-card:active { transform: scale(0.97); background: var(--bg-input); }
+    .menu-card.full { grid-column: span 2; }
+    
+    .menu-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+    .menu-card-icon { font-size: 1.8rem; color: var(--accent-cyan); }
+    .menu-card-arrow { color: var(--text-secondary); font-size: 1rem; opacity: 0.5; }
+    .menu-card-title { font-size: 1rem; font-weight: 800; line-height: 1.2; margin-top: auto; }
+    
+    /* Card Premium */
+    .plus-card { background: linear-gradient(135deg, var(--bg-card), #445158); border: 1px solid var(--accent-pink); }
+    .plus-title { display: flex; align-items: center; gap: 8px; font-size: 1.2rem; font-weight: 800; color: white; margin-bottom: 5px; }
+    .plus-desc { font-size: 0.85rem; color: var(--text-secondary); padding-right: 30px; }
+
+    /* MENSAJES / ESTADÍSTICAS */
+    .stats-section { margin-top: 20px; }
+    .stats-title { font-size: 1.3rem; font-weight: 800; margin-bottom: 15px; }
+    .stats-table { width: 100%; border-collapse: collapse; }
+    .stats-table th { text-align: left; font-size: 0.85rem; color: var(--text-secondary); padding-bottom: 10px; border-bottom: 1px solid var(--bg-input); text-transform: uppercase; letter-spacing: 1px; }
+    .stats-table td { padding: 15px 0; border-bottom: 1px solid var(--bg-input); font-size: 0.95rem; font-weight: 600; }
+    .stats-table tr:last-child td { border-bottom: none; }
+
+    /* FOOTER (Estilo 65826.jpg) */
+    .footer-app { display: flex; flex-direction: column; align-items: center; padding: 40px 20px 80px 20px; border-top: 1px solid var(--bg-input); background: var(--bg-card); }
+    .lang-pill { display: flex; width: 100%; background-color: var(--bg-input); border-radius: 30px; margin-bottom: 30px; overflow: hidden; }
+    .lang-btn { flex: 1; padding: 14px; display: flex; justify-content: center; align-items: center; gap: 10px; color: white; font-weight: 700; cursor: pointer; }
+    
+    .footer-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; text-align: center; }
+    .footer-nav a { color: var(--text-primary); text-decoration: none; font-size: 0.9rem; font-weight: 600; }
+    
+    .social-links { display: flex; gap: 15px; margin-bottom: 30px; }
+    .social-item { width: 40px; height: 40px; background: white; color: var(--bg-app); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; text-decoration: none; }
+
+    /* BOTTOM NAV (NUNITO 700) */
+    .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background-color: var(--bg-app); display: flex; justify-content: space-around; align-items: center; padding: 12px 0 16px 0; border-top: 1px solid var(--bg-card); z-index: 500; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 6px; text-decoration: none; color: var(--text-secondary); font-family: var(--font-main) !important; font-weight: 700; font-size: 0.85rem; }
+    .nav-item.active { color: var(--accent-cyan); }
+    .nav-item i { font-size: 1.4rem; }
+  </style>
+</head>
+<body>
+
+  <div class="mobile-app-container">
+    
+    <header class="app-header">
+      <a href="inicio.html" class="brand-logo"><i class="fa-solid fa-hand-holding-medical"></i> TO connect</a>
+      <div class="header-actions">
+        <div class="btn-circle-outline"><i class="fa-solid fa-bars"></i></div>
+        <div class="btn-circle-solid"><i class="fa-solid fa-user"></i></div>
+      </div>
+    </header>
+
+    <main class="app-content">
+      
+      <div class="profile-summary">
+        <div class="profile-avatar-box"><i class="fa-solid fa-person-walking-with-cane"></i></div>
+        <div>
+          <h1 class="greeting-text">¡Hola Camila!</h1>
+          <a href="perfil.html" class="btn-action-small"><i class="fa-solid fa-notes-medical"></i> Mi Ficha Maestra</a>
+        </div>
+      </div>
+      <p class="profile-moto">"Tu camino a la autonomía comienza con la constancia."</p>
+
+      <div class="account-grid">
+        
+        <a href="premium.html" class="menu-card full plus-card">
+          <div class="plus-title">Paciente Plus <i class="fa-solid fa-crown" style="color: var(--accent-pink);"></i></div>
+          <div class="plus-desc">Habla con especialistas ilimitados y accede al ranking de calidad.</div>
+          <i class="fa-solid fa-chevron-right menu-card-arrow" style="position:absolute; right:20px; top:50%; transform:translateY(-50%);"></i>
+        </a>
+
+        <a href="#" class="menu-card">
+          <div class="menu-card-top">
+            <div class="menu-card-icon"><i class="fa-solid fa-id-card-clip"></i></div>
+            <i class="fa-solid fa-chevron-right menu-card-arrow"></i>
+          </div>
+          <div class="menu-card-title">Información personal</div>
+        </a>
+
+        <a href="insignias.html" class="menu-card">
+          <div class="menu-card-top">
+            <div class="menu-card-icon"><i class="fa-solid fa-award"></i></div>
+            <i class="fa-solid fa-chevron-right menu-card-arrow"></i>
+          </div>
+          <div class="menu-card-title">Nivel de Confianza</div>
+        </a>
+
+        <a href="#" class="menu-card">
+          <div class="menu-card-top">
+            <div class="menu-card-icon"><i class="fa-solid fa-credit-card"></i></div>
+            <i class="fa-solid fa-chevron-right menu-card-arrow"></i>
+          </div>
+          <div class="menu-card-title">Pagos y Facturas</div>
+        </a>
+
+        <a href="#" class="menu-card">
+          <div class="menu-card-top">
+            <div class="menu-card-icon"><i class="fa-solid fa-shield-heart"></i></div>
+            <i class="fa-solid fa-chevron-right menu-card-arrow"></i>
+          </div>
+          <div class="menu-card-title">Seguridad & SOS</div>
+        </a>
+
+      </div>
+
+      <div style="text-align: center; margin-bottom: 40px;">
+        <a href="#" style="color: var(--text-secondary); font-weight: 700; font-size: 0.9rem; text-decoration: underline;">Cerrar sesión</a>
+      </div>
+
+      <div class="stats-section">
+        <h2 class="stats-title">Contactos con especialistas</h2>
+        <table class="stats-table">
+          <thead>
+            <tr>
+              <th>Período</th>
+              <th>Solicitudes</th>
+              <th>Cupos Plus</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Este mes</td>
+              <td>2 / 3</td>
+              <td>Ilimitado</td>
+            </tr>
+            <tr>
+              <td>Histórico</td>
+              <td>14</td>
+              <td>-</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </main>
+
+    <footer class="footer-app">
+      <div class="lang-pill">
+        <div class="lang-btn" style="border-right: 1px solid var(--bg-app);">🇨🇱 <i class="fa-solid fa-caret-down"></i></div>
+        <div class="lang-btn">Español <i class="fa-solid fa-caret-down"></i></div>
+      </div>
+      
+      <div class="footer-nav">
+        <a href="#">Cómo funciona</a><a href="#">Ayuda</a>
+        <a href="#">Privacidad</a><a href="#">Precios</a>
+        <a href="#">Empresa</a><a href="#">Comunidad</a>
+      </div>
+
+      <div class="social-links">
+        <a href="#" class="social-item"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="#" class="social-item"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" class="social-item"><i class="fa-brands fa-linkedin-in"></i></a>
+      </div>
+
+      <p style="font-weight: 700; color: var(--accent-cyan); font-size: 0.95rem;">© 2026 TO connect Chile</p>
+    </footer>
+
+    <nav class="bottom-nav">
+      <a href="inicio.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Inicio</span></a>
+      <a href="buscar.html" class="nav-item"><i class="fa-solid fa-magnifying-glass"></i><span>Buscar</span></a>
+      <a href="mensajes.html" class="nav-item"><i class="fa-solid fa-comment-dots"></i><span>Mensajes</span></a>
+      <a href="cuenta.html" class="nav-item active"><i class="fa-solid fa-circle-user"></i><span>Mi Cuenta</span></a>
+    </nav>
+
+  </div>
+</body>
+</html>

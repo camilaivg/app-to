@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>TO connect - Cómo Funciona</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --bg-app: #2c363b;
+      --bg-card: #3a464c;
+      --bg-input: #445158;
+      --text-primary: #ffffff;
+      --text-secondary: #aab8c0;
+      --accent-cyan: #5fa5a1;
+      --accent-pink: #df7b90;
+      --font-main: 'Nunito', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-main); }
+    body { background-color: #121212; display: flex; justify-content: center; min-height: 100vh; }
+
+    .mobile-app-container {
+      width: 100%; max-width: 480px; background-color: var(--bg-app); color: var(--text-primary);
+      position: relative; overflow-x: hidden; display: flex; flex-direction: column;
+    }
+
+    /* HEADER (Iconos según 65877.jpg) */
+    .app-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; background-color: var(--bg-app); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--bg-input); }
+    .brand-logo { font-size: 1.4rem; font-weight: 800; color: var(--accent-cyan); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+    
+    .header-actions { display: flex; align-items: center; gap: 12px; }
+    .btn-circle-outline { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--text-secondary); display: flex; justify-content: center; align-items: center; color: white; }
+    .btn-circle-solid { width: 38px; height: 38px; border-radius: 50%; background-color: var(--text-secondary); color: var(--bg-app); display: flex; justify-content: center; align-items: center; font-size: 1.1rem; }
+    
+    .sub-nav { display: flex; justify-content: space-around; background-color: var(--bg-app); }
+    .sub-nav-item { padding: 15px 0; color: var(--text-secondary); font-weight: 700; text-decoration: none; font-size: 1rem; flex: 1; text-align: center; }
+    .sub-nav-item.active { color: var(--text-primary); border-bottom: 3px solid var(--accent-cyan); }
+
+    /* HERO SECTION */
+    .hero-title { font-size: 1.8rem; font-weight: 800; padding: 25px 20px 10px 20px; line-height: 1.2; text-align: center; }
+    .hero-image-wrapper { position: relative; width: 100%; height: 220px; background: url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=600') center/cover; }
+    .hero-wave { position: absolute; bottom: -1px; left: 0; width: 100%; height: 40px; }
+    .hero-wave path { fill: var(--bg-app); }
+    .hero-wave path.accent { fill: var(--accent-pink); opacity: 0.8; }
+    
+    .hero-text-intro { font-size: 1rem; color: var(--text-primary); text-align: center; padding: 20px; line-height: 1.5; font-weight: 600; }
+
+    /* SCROLL HORIZONTAL (PASOS) */
+    .section-header { font-size: 1.5rem; font-weight: 800; padding: 20px; }
+    .scroll-container-wrapper { position: relative; padding-bottom: 20px; }
+    .horizontal-scroll { display: flex; overflow-x: auto; gap: 15px; scroll-snap-type: x mandatory; padding: 0 20px; scrollbar-width: none; }
+    .horizontal-scroll::-webkit-scrollbar { display: none; }
+    
+    .step-card { min-width: 280px; background-color: var(--bg-card); border-radius: 20px; padding: 30px 20px; scroll-snap-align: center; display: flex; flex-direction: column; border: 1px solid var(--bg-input); }
+    .step-icon { font-size: 4rem; color: var(--accent-cyan); text-align: center; margin-bottom: 20px; }
+    .step-title { font-size: 1.3rem; font-weight: 800; margin-bottom: 12px; text-align: center; }
+    .step-desc { font-size: 0.95rem; color: var(--text-primary); line-height: 1.5; text-align: center; margin-bottom: 20px; flex: 1; }
+    .step-link { color: var(--accent-cyan); font-weight: 800; text-align: center; text-decoration: none; }
+    .step-note { font-size: 0.85rem; color: var(--text-secondary); margin-top: 15px; line-height: 1.4; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; display: flex; align-items: flex-start; gap: 8px; }
+
+    /* DOTS */
+    .scroll-dots { display: flex; justify-content: center; gap: 8px; margin-top: 15px; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background-color: var(--text-secondary); opacity: 0.3; }
+    .dot.active { background-color: var(--accent-cyan); opacity: 1; }
+
+    /* SECCIÓN DE APOYO */
+    .support-section { padding: 40px 20px; text-align: center; }
+    .support-img { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent-cyan); margin-bottom: 20px; }
+    .support-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 15px; }
+    .support-text { font-size: 0.95rem; line-height: 1.5; color: var(--text-secondary); margin-bottom: 20px; text-align: left; }
+    .btn-support { display: block; background-color: var(--bg-input); color: white; padding: 14px; border-radius: 30px; font-weight: 700; text-decoration: none; margin-top: 10px; }
+
+    /* RESEÑAS (Estilo video) */
+    .reviews-box { background-color: var(--bg-card); padding: 40px 0; }
+    .reviews-header { text-align: center; padding: 0 20px 25px 20px; }
+    .stars { color: #ffb400; font-size: 1.2rem; margin-bottom: 8px; }
+    .review-card { min-width: 260px; background-color: var(--bg-app); border-radius: 20px; padding: 25px; scroll-snap-align: center; }
+    .review-text { font-style: italic; font-size: 0.95rem; line-height: 1.6; color: var(--text-primary); margin-bottom: 15px; }
+    .review-author { font-weight: 800; font-size: 0.9rem; color: var(--accent-cyan); }
+
+    /* FAQ */
+    .faq-section { padding: 40px 20px; }
+    .faq-item { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; border-bottom: 1px solid var(--bg-input); cursor: pointer; font-weight: 700; }
+    .faq-item i { color: var(--accent-pink); }
+
+    /* CHARITY BANNER */
+    .charity-banner { display: flex; gap: 15px; padding: 25px 20px; background: rgba(95, 165, 161, 0.1); border-radius: 15px; margin: 20px; border-left: 4px solid var(--accent-cyan); }
+    .charity-text { font-size: 0.85rem; line-height: 1.4; }
+
+    /* BOTONES FINALES */
+    .footer-actions { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+    .btn-outline-full { width: 100%; border: 1px solid var(--text-secondary); padding: 14px; border-radius: 30px; color: white; text-decoration: none; text-align: center; font-weight: 700; }
+
+    /* FOOTER STANDARD (Coherencia con BAPPSEARCH) */
+    .footer-final { background-color: var(--bg-card); padding: 40px 20px; text-align: center; }
+    .lang-pill { background-color: var(--bg-input); border-radius: 30px; display: flex; overflow: hidden; margin-bottom: 30px; }
+    .lang-item { flex: 1; padding: 12px; font-weight: 700; font-size: 0.9rem; }
+    .lang-item.flag { border-right: 1px solid var(--bg-app); flex: 0.3; }
+    
+    .social-row { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; }
+    .social-icon { width: 36px; height: 36px; background-color: var(--bg-input); border-radius: 50%; display: flex; justify-content: center; align-items: center; color: white; text-decoration: none; }
+    .copyright { font-size: 0.85rem; color: var(--text-secondary); font-weight: 700; }
+  </style>
+</head>
+<body>
+
+  <div class="mobile-app-container">
+    
+    <header class="app-header">
+      <a href="index.html" class="brand-logo"><i class="fa-solid fa-hand-holding-medical"></i> TO connect</a>
+      <div class="header-actions">
+        <div class="btn-circle-outline"><i class="fa-solid fa-bars"></i></div>
+        <div class="btn-circle-solid"><i class="fa-solid fa-user"></i></div>
+      </div>
+    </header>
+    
+    <nav class="sub-nav">
+      <a href="#" class="sub-nav-item">Sobre nosotros</a>
+      <a href="#" class="sub-nav-item active">Cómo funciona</a>
+    </nav>
+
+    <h1 class="hero-title">Conectando salud y autonomía</h1>
+    <div class="hero-image-wrapper">
+      <svg class="hero-wave" viewBox="0 0 1440 120" preserveAspectRatio="none">
+        <path class="accent" d="M0,60 C320,160 800,-40 1440,60 L1440,120 L0,120 Z" transform="translate(0, -10)"></path>
+        <path d="M0,60 C400,120 800,0 1440,60 L1440,120 L0,120 Z"></path>
+      </svg>
+    </div>
+    
+    <p class="hero-text-intro">TO connect une a pacientes con Terapeutas Ocupacionales expertos, haciendo que la rehabilitación sea simple, segura y profesional.</p>
+
+    <h2 class="section-header">Es tan fácil como:</h2>
+    <div class="scroll-container-wrapper">
+      <div class="horizontal-scroll">
+        
+        <div class="step-card">
+          <div class="step-icon"><i class="fa-solid fa-address-card"></i></div>
+          <h3 class="step-title">Crea un perfil</h3>
+          <p class="step-desc">Define tus necesidades terapéuticas o cuéntanos tu especialidad clínica para empezar a conectar.</p>
+          <div class="step-note">
+            <i class="fa-solid fa-shield-halved" style="color:var(--accent-cyan);"></i>
+            <span>Para seguridad de todos, los terapeutas verifican su Registro SIS (Superintendencia de Salud).</span>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+          <h3 class="step-title">Busca y agenda</h3>
+          <p class="step-desc">Filtra por especialidad y cercanía. Los pacientes Plus acceden a mensajería ilimitada y prioridad de búsqueda.</p>
+          <a href="#" class="step-link">Ver beneficios Plus</a>
+        </div>
+
+        <div class="step-card">
+          <div class="step-icon"><i class="fa-solid fa-house-user"></i></div>
+          <h3 class="step-title">Inicia tu terapia</h3>
+          <p class="step-desc">Coordina la primera evaluación en el lugar que prefieras. Define objetivos y comienza tu camino a la autonomía.</p>
+        </div>
+
+      </div>
+      <div class="scroll-dots"><span class="dot active"></span><span class="dot"></span><span class="dot"></span></div>
+    </div>
+
+    <section class="support-section">
+      <img src="https://picsum.photos/300/300?random=88" alt="Terapia" class="support-img">
+      <h2 class="support-title">Tú tienes el control clínico</h2>
+      <p class="support-text">Proporcionamos las herramientas de verificación para que te concentres en lo importante: encontrar al terapeuta o paciente adecuado con total confianza clínica. ✨</p>
+      <p class="support-text">Tú decides los horarios y objetivos. Siempre estamos aquí para orientarte en el uso de la plataforma y soporte técnico. 💙</p>
+      <a href="#" class="btn-support">Atención al cliente</a>
+    </section>
+
+    <section class="reviews-box">
+      <div class="reviews-header">
+        <h2 class="support-title">Recomendado por la comunidad</h2>
+        <div class="stars">
+          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+        </div>
+        <p style="font-weight: 700;">4.9 / 5 (2.500+ reseñas)</p>
+      </div>
+
+      <div class="horizontal-scroll">
+        <div class="review-card">
+          <p class="review-text">"Encontré un TO especialista en manos en tiempo récord. La verificación del SIS me dio mucha tranquilidad."</p>
+          <p class="review-author">Camila Oyarzún</p>
+        </div>
+        <div class="review-card">
+          <p class="review-text">"Como terapeuta, me encanta la libertad de gestionar mi propia agenda y conectar con pacientes de mi zona."</p>
+          <p class="review-author">Ricardo Jiménez</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="faq-section">
+      <h2 class="section-header">Preguntas frecuentes</h2>
+      <div class="faq-item"><span>¿Cómo verifican a los terapeutas?</span><i class="fa-solid fa-chevron-down"></i></div>
+      <div class="faq-item"><span>¿Qué incluye el plan Paciente Plus?</span><i class="fa-solid fa-chevron-down"></i></div>
+      <div class="faq-item"><span>¿Puedo cancelar una sesión agendada?</span><i class="fa-solid fa-chevron-down"></i></div>
+    </section>
+
+    <div class="footer-actions">
+      <p style="font-weight: 800; margin-bottom: 5px;">Más Información</p>
+      <a href="#" class="btn-outline-full">Confianza y seguridad</a>
+      <a href="#" class="btn-outline-full">Normas de la comunidad</a>
+      <a href="#" class="btn-outline-full">Precios y suscripciones</a>
+    </div>
+
+    <div class="charity-banner">
+      <i class="fa-solid fa-leaf" style="color: #4caf50; font-size: 1.5rem;"></i>
+      <div class="charity-text">
+        <strong>TO connect sustentable.</strong> Parte de cada suscripción se destina a Stripe Climate para eliminar CO₂ de la atmósfera. <a href="#" style="color:var(--accent-cyan); font-weight:700;">Saber más</a>
+      </div>
+    </div>
+
+    <footer class="footer-final">
+      <div class="lang-pill">
+        <div class="lang-item flag">🇨🇱 <i class="fa-solid fa-caret-down"></i></div>
+        <div class="lang-item">Español <i class="fa-solid fa-caret-down"></i></div>
+      </div>
+      
+      <div class="footer-links-center" style="margin-bottom: 25px;">
+        <div class="footer-link-row"><a href="#">Privacidad</a><a href="#">Términos</a><a href="#">Ayuda</a></div>
+      </div>
+
+      <div class="social-row">
+        <a href="#" class="social-icon"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" class="social-item" style="color: white; text-decoration: none; font-weight: 800;">TikTok</a>
+        <a href="#" class="social-icon"><i class="fa-brands fa-linkedin-in"></i></a>
+      </div>
+
+      <p class="copyright"><i class="fa-solid fa-hand-holding-medical"></i> © 2026 TO connect Chile</p>
+    </footer>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>TO connect - Perfil Profesional Maestro</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --bg-app: #1e2528;
+      --bg-card: #2c363b;
+      --bg-input: #3a464c;
+      --text-primary: #ffffff;
+      --text-secondary: #aab8c0;
+      --accent-cyan: #5fa5a1;
+      --accent-pink: #df7b90;
+      --accent-red: #e27d8f;
+      --font-main: 'Nunito', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-main); }
+    body { background-color: #121212; display: flex; justify-content: center; min-height: 100vh; }
+
+    .mobile-app-container {
+      width: 100%; max-width: 480px; background-color: var(--bg-app); color: var(--text-primary);
+      position: relative; overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh;
+      padding-bottom: 110px;
+    }
+
+    /* HEADER */
+    .profile-header {
+      padding: 40px 20px 25px 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: linear-gradient(180deg, #2c363b 0%, var(--bg-app) 100%);
+    }
+    .avatar-box {
+      width: 110px; height: 110px; background-color: var(--bg-card); border-radius: 35px;
+      display: flex; justify-content: center; align-items: center; border: 3px solid var(--accent-pink);
+      margin-bottom: 18px; position: relative;
+    }
+    .avatar-box i { font-size: 3.5rem; color: white; }
+    .badge-verified {
+      position: absolute; bottom: 0px; right: 0px; background: var(--accent-cyan); color: var(--bg-app);
+      width: 32px; height: 32px; border-radius: 50%; display: flex; justify-content: center;
+      align-items: center; font-size: 0.9rem; border: 3px solid var(--bg-app);
+    }
+
+    .user-name { font-size: 1.8rem; font-weight: 800; margin-bottom: 4px; }
+    .user-meta { font-size: 0.85rem; color: var(--text-secondary); font-weight: 600; }
+
+    /* CONTENIDO SCROLL */
+    .ficha-scroll { padding: 0 20px; display: flex; flex-direction: column; gap: 30px; }
+    .section-label { font-size: 1.1rem; font-weight: 800; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+    
+    .clinical-card {
+      background-color: var(--bg-card); border-radius: 24px; padding: 22px;
+      border: 1px solid rgba(255,255,255,0.03); box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .row-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    .input-wrap { display: flex; flex-direction: column; gap: 6px; margin-bottom: 18px; }
+    .label-tag { font-size: 0.7rem; font-weight: 800; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+    
+    .field-styled {
+      background-color: var(--bg-input); border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 14px; padding: 14px 16px; color: white; font-size: 1rem;
+      font-weight: 600; width: 100%; outline: none; transition: 0.3s;
+    }
+    .field-styled:focus { border-color: var(--accent-cyan); }
+    textarea.field-styled { min-height: 80px; resize: none; line-height: 1.4; }
+
+    .tags-container { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 5px; }
+    .specialty-tag { background: var(--bg-input); color: var(--text-primary); padding: 6px 12px; border-radius: 10px; font-size: 0.8rem; font-weight: 700; border: 1px solid rgba(255,255,255,0.1); }
+
+    /* SUBIDA DE ARCHIVOS */
+    .upload-area {
+      border: 2px dashed rgba(255,255,255,0.1); border-radius: 16px; padding: 20px;
+      text-align: center; cursor: pointer; background: rgba(0,0,0,0.1);
+      display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 10px;
+    }
+    .upload-area i { font-size: 1.8rem; color: var(--accent-cyan); }
+    .upload-area span { font-size: 0.85rem; font-weight: 700; color: var(--text-secondary); }
+
+    .file-item {
+      background: var(--bg-input); padding: 12px 15px; border-radius: 12px;
+      display: flex; align-items: center; gap: 12px; font-size: 0.85rem; font-weight: 700; margin-top: 10px;
+    }
+    .file-item i.file-icon { color: var(--accent-pink); }
+
+    /* BOTONES */
+    .btn-save-all {
+      background: linear-gradient(135deg, var(--accent-cyan) 0%, #4e8c89 100%);
+      color: var(--bg-app); border: none; padding: 20px; border-radius: 24px;
+      font-weight: 800; font-size: 1rem; margin: 35px 20px; cursor: pointer;
+      text-transform: uppercase; letter-spacing: 1.5px;
+    }
+
+    /* NAV */
+    .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background-color: var(--bg-app); display: flex; justify-content: space-around; align-items: center; padding: 12px 0 16px 0; border-top: 1px solid var(--bg-card); z-index: 500; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 6px; text-decoration: none; color: var(--text-secondary); font-weight: 700; font-size: 0.85rem; }
+    .nav-item.active { color: var(--accent-cyan); }
+    .nav-item i { font-size: 1.4rem; }
+  </style>
+</head>
+<body>
+
+  <div class="mobile-app-container">
+    
+    <header class="profile-header">
+      <div class="avatar-box">
+        <i class="fa-solid fa-user-doctor"></i>
+        <div class="badge-verified"><i class="fa-solid fa-check-double"></i></div>
+      </div>
+      <h1 class="user-name">Camila Vidal</h1>
+      <p class="user-meta">ID: 19.882.XXX-K · Ñuñoa</p>
+    </header>
+
+    <div class="ficha-scroll">
+
+      <section>
+        <h2 class="section-label">Registro Técnico y Ubicación</h2>
+        <div class="clinical-card" style="border-top: 4px solid var(--accent-cyan);">
+          <div class="input-wrap">
+            <label class="label-tag">Dirección de Atención / Domicilio</label>
+            <input type="text" class="field-styled" value="Calle Ejemplo 1234, Ñuñoa, Santiago">
+          </div>
+          <div class="input-wrap">
+            <label class="label-tag">N° Registro SIS</label>
+            <input type="text" class="field-styled" value="649XXX">
+          </div>
+          <div class="row-fields">
+            <div class="input-wrap">
+              <label class="label-tag">Años Exp.</label>
+              <input type="number" class="field-styled" value="4">
+            </div>
+            <div class="input-wrap">
+              <label class="label-tag">Egresada de</label>
+              <input type="text" class="field-styled" value="U. de Chile">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-label">Seguridad SOS</h2>
+        <div class="clinical-card" style="border-left: 5px solid var(--accent-red);">
+          <div class="input-wrap">
+            <label class="label-tag">Certificado de Antecedentes (Adjuntar)</label>
+            <div class="upload-area">
+              <i class="fa-solid fa-file-shield"></i>
+              <span>Subir PDF Antecedentes</span>
+            </div>
+            <div class="file-item">
+              <i class="fa-solid fa-file-pdf file-icon"></i>
+              <span>antecedentes_camila_2026.pdf</span>
+            </div>
+          </div>
+          <div class="row-fields">
+            <div class="input-wrap">
+              <label class="label-tag">Grupo Sangre</label>
+              <input type="text" class="field-styled" value="O Rh+">
+            </div>
+            <div class="input-wrap">
+              <label class="label-tag">Edad</label>
+              <input type="number" class="field-styled" value="27">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-label">Áreas Terapéuticas</h2>
+        <div class="clinical-card" style="border-left: 5px solid var(--accent-pink);">
+          <div class="input-wrap">
+            <label class="label-tag">Especialidades Principales</label>
+            <div class="tags-container">
+              <span class="specialty-tag">Rehabilitación Física</span>
+              <span class="specialty-tag">Terapia de Mano</span>
+              <span class="specialty-tag">Neurorehabilitación</span>
+            </div>
+          </div>
+          <div class="input-wrap">
+            <label class="label-tag">Otras Áreas de Interés / Terapéuticas</label>
+            <input type="text" class="field-styled" placeholder="Ej: Pediatría, Salud Mental, Geriatría...">
+          </div>
+          <div class="input-wrap">
+            <label class="label-tag">Bio Profesional</label>
+            <textarea class="field-styled">TO especialista en manejo de cicatrices, confección de órtesis y neurodinámica. Enfocada en la recuperación funcional.</textarea>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-label">Formación y Cursos</h2>
+        <div class="clinical-card">
+          <label class="label-tag">Diplomas Adjuntos</label>
+          <div class="upload-area">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span>Añadir Certificados</span>
+          </div>
+          <div class="file-list">
+            <div class="file-item">
+              <i class="fa-solid fa-award file-icon" style="color:var(--accent-cyan)"></i>
+              <span>Diplomado_Terapia_Mano.pdf</span>
+            </div>
+          </div>
+          <div class="input-wrap" style="margin-top: 20px;">
+            <label class="label-tag">Otros Conocimientos (Manualidades/Madera)</label>
+            <textarea class="field-styled">Macramé terapéutico, Woodcrafting para ayudas técnicas, Diseño de órtesis 3D.</textarea>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-label">Modalidad y Tarifas</h2>
+        <div class="clinical-card">
+          <div class="input-wrap">
+            <label class="label-tag">Atención</label>
+            <select class="field-styled">
+              <option>Domicilio & Box</option>
+              <option>Solo Domicilio</option>
+            </select>
+          </div>
+          <div class="input-wrap">
+            <label class="label-tag">Valor Sesión</label>
+            <input type="text" class="field-styled" value="$35.000">
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <button class="btn-save-all">Actualizar Perfil Maestro</button>
+
+    <nav class="bottom-nav">
+      <a href="#" class="nav-item"><i class="fa-solid fa-briefcase"></i><span>Casos</span></a>
+      <a href="#" class="nav-item"><i class="fa-regular fa-calendar-check"></i><span>Agenda</span></a>
+      <a href="#" class="nav-item"><i class="fa-solid fa-comment-dots"></i><span>Mensajes</span></a>
+      <a href="#" class="nav-item active"><i class="fa-solid fa-user-doctor"></i><span>Mi Perfil</span></a>
+    </nav>
+
+  </div>
+</body>
+</html>
